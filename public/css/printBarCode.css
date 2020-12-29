@@ -1,0 +1,34 @@
+@media print {
+  /* Este funciona */
+  body {
+    width: 79mm;
+    height: 10mm;
+
+    display: flex;
+    justify-content: center;
+  }
+
+  .print_barcode {
+    text-align: center !important;
+  }
+  .print_barcode--barcode {
+    width: 25mm !important;
+    font-size: 20px;
+    height: 10mm;
+  }
+  .print_barcode--barcode img {
+    width: 70%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .print_barcode--espacio {
+    /* width: 5mm; */
+    width: 12mm;
+  }
+  .print_barcode--precio {
+    width: 32mm;
+    font-weight: bold;
+    text-align: center !important;
+    font-size: 50px;
+  }
+}
