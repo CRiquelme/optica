@@ -26,7 +26,7 @@ class RestConvenios extends MyRestApi
         if ($this->validate('ingresoConvenios')) {
             $id = $ingresoConvenios->insert([
 				'nombre_empresa'    => $this->request->getPost('nombre_empresa'),
-				'estado' 		=> $this->request->getPost('estado')
+				'estado' 			=> $this->request->getPost('estado')
             ]);
             
 			return $this->genericResponse($this->model->find($id), null, 200);

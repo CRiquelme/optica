@@ -63,11 +63,25 @@ class Validation
 		'potencia2' => 'required',
 		'cantidad' => 'required|numeric'
 	];
-
+	
 	public $salidaCristales = [
 		'cristal_id'	=> 'required',
 		'tienda_id'		=> 'required',
 		'cantidad'		=> 'required|numeric'
+	];
+	
+	public $ingresoConvenios = [
+		'nombre_empresa'	=> 'required',
+		'estado' => 'required'
+	];
+
+	public $ingresoConvenios_errors = [
+		'nombre_empresa'  => [
+            'required'	=> 'Requerido.'
+        ],
+		'estado'  => [
+            'required'	=> 'Requerido.'
+        ]
 	];
 
 	public $ingresoUsuario = [
