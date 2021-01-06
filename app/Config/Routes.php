@@ -45,6 +45,8 @@ $routes->get('productos', 'ProductosController::index');
 $routes->get('cristales', 'CristalesController::index');
 $routes->get('salida_cristales', 'CristalesController::salida_cristales');
 
+$routes->get('convenios', 'ConveniosController::index');
+
 $routes->get('sobre', 'SobreController::index');
 $routes->get('traslados', 'TrasladosController::index');
 $routes->get('stock_productos', 'StockController::index');
@@ -66,6 +68,8 @@ $routes->resource('rest-productos', ['controller' => 'RestProductos']); // gené
 $routes->resource('rest-cristales', ['controller' => 'RestCristales']); // genérica
 $routes->get('rest-salida-cristales/ultimo/(:any)', 'RestSalidaCristales::ultimo/$1');
 $routes->resource('rest-salida-cristales', ['controller' => 'RestSalidaCristales']);
+
+$routes->resource('rest-convenios', ['controller' => 'RestConvenios']); // genérica
 
 $routes->put('rest-usuario/update-password', ['controller' => 'RestUsuario']); // genérica
 $routes->resource('rest-usuario', ['controller' => 'RestUsuario']); // genérica
