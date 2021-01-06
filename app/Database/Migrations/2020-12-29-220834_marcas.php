@@ -1,0 +1,41 @@
+<?php namespace App\Database\Migrations;
+
+use CodeIgniter\Database\Migration;
+
+class Marcas extends Migration
+{
+	public function up()
+	{
+		$this->forge->addField([
+			'id_marca' => [
+				'type'				=> 'INT',
+				'constraint'		=> 11,
+				'unsigned'			=> true,
+				'auto_increment'	=> true,
+			],
+			'nombre_marca' => [
+				'type'				=> 'VARCHAR',
+				'constraint'		=> '150',
+			],
+			'proveedor_id' => [
+				'type'				=> 'INT',
+				'constraint'		=> 11,
+			],
+			'deleted' => [
+				'type'				=> 'DATETIME',
+				'null'				=> true,
+			],
+			'created_at datetime default current_timestamp on update current_timestamp',
+			'updated_at datetime default current_timestamp on update current_timestamp'
+		]);
+		$this->forge->addPrimaryKey('id_marca', true);
+		$this->forge->createTable('marcas');
+	}
+
+	//--------------------------------------------------------------------
+
+	public function down()
+	{
+		$this->forge->dropTable('marcas');
+	}
+}
