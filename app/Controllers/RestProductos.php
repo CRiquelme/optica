@@ -15,7 +15,7 @@ class RestProductos extends MyRestApi {
 		$builder->select('p.id_producto, m.nombre_marca, p.cod_barra, p.marca_id, p.modelo, p.created_at, p.precio_venta');
 					$builder->join('marcas AS m', 'm.id_marca = p.marca_id');
 					$builder->where('p.deleted', null);
-        //             // $builder->orderBy('pt.created_at', 'DESC');
+                    $builder->orderBy('p.created_at', 'DESC');
         //             $builder->groupby('i.producto_id, i.tienda_id');
 		$query = $builder->get();
 		return  $this->genericResponse($query->getResultArray(), null, 200);

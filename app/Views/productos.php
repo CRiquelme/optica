@@ -28,6 +28,7 @@ Productos
         <table class="uk-table uk-table-striped uk-table-hover" id="table_productos">
             <thead>
                 <tr>
+                    <th>created_at</th>
                     <th>Producto</th>
                     <th>Categoría</th>
                     <th>Proveedor(es)</th>
@@ -39,6 +40,7 @@ Productos
             <tbody>
                 <?php foreach($productos as $producto) : ?>
                     <tr>
+                        <td><?=$producto['created_at'];?></td>
                         <td>
                             <button
                                 class="uk-button uk-button-link uk-text-primary uk-text-bolder"
@@ -99,9 +101,17 @@ Productos
             // "scrollY":          "50vh",
             // "scrollCollapse":   true,
             "paging":           true,
-            "order":            [[ 0, "asc" ]],
+            "order":            [[ 0, "desc" ]],
+            // "order": [],
             "info"          : false,
-            "responsive"    : true
+            "responsive"    : true,
+            "columnDefs": [
+                {
+                    "targets": [ 0 ],
+                    "visible": false,
+                    "searchable": false
+                }
+            ]
         });
 
         $( '#table_productos_filter' ).addClass( "dataTables_filter uk-search uk-search-default" );

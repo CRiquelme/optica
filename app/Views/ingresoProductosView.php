@@ -8,10 +8,6 @@ Ingreso de productos
 <section id="ingreso_producto">
     <article class="uk-margin-medium-right uk-margin-small-left uk-margin-medium-top" uk-grid>
         <titulo class="text-4xl"></titulo>
-
-        
-
-
         <div class="uk-width-1-6 pos_relative">
             <!-- <button class="uk-button uk-button-secondary uk-button-small  uk-text-middle uk-position-center" @click="nuevo_traslado()">Nuevo</button> -->
         </div>
