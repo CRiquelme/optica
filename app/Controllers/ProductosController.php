@@ -23,7 +23,7 @@ class ProductosController extends BaseController
             $db      = \Config\Database::connect();
             $builder = $db->table('productos');
             // Construir la consulta
-            $builder->select('id_producto, productos.created_at, modelo, nombre_cat_pro, group_concat(nombre_proveedor) as nombre_proveedor, marcas.nombre_marca, precio_unitario, precio_venta, stock_critico, cod_barra, productos.deleted, precio_venta');
+            $builder->select('id_producto, modelo, nombre_cat_pro, group_concat(nombre_proveedor) as nombre_proveedor, marcas.nombre_marca, precio_unitario, precio_venta, stock_critico, cod_barra, productos.deleted, precio_venta');
             $builder->join('categoria_productos', 'categoria_productos.id_cat_prod = productos.cat_prod_id', 'inner');
             $builder->join('proveedores', 'FIND_IN_SET(proveedores.id_proveedor, productos.proveedor_id) > 0', 'left');
             $builder->join('marcas', 'marcas.id_marca = productos.marca_id', 'inner');

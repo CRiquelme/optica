@@ -45,9 +45,7 @@
     <!-- <script src="<?//=base_url('public/js/canvas2image.js');?>"></script> -->
     <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
     <link rel="stylesheet" href="https://printjs-4de6.kxcdn.com/print.min.css">
-
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-  
 
 </head>
 <body>
