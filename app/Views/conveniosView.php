@@ -29,23 +29,23 @@ Convenios
               </select>
             </div>
           </div>
-          
+          <!-- Botones de acción -->
           <div class="uk-margin" v-if="action === 'editar'">
-            <button class="uk-button uk-button-primary" type="button">Editar</button>
-            <button class="uk-button uk-button-secondary" type="button">Limpiar</button> 
+            <button class="uk-button uk-button-primary" type="button" @click=agregar() >Editar</button>
+            <button class="uk-button uk-button-secondary" type="button" @click=limpiar()>Limpiar</button> 
           </div>
           <div v-if="action==='nuevo'" class="uk-margin">
             <button class="uk-button uk-button-primary uk-width-1-1" type="button" @click="agregar" >Guardar</button>
           </div>
         </fieldset>
       </form>
-
-      <div class="uk-card uk-card-default uk-card-body uk-margin-medium-top">
+      <!-- filtros -->
+<!--       <div class="uk-card uk-card-default uk-card-body uk-margin-medium-top">
         <h2 class="uk-text-uppercase">FILTROS</h2>
         <label>Estado</label>
 
         <button @click="limpiarFiltro" class="uk-button uk-button-secondary uk-margin-medium-top uk-align-center">Limpiar filtros</button>
-      </div>
+      </div> -->
     </div>
     <!-- tabla -->
     <div class="uk-width-3-4" uk-grid>
@@ -67,7 +67,7 @@ Convenios
             :key="n" 
           >
             <td>
-              <button class="uk-button uk-button-link uk-text-success uk-text-bolder" @click="editar_ingreso(idinfo, ingresos.id_cristal)">
+              <button class="uk-button uk-button-link uk-text-success uk-text-bolder" @click="seleccionar(n)">
                 <i class="far fa-edit uk-margin-small-left uk-text-success"></i> {{ convenio.id_convenio }}
               </button>
             </td>
@@ -95,6 +95,7 @@ Convenios
         nombre_empresa:null,
         estado:"Activo",
         action:"nuevo",
+        id_convenio:null,
         errores:null
        }
   },
@@ -109,6 +110,9 @@ Convenios
         .catch(e=>console.error(e))
       this.estado="Activo"
       this.nombre_empresa=null
+    },
+    limpiar(){
+      this.action="nuevo"
     },
     limpiarFiltro(){
 
@@ -126,17 +130,32 @@ Convenios
       const params = new URLSearchParams();
       params.append('nombre_empresa',this.nombre_empresa)
       params.append('estado',this.estado)
-      axios
-        .post('<?=base_url('rest-convenios')?>', params)
-        .then(
-          response => {
-          if(response.data.code === 500) {
-            console.error(response.data.msj)
-            this.alertarError("Hubo un problema, intenta nuevamente",'error')
-          }else{
-            this.cargar()
-          }
-        })
+      if(this.action==="nuevo"){
+        axios
+          .post('<?=base_url('rest-convenios')?>', params)
+          .then(
+            response => {
+            if(response.data.code === 500) {
+              console.error(response.data.msj)
+              this.alertarError("Hubo un problema, intenta nuevamente",'error')
+            }else{
+              this.cargar()
+            }
+          })
+      }else if(this.action="editar"){
+        axios
+          .put('<?=base_url('rest-convenios')?>/' + this.id_convenio, params)
+          .then(
+            response => {
+            if(response.data.code === 500) {
+              console.error(response.data.msj)
+              this.alertarError("Hubo un problema, intenta nuevamente",'error')
+            }else{
+              this.cargar()
+              this.limpiar()
+            }
+          })
+      }
     },
     borrar(id){
       Swal.fire({
@@ -151,10 +170,21 @@ Convenios
       }).then(r=>{
         if(r.value){
           axios.delete('<?=base_url('rest-convenios')?>/' + id)
-            .then(()=>{
-              this.cargar()})
+            .then(()=>{this.cargar()})
         }
       })
+    },
+    limpiar(){
+      this.nombre_empresa=null
+      this.id_convenio=null
+      this.estado=="Activo"
+      this.action="nuevo"
+    },
+    seleccionar(n){
+      this.nombre_empresa=this.info[n].nombre_empresa
+      this.id_convenio=this.info[n].id_convenio
+      this.estado=this.info[n].estado
+      this.action="editar"
     },
     alertarError(title,icon){
       Swal.fire({
