@@ -423,7 +423,6 @@ Cristales
                                 showConfirmButton: false,
                                 timer: 1500
                             })
-                            
                         });
                     } else if (
                         /* Read more about handling dismissals below */
