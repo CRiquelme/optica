@@ -40,12 +40,22 @@ Convenios
         </fieldset>
       </form>
       <!-- filtros -->
-<!--       <div class="uk-card uk-card-default uk-card-body uk-margin-medium-top">
+      <div class="uk-card uk-card-default uk-card-body uk-margin-medium-top">
         <h2 class="uk-text-uppercase">FILTROS</h2>
-        <label>Estado</label>
-
+          <!-- Estado -->
+          <div class="uk-margin">
+            <label class="uk-form-label">Estado</label>
+            <div class="uk-form-controls">
+              <select v-model="selected_estado" class="uk-select">
+                <option value="Todos">Todos</option>
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+              </select>
+            </div>
+          </div>
+        
         <button @click="limpiarFiltro" class="uk-button uk-button-secondary uk-margin-medium-top uk-align-center">Limpiar filtros</button>
-      </div> -->
+      </div>
     </div>
     <!-- tabla -->
     <div class="uk-width-3-4" uk-grid>
@@ -96,12 +106,13 @@ Convenios
         estado:"Activo",
         action:"nuevo",
         id_convenio:null,
-        errores:null
+        errores:null,
+        selected_estado:"Todos"
        }
   },
-    created(){
-      this.cargar()
-    },
+  created(){
+    this.cargar()
+  },
   methods:{
     cargar(){
       axios
@@ -115,7 +126,7 @@ Convenios
       this.action="nuevo"
     },
     limpiarFiltro(){
-
+      cargar()
     },
     agregar(){
       this.errores=null
@@ -194,6 +205,14 @@ Convenios
           showConfirmButton: false,
           timer: 1500
       })
+    }
+  },
+  watch:{
+    selected_estado(val){
+      this.cargar()
+      if(val!="Todos"){
+        this.info=this.info.filter(c=>c.estado===val)
+      }
     }
   }
   })
