@@ -86,22 +86,25 @@ class Validation
 
 	public $facturasEmitidas = [
 		'nc'						=> 'if_exist|numeric',
+		'anula_factura'				=> 'if_exist|numeric',
 		'numero_factura'			=> 'if_exist|numeric',
 		'fecha' 			        => 'valid_date[Y-m-d]|required',
 		'cliente_id' 			    => 'required|numeric',
 		'monto' 			        => 'required|numeric',
 		'numero_documento' 			=> 'if_exist|numeric',
 		'fecha_emision' 			=> 'if_exist|valid_date[Y-m-d]',
-		'fecha_recibo_documento' 	=> 'if_exist|valid_date[Y-m-d]'
+		'fecha_recibo_documento' 	=> 'if_exist|valid_date[Y-m-d]',
+		'tienda_id' 			    => 'if_exist|numeric'
 	];
 
 	public $facturasEmitidas_errors = [
 		'nc'  => [
-			'required'	=> 'Requerido.',
+			'numeric'	=> 'La nc solo debe ser numérico'
+        ],
+		'anula_factura'  => [
 			'numeric'	=> 'La nc solo debe ser numérico'
         ],
 		'numero_factura'  => [
-			'required'	=> 'Requerido.',
 			'numeric'	=> 'La nc solo debe ser numérico'
         ],
 		'fecha'  => [
@@ -127,21 +130,29 @@ class Validation
 		'fecha_recibo_documento'  => [
 			'required'		=> 'Requerido.',
 			'valid_date' 	=> 'La fecha_recibo_documento debe tener un formato válido. año-mes-día'
+        ],
+		'tienda_id'  => [
+			'numeric' 	=> 'La tienda_id solo debe ser numérico'
         ]
 	];
 
 	public $facturasEmitidasEdit =  [
 		'nc'						=> 'if_exist|numeric',
+		'anula_factura'				=> 'if_exist|numeric',
 		'numero_factura'			=> 'if_exist|numeric',
 		'fecha' 			        => 'if_exist|valid_date[Y-m-d]',
 		'cliente_id' 			    => 'if_exist|numeric',
 		'monto' 			        => 'if_exist|numeric',
 		'numero_documento' 			=> 'if_exist|numeric',
 		'fecha_emision' 			=> 'if_exist|valid_date[Y-m-d]',
-		'fecha_recibo_documento' 	=> 'if_exist|valid_date[Y-m-d]'
+		'fecha_recibo_documento' 	=> 'if_exist|valid_date[Y-m-d]',
+		'tienda_id' 			    => 'if_exist|numeric'
 	];
 	public $facturasEmitidasEdit_errors = [
 		'nc'  => [
+			'numeric'	=> 'La nc solo debe ser numérico'
+		],
+		'anula_factura'  => [
 			'numeric'	=> 'La nc solo debe ser numérico'
         ],
 		'numero_factura'  => [
@@ -164,6 +175,9 @@ class Validation
         ],
 		'fecha_recibo_documento'  => [
 			'valid_date' 	=> 'La fecha_recibo_documento debe tener un formato válido. año-mes-día'
+        ],
+		'tienda_id'  => [
+			'numeric' 	=> 'La tienda_id solo debe ser numérico'
         ]
 	];
 
