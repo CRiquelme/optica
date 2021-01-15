@@ -49,6 +49,8 @@ $routes->get('convenios', 'ConveniosController::index');
 
 $routes->get('facturas_emitidas', 'FacturasEmitidasController::index');
 
+$routes->get('clientes_empresas', 'ClientesEmpresasController::index');
+
 $routes->get('sobre', 'SobreController::index');
 $routes->get('traslados', 'TrasladosController::index');
 $routes->get('stock_productos', 'StockController::index');
@@ -74,6 +76,8 @@ $routes->resource('rest-salida-cristales', ['controller' => 'RestSalidaCristales
 $routes->resource('rest-convenios', ['controller' => 'RestConvenios']); // genérica
 
 $routes->resource('rest-facturas-emitidas', ['controller' => 'RestFacturasEmitidas']); // genérica
+
+$routes->resource('rest-clientes-empresas', ['controller' => 'RestClientesEmpresas']); // genérica
 
 $routes->put('rest-usuario/update-password', ['controller' => 'RestUsuario']); // genérica
 $routes->resource('rest-usuario', ['controller' => 'RestUsuario']); // genérica

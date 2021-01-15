@@ -181,6 +181,10 @@ class Validation
         ]
 	];
 
+	public $clientesEmpresas = [
+		'email'     => 'if_exist|valid_email'
+	];
+
 	public $ingresoUsuario = [
 		'username'          => 'required',
         'email'             => 'required',
