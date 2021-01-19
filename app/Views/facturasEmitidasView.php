@@ -8,7 +8,7 @@ Facturas emitidas
 <?= $this->section('page_content'); ?>
 
 <section id="facturasEmitidas">
-
+  
 </section>
 
 
