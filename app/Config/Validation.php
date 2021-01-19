@@ -72,16 +72,117 @@ class Validation
 	
 	public $ingresoConvenios = [
 		'nombre_empresa'	=> 'required',
-		'estado' => 'required'
+		'estado' 			=> 'required'
 	];
 
 	public $ingresoConvenios_errors = [
-		'nombre_empresa'  => [
-            'required'	=> 'Requerido.'
+		'nombre_empresa'	=> [
+            'required'		=> 'Requerido.'
         ],
 		'estado'  => [
             'required'	=> 'Requerido.'
         ]
+	];
+
+	public $facturasEmitidas = [
+		'nc'						=> 'if_exist|numeric',
+		'anula_factura'				=> 'if_exist|numeric',
+		'numero_factura'			=> 'if_exist|numeric',
+		'fecha' 			        => 'valid_date[Y-m-d]|required',
+		'cliente_id' 			    => 'required|numeric',
+		'monto' 			        => 'required|numeric',
+		'numero_documento' 			=> 'if_exist|numeric',
+		'fecha_emision' 			=> 'if_exist|valid_date[Y-m-d]',
+		'fecha_recibo_documento' 	=> 'if_exist|valid_date[Y-m-d]',
+		'tienda_id' 			    => 'if_exist|numeric'
+	];
+
+	public $facturasEmitidas_errors = [
+		'nc'  => [
+			'numeric'	=> 'La nc solo debe ser numérico'
+        ],
+		'anula_factura'  => [
+			'numeric'	=> 'La nc solo debe ser numérico'
+        ],
+		'numero_factura'  => [
+			'numeric'	=> 'La nc solo debe ser numérico'
+        ],
+		'fecha'  => [
+			'required'		=> 'Requerido.',
+			'valid_date' 	=> 'La fecha debe tener un formato válido. año-mes-día'
+        ],
+		'cliente_id'  => [
+            'required'	=> 'Requerido.',
+			'numeric'	=> 'El cliente id solo debe ser numérico'
+        ],
+		'monto'  => [
+			'required'	=> 'Requerido.',
+			'numeric'	=> 'El monto solo debe ser numérico'
+		],
+		'numero_documento'  => [
+			'required'	=> 'Requerido.',
+			'numeric'	=> 'El numero_documento solo debe ser numérico'
+		],
+		'fecha_emision'  => [
+			'required'		=> 'Requerido.',
+			'valid_date' 	=> 'La fecha_emision debe tener un formato válido. año-mes-día'
+        ],
+		'fecha_recibo_documento'  => [
+			'required'		=> 'Requerido.',
+			'valid_date' 	=> 'La fecha_recibo_documento debe tener un formato válido. año-mes-día'
+        ],
+		'tienda_id'  => [
+			'numeric' 	=> 'La tienda_id solo debe ser numérico'
+        ]
+	];
+
+	public $facturasEmitidasEdit =  [
+		'nc'						=> 'if_exist|numeric',
+		'anula_factura'				=> 'if_exist|numeric',
+		'numero_factura'			=> 'if_exist|numeric',
+		'fecha' 			        => 'if_exist|valid_date[Y-m-d]',
+		'cliente_id' 			    => 'if_exist|numeric',
+		'monto' 			        => 'if_exist|numeric',
+		'numero_documento' 			=> 'if_exist|numeric',
+		'fecha_emision' 			=> 'if_exist|valid_date[Y-m-d]',
+		'fecha_recibo_documento' 	=> 'if_exist|valid_date[Y-m-d]',
+		'tienda_id' 			    => 'if_exist|numeric'
+	];
+	public $facturasEmitidasEdit_errors = [
+		'nc'  => [
+			'numeric'	=> 'La nc solo debe ser numérico'
+		],
+		'anula_factura'  => [
+			'numeric'	=> 'La nc solo debe ser numérico'
+        ],
+		'numero_factura'  => [
+			'numeric'	=> 'La nc solo debe ser numérico'
+        ],
+		'fecha'  => [
+			'valid_date' 	=> 'La fecha debe tener un formato válido. año-mes-día'
+        ],
+		'cliente_id'  => [
+            'numeric'	=> 'El cliente id solo debe ser numérico'
+        ],
+		'monto'  => [
+			'numeric'	=> 'El monto solo debe ser numérico'
+		],
+		'numero_documento'  => [
+			'numeric'	=> 'El numero_documento solo debe ser numérico'
+		],
+		'fecha_emision'  => [
+			'valid_date' 	=> 'La fecha_emision debe tener un formato válido. año-mes-día'
+        ],
+		'fecha_recibo_documento'  => [
+			'valid_date' 	=> 'La fecha_recibo_documento debe tener un formato válido. año-mes-día'
+        ],
+		'tienda_id'  => [
+			'numeric' 	=> 'La tienda_id solo debe ser numérico'
+        ]
+	];
+
+	public $clientesEmpresas = [
+		'email'     => 'if_exist|valid_email'
 	];
 
 	public $ingresoUsuario = [
