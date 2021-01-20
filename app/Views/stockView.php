@@ -52,7 +52,10 @@ Stock productos
                 :key="index.producto_id" 
                 v-if="(stock.producto_id === valorProducto || !valorProducto) 
                         && 
-                        (stock.tienda_id === valorTienda || !valorTienda) "
+                        (stock.tienda_id === valorTienda || !valorTienda)
+                        &&
+                        stock.stock >= 0
+                    "
             >
                 <div class="uk-card uk-card-default uk-card-hover uk-card-body">
                     <h3 class="uk-card-title">{{ stock.producto }} en {{ stock.tienda }}</h3>
@@ -63,8 +66,8 @@ Stock productos
                         <b>Stock crítico:</b> {{ stock.stock_critico }} <br>
                         <!-- <b>Stock crítico:</b> {{ stock.stock_critico }} <br> -->
                     </p>
-                        <span v-if="parseInt(stock.stock) <= parseInt(stock.stock_critico)" class="bg-yellow-300 px-3 py-2">Poco stock </span>
-                        <span v-else-if="parseInt(stock.stock) == 0" class="bg-red-200 px-3 py-2">Sin stock </span>
+                        <span v-if="parseInt(stock.stock) <= parseInt(stock.stock_critico) && parseInt(stock.stock) > 0" class="bg-yellow-300 px-3 py-2">Poco stock </span>
+                        <span v-else-if="parseInt(stock.stock) === 0" class="bg-red-200 px-3 py-2">Sin stock </span>
                         <span v-else class="bg-green-200 px-3 py-2">Stock suficiente</span>
                         <!-- <span v-else class="uk-alert-success" uk-alert>Stock suficiente</span> -->
                 </div>

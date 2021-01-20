@@ -13,6 +13,17 @@ Facturas emitidas
 
 
 <script>
+var app = new Vue({
+    el      : '#facturasEmitidas',
+    data () {
+        return {
+
+        }
+    },
+    created () {
+        console.log('hola')
+    }
+});
 
 </script>
 
