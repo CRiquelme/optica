@@ -37,19 +37,23 @@ class RestSalidaProductos extends MyRestApi
 				'cantidad_producto'		=> $this->request->getPost('cantidad_producto')
 			]);
 
+			// $getId = $id->getInsertID();
+
 			// return $this->respond($this->model->find($id));
+			
+			$getId = $salidaProductos->insertID();
 			
 			// Guardar en inventario
 			$inventario->insert([
 				'cantidad'			=> $this->request->getPost('cantidad_producto') * -1,
 				'producto_id'		=> $this->request->getPost('producto_id'),
 				'tienda_id'			=> $this->request->getPost('tienda_id'),
-				'ingreso_id'		=> $id,
-				'tipo' 				=> 'Sal'
+				'salida_id'			=> 22222,
+				'tipo' 				=> 'Salida'
 			]);
 
-
-			return $this->genericResponse($this->model->find($id), null, 200);
+			return $this->genericResponse($this->model->find($id), null, 200);	
+			
         }
 
         $validation = \Config\Services::validation();

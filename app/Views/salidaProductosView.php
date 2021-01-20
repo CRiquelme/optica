@@ -34,7 +34,7 @@ Salida de productos
                             v-model="op_producto"
                             class="uk-form-width-large uk-width-1-1@m"
                             id="producto_id"
-                            @change="revisarStock($event)"
+                            @input="revisarStock($event)"
                         >
                             <span slot="no-options">No hay datos del productos. <a href="<?=base_url('productos')?>" class="bg-blue-200 text-blue-800 hover:bg-blue-800 hover:text-blue-200 px-1 block">Por favor ingreselo.</a> </span>
                         </v-select>
@@ -53,14 +53,14 @@ Salida de productos
                     </div>
                     
                     <div class="uk-margin">
-                        <label class="uk-form-label" for="cantidad_productos">Cantidad de productos* {{ stock }} </label>
+                        <label class="uk-form-label" for="cantidad_productos">Cantidad de productos* (Stock: {{ stock }}) </label>
                         <input v-model="op_cantidad_productos" class="uk-input" id="cantidad_productos" name="cantidad_productos" type="number" placeholder="Cantidad" :min="1" autocomplete="off" :max="stock">
                     </div>
                     <div class="uk-margin" v-if="op_producto && op_tienda_id && op_cantidad_productos  && action === 'editar'">
                         <button class="bg-blue-700 min-w-full xl:min-w-0 text-white py-1 px-2 mb-2" type="button" @click="update_ingreso()">Editar</button>
                         <button class="bg-red-700 min-w-full xl:min-w-0 text-white py-1 px-2" type="button" @click="limpiar_form()">No editar</button>
                     </div>
-                    <div class="uk-margin" v-else-if="op_producto && op_tienda_id && op_cantidad_productos ">
+                    <div class="uk-margin" v-else-if="op_producto && op_tienda_id && op_cantidad_productos && op_cantidad_productos <= stock && op_cantidad_productos > 0">
                         <button class="uk-button uk-button-primary uk-width-1-1" type="button" @click="agregar()">Guardar</button>
                     </div>
                     *<small class="text-red-600">datos obligatorios</small>
@@ -161,10 +161,10 @@ Salida de productos
                 info: null,
                 infoedit: null,
                 errores: [],
-                op_producto: null,
+                op_producto: '',
                 selected: null,
                 tiendas: null,
-                op_tienda_id: null,
+                op_tienda_id: '',
                 op_cantidad_productos: null,
                 id_producto_salida: null,
                 options: [],
@@ -342,6 +342,9 @@ Salida de productos
             },
 
             revisarStock: function(event)  {
+                axios
+                .get('<?=base_url('rest-stock')?>')
+                .then(response => (this.stocks = response.data.data));
                 console.log(this.op_producto + ' ' + this.op_tienda_id)
                 for(st of this.stocks) {
                     if(this.op_producto === st.producto_id && this.op_tienda_id === st.tienda_id) {

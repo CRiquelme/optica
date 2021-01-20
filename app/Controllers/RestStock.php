@@ -59,7 +59,7 @@ class RestStock extends MyRestApi
 		$db = db_connect();
 		
 		if($id === null) {
-			return $this->genericResponse(null, array("Mensaje" => "No existen datos."), 500);
+			return $this->genericResponse(null, array("Mensaje" => "No existen datos..."), 500);
 		}
 
 		$builder =	$db->table('inventario AS i');
