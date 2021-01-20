@@ -9,7 +9,7 @@ class InventarioModel extends Model {
     protected $returnType       = 'array';
     protected $useSoftDeletes   = true;
 
-    protected $allowedFields    = ['cantidad', 'producto_id', 'tienda_id', 'tipo', 'ingreso_id', 'traslado_id' ];
+    protected $allowedFields    = ['cantidad', 'producto_id', 'tienda_id', 'tipo', 'ingreso_id', 'traslado_id', 'salida_id', 'numero_factura', 'traslado_id' ];
 
     protected $useTimestamps    = false;
     protected $createdField     = 'created_at';

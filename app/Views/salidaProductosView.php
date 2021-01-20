@@ -205,6 +205,9 @@ Salida de productos
                                     .then(response => (this.info = response.data.data));
                                 this.errores                = null;
                                 this.op_cantidad_productos  = null;
+                                this.op_tienda_id = '';
+                                this.op_producto = '';
+                                this.stock = null;
                             }
                         }
                     );
