@@ -22,7 +22,7 @@ class RestIngresoProductos extends MyRestApi
 					$builder->join('tiendas AS t', 'pi.tienda_id = t.id_tienda');
 		// 			$builder->join('marcas AS m', 'm.id_marca = p.marca_id');
 					$builder->where('pi.deleted', null);
-        //             // $builder->orderBy('pt.created_at', 'DESC');
+	            	$builder->orderBy('pi.created_at', 'DESC');
         //             $builder->groupby('i.producto_id, i.tienda_id');
 		$query = $builder->get();
 		return  $this->genericResponse($query->getResultArray(), null, 200);
