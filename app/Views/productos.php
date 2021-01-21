@@ -40,13 +40,17 @@ Productos
                 <?php foreach($productos as $producto) : ?>
                     <tr>
                         <td>
-                            <button
-                                class="uk-button uk-button-link uk-text-primary uk-text-bolder"
-                                onclick="edit_producto(<?php echo $producto['id_producto'];?>)"
-                            >
-                                <i class="far fa-edit"></i>
-                                <?=$producto['modelo'];?>
-                            </button>
+                            <?php if( $producto['deleted'] === null ) { ?>
+                                <button
+                                    class="uk-button uk-button-link uk-text-primary uk-text-bolder"
+                                    onclick="edit_producto(<?php echo $producto['id_producto'];?>)"
+                                >
+                                    <i class="far fa-edit"></i>
+                                    <?=$producto['modelo'];?>
+                                </button>
+                            <?php } else { ?>
+                                <span class="font-bold"><?=$producto['modelo'];?></span>
+                            <?php } ?>
                         </td>
                         <td><?=$producto['nombre_cat_pro'];?></td>
                         <td><?=str_replace(",", "<br>", $producto['nombre_proveedor']);?></td>
@@ -71,7 +75,15 @@ Productos
                             <!-- </div> -->
                         </td>
                         <td>
-                            <button class="uk-button uk-button-link uk-text-danger uk-text-bolder" onclick="delete_producto(<?php echo $producto['id_producto'];?>,)"><i class="fas fa-trash-alt uk-margin-small-left uk-text-danger" ></i> Eliminar</button>
+                            <?php if( $producto['deleted'] === null ) { ?>
+                                <button class="uk-button uk-button-link uk-text-danger uk-text-bolder" onclick="delete_producto(<?php echo $producto['id_producto'];?>,)">
+                                    <i class="fas fa-trash-alt uk-margin-small-left uk-text-danger" ></i> Eliminar 
+                                </button>
+                            <?php } else { ?>
+                                <button class="uk-button uk-button-link text-blue-800 uk-text-bolder" onclick="reactivar_producto(<?php echo $producto['id_producto'];?>,)">
+                                    <i class="fas fa-trash-alt uk-margin-small-left text-blue-800" ></i> Volver a activar 
+                                </button>
+                            <?php } ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -359,6 +371,35 @@ Productos
             $.ajax({
                 url : "<?php echo site_url('productosController/producto_delete')?>/"+id,
                 type: "POST",
+                dataType: "JSON",
+                success: function(data)
+                {
+                    console.log(data);
+                    location.reload();
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Error');
+                }
+            });
+        }, 
+        function () {
+            console.log('Rejected.');
+        });
+    }
+
+    function reactivar_producto(id) {
+        UIkit.modal.confirm('¿Deseas reactivar este producto?', {
+            labels: {
+                cancel: 'Cancelar',
+                ok: 'Sí, reactivar'
+            }
+        }).then(function () 
+        {
+            console.log('Confirmed.');
+            $.ajax({
+                url : "<?php echo site_url('productosController/reactivar_producto_deleted')?>/"+id,
+                type: "GET",
                 dataType: "JSON",
                 success: function(data)
                 {

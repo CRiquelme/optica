@@ -27,7 +27,7 @@ class ProductosController extends BaseController
             $builder->join('categoria_productos', 'categoria_productos.id_cat_prod = productos.cat_prod_id', 'inner');
             $builder->join('proveedores', 'FIND_IN_SET(proveedores.id_proveedor, productos.proveedor_id) > 0', 'left');
             $builder->join('marcas', 'marcas.id_marca = productos.marca_id', 'inner');
-            $builder->where('productos.deleted', null);
+            // $builder->where('productos.deleted', null);
             $builder->groupBy("id_producto");
             $productos   = $builder->get()->getResultArray();  // Produces: SELECT * FROM mytable
             
@@ -136,10 +136,27 @@ class ProductosController extends BaseController
     
     public function producto_delete($id) { 
 		$productoModel  = new ProductosModel($db);		
-		// $this->Book_model->delete_by_id($id);
-		$productoModel->delete(['id_producto' => $id]);
+        // $this->Book_model->delete_by_id($id);
+        $productoModel->delete(['id_producto' => $id]);
         echo json_encode(array("status" => TRUE, "id" => $id));
     } // producto_delete
+    
+    public function reactivar_producto_deleted($id) { 
+        $productosModel  = new ProductosModel($db);
+        $data_producto = $productosModel->withDeleted()->find((integer)$id);
+        $data = [
+            'modelo'        => $data_producto['modelo'],
+            'marca_id'      => $data_producto['marca_id'],
+            'proveedor_id'  => $data_producto['proveedor_id'],
+            'cat_prod_id'   => $data_producto['cat_prod_id'],
+            'deleted'       => null
+        ];
+        
+        if($productosModel->update((integer) $data_producto['id_producto'], $data)) 
+        {
+            echo json_encode(array("status" => TRUE, "id" => $id));
+        }
+    } // reactivar_producto_deleted
     
     public function autocompletar_producto() {
         $productoModel  = new ProductosModel($db);
