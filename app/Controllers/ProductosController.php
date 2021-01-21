@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Models\MarcasModel;
 use App\Models\ProductosModel;
 use App\Models\InventarioModel;
+use App\Models\IngresoProductosModel;
 use App\Models\ProveedoresModel;
 use App\Models\CategoriaProductoModel;
 
@@ -23,11 +24,12 @@ class ProductosController extends BaseController
             $db      = \Config\Database::connect();
             $builder = $db->table('productos');
             // Construir la consulta
-            $builder->select('id_producto, modelo, nombre_cat_pro, group_concat(nombre_proveedor) as nombre_proveedor, marcas.nombre_marca, precio_unitario, precio_venta, stock_critico, cod_barra, productos.deleted, precio_venta');
+            $builder->select('id_producto, modelo, nombre_cat_pro, group_concat(nombre_proveedor) as nombre_proveedor, marcas.nombre_marca, precio_unitario, precio_venta, stock_critico, cod_barra, productos.deleted, precio_venta, productos.created_at');
             $builder->join('categoria_productos', 'categoria_productos.id_cat_prod = productos.cat_prod_id', 'inner');
             $builder->join('proveedores', 'FIND_IN_SET(proveedores.id_proveedor, productos.proveedor_id) > 0', 'left');
             $builder->join('marcas', 'marcas.id_marca = productos.marca_id', 'inner');
             // $builder->where('productos.deleted', null);
+            $builder->orderBy('productos.created_at', 'DESC');
             $builder->groupBy("id_producto");
             $productos   = $builder->get()->getResultArray();  // Produces: SELECT * FROM mytable
             
@@ -47,8 +49,9 @@ class ProductosController extends BaseController
     public function producto_add() 
 	{
 		$request= \Config\Services::request();
-        $productosModel  = new productosModel($db);
-        $inventarioModel  = new InventarioModel($db);
+        $productosModel         = new productosModel($db);
+        $inventarioModel        = new InventarioModel($db);
+        $IngresoProductosModel  = new IngresoProductosModel($db);
 
         if ( $request->getPostGet('proveedor_id') != null ) {
             $proveedor = $separado_por_comas = implode(",", $request->getPostGet('proveedor_id') );
@@ -77,13 +80,25 @@ class ProductosController extends BaseController
         }
         
         if($last_id) {
+            $dataIngresoProducto = array(
+                'producto_id'       => $last_id,
+                'cantidad_producto' => $request->getPostGet('stock'),
+                'factura'           => $request->getPostGet('factura'),
+                'tienda_id'         => 1
+            );
+            $IngresoProductosModel->save($dataIngresoProducto);
+            $last_id_ingreso = $IngresoProductosModel->insertID();
+
             $dataInventario = array(
                 'cantidad'			=> $request->getPostGet('stock'),
                 'producto_id'       => $last_id,
                 'tienda_id'         => 1,
+                'ingreso_id'        => $last_id_ingreso,
                 'tipo'              => 'Ent'
             );
             $inventarioModel->save($dataInventario);
+
+            
         }
     }
     

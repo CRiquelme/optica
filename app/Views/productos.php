@@ -28,6 +28,7 @@ Productos
         <table class="uk-table uk-table-striped uk-table-hover" id="table_productos">
             <thead>
                 <tr>
+                    <th>Created_at</th>
                     <th>Producto</th>
                     <th>Categoría</th>
                     <th>Proveedor(es)</th>
@@ -39,6 +40,7 @@ Productos
             <tbody>
                 <?php foreach($productos as $producto) : ?>
                     <tr>
+                        <td><?=$producto['created_at'];?></td>
                         <td>
                             <?php if( $producto['deleted'] === null ) { ?>
                                 <button
@@ -111,7 +113,14 @@ Productos
             // "scrollY":          "50vh",
             // "scrollCollapse":   true,
             "paging":           true,
-            "order":            [[ 0, "asc" ]],
+            "columnDefs": [
+                {
+                    "targets": [ 0 ],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            "order":            [[ 0, "desc" ]],
             "info"          : false,
             "responsive"    : true
         });
@@ -455,7 +464,7 @@ Productos
                     echo form_input(array('name' => 'cat_prod_id', 'id' => 'cat_prod_id', 'class' => $class_cat_prod_id));
                 echo '</div>';
                 
-                echo '<div class="uk-width-1-1@s">';
+                echo '<div class="uk-width-1-2@s">';
                     echo form_label('Proveedores', 'proveedor_id');               
                     echo    '<select class="js-example-basic-multiple uk-select" id="proveedor_id" name="proveedor_id[]" multiple="multiple" style="width: 100%">';
                                 foreach ($proveedores as $proveedor) :
@@ -464,6 +473,11 @@ Productos
                                     '</option>';
                                 endforeach;
                             echo '</select>';
+                echo '</div>';
+                
+                echo '<div class="uk-width-1-2@s">';
+                    echo form_label('Factura', 'factura');
+                    echo form_input(array('name' => 'factura', 'id' => 'factura', 'class' => 'uk-input uk-width-1-1'));
                 echo '</div>';
                 
                 echo '<div class="uk-width-1-4@s">';
