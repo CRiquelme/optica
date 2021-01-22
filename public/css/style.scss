@@ -195,3 +195,9 @@ table.dataTable.no-footer {
   //   font-weight: bolder;
   // }
 }
+
+.dataTables_wrapper input[type="search"] {
+  border: 1px solid;
+  padding: 2px 3px;
+  margin-bottom: 5px;
+}

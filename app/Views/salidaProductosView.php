@@ -11,7 +11,7 @@ Salida de productos
     </article>
 
     <article class="uk-margin-medium-right uk-margin-small-left uk-margin-medium-top" uk-grid>
-        <div class="uk-width-1-4 uk-margin-large-bottom">
+        <div class="w-1/5">
             <form class="uk-card uk-card-default uk-card-body">
                 <h2 class="uk-text-uppercase">Salida de producto</h2>
                 <fieldset class="uk-fieldset">
@@ -98,8 +98,8 @@ Salida de productos
             </div>
         </div>
 
-        <div class="uk-width-3-4" uk-grid>
-            <table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
+        <div class="w-4/5">
+            <table class="uk-table uk-table-striped uk-table-hover w-full" id="salidaProductos">
                 <thead>
                     <tr>
                         <th>producto</th>
@@ -356,6 +356,24 @@ Salida de productos
                     this.stock = 0;
                 }
             },
+
+            getAllInfo() {
+                axios
+                    .get('<?=base_url('rest-salida-productos')?>')
+                    .then(response => {
+                        this.info = response.data.data;
+                        
+                        $(function() {
+                            var table = $('#salidaProductos').DataTable( 
+                                {
+                                    "order": [ 3, "desc" ],
+                                    "info": false,
+                                    "language": { "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" },
+                                }
+                            )
+                        });
+                    });
+            }
         },
         created () {
             axios
@@ -385,6 +403,9 @@ Salida de productos
             axios
                 .get('<?=base_url('rest-traslados/tiendas')?>')
                 .then(response => (this.tiendas = response.data.data));
+        },
+        mounted () {
+           this.getAllInfo();
         }
     });
 

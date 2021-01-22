@@ -99,12 +99,6 @@ Productos
 <script type="text/javascript">
     $(document).ready( function () {
 
-        // $(".print_barcode").on('click', function() {
-        //     $(".print_barcode").print({
-        //         globalStyles : true,
-        //         mediaPrint : true
-        //     })
-        // });
         
         var table = $('#table_productos').DataTable( {
             "language": {
