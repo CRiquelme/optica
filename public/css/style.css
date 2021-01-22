@@ -135,4 +135,9 @@ table.dataTable.no-footer {
   align-items: center;
   justify-content: space-between; }
 
+.dataTables_wrapper input[type="search"] {
+  border: 1px solid;
+  padding: 2px 3px;
+  margin-bottom: 5px; }
+
 /*# sourceMappingURL=style.css.map */
