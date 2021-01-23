@@ -341,7 +341,7 @@ Salida de productos
                 axios
                     .get('<?=base_url("rest-stock/show-codigo")?>/' + self.searchProduct)
                     // .then(response => (self.buscarStock = response.data.data))
-                    .then(response => (self.op_producto = response.data.data[0].producto_id));
+                    .then(response => (self.op_producto = response.data.data[0].producto));
             },
 
             revisarStock: function(event)  {
