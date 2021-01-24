@@ -22,7 +22,7 @@ Salida de productos
                     </div>
                     <div class="uk-margin">
                         <label>Buscar producto <small>(código de barras)</small></label>
-                        <input @keyup="buscarCodigoBarra()" id="searchProduct" v-model="searchProduct" class="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal" type="text" placeholder="12345">
+                        <input @keyup="buscarCodigoBarra()" id="searchProduct" v-model="searchProduct" class="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal" @change="revisarStock($event)" type="text" placeholder="12345">
                     </div>
                     <div class="uk-margin">
                         <label for="">Producto*</label>
@@ -45,7 +45,7 @@ Salida de productos
                         <div class="uk-form-controls">
                             <select v-model="op_tienda_id" class="uk-select" id="tienda_id" name="tienda_id" @change="revisarStock($event)">
                                 <option value="">Seleccione una tienda</option>
-                                <option v-for="(tienda, index) in tiendas" :key="tiendas.id_tienda" v-bind:value="tienda.id_tienda">
+                                <option v-for="(tienda, index) in tiendas" :key="tiendas.id_tienda" :value="tienda.id_tienda">
                                     {{tienda.nombre_tienda}}
                                 </option>
                             </select>
@@ -341,15 +341,20 @@ Salida de productos
                 axios
                     .get('<?=base_url("rest-stock/show-codigo")?>/' + self.searchProduct)
                     // .then(response => (self.buscarStock = response.data.data))
-                    .then(response => (self.op_producto = response.data.data[0].producto));
+                    .then(response => (self.op_producto = response.data.data[0].producto_id));
+                    // .then(response => (self.op_producto = response.data.data[0].producto_id));
+                console.log(self.op_producto)
             },
 
             revisarStock: function(event)  {
                 axios
                 .get('<?=base_url('rest-stock')?>')
                 .then(response => (this.stocks = response.data.data));
+                
                 console.log(this.op_producto + ' ' + this.op_tienda_id)
+
                 for(st of this.stocks) {
+
                     if(this.op_producto === st.producto_id && this.op_tienda_id === st.tienda_id) {
                         return this.stock = st.stock;
                     } 
@@ -379,11 +384,7 @@ Salida de productos
             axios
                 .get('<?=base_url('rest-stock')?>')
                 .then(response => (this.stocks = response.data.data));
-        },
-
-        mounted () {
-            var self = this;
-
+       
             axios
                 .get('<?=base_url('rest-traslados/productos')?>')
                 .then(response => (this.options = response.data.data));
@@ -399,10 +400,6 @@ Salida de productos
             axios
             .get('<?=base_url('rest-traslados/productos')?>')
             .then(response => (this.options = response.data.data));
-
-            axios
-                .get('<?=base_url('rest-traslados/tiendas')?>')
-                .then(response => (this.tiendas = response.data.data));
         },
         mounted () {
            this.getAllInfo();
