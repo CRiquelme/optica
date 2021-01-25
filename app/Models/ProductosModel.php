@@ -17,21 +17,21 @@ class ProductosModel extends Model {
     protected $updatedField     = 'updated_at';
     protected $deletedField     = 'deleted';
 
-    // protected $validationRules  = [
-        // 'modelo'                => 'required|alpha_numeric_space|min_length[3]|is_unique[productos.modelo, productos.id_producto, {id_producto}]',
+    protected $validationRules  = [
+        'modelo'                => 'required|alpha_numeric_space|min_length[3]|is_unique[productos.modelo, productos.id_producto, {id_producto}]'
         // 'marca_id'              => 'required|alpha_numeric_space|min_length[3]',
         // 'proveedor_id'          => 'required',
         // 'cat_prod_id'           => 'required|min_length[3]',
-    // ];
-    protected $validationRules  = [];
+    ];
+    // protected $validationRules  = [];
 
-    protected $validationMessages   = [];
-        // 'modelo'        => [
+    protected $validationMessages   = [
+        'modelo'        => [
         //     'required'              => 'El producto es requerido.',
         //     'alpha_numeric_space'   => 'El producto es alfanumérico y con espacio.',
         //     'min_length'            => 'El producto debe contener mínimo 3 caracteres.',
-        //     'is_unique'             => 'El producto ya está registrado.'
-        // ],
+            'is_unique'             => 'El producto ya está registrado.'
+        ],
         // 'marca_id'      => [
         //     'required'              => 'La marca es requerida.',
         //     'alpha_numeric_space'   => 'La marca es alfanumérica y con espacio.',
@@ -44,7 +44,7 @@ class ProductosModel extends Model {
         //     'required'              => 'La categoría es requerida.',
         //     'min_length'            => 'La categoría debe contener mínimo 3 caracteres.'
         // ]
-    // ];
+    ];
 
     protected $skipValidation   = false;
 

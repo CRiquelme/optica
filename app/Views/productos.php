@@ -312,7 +312,7 @@ Productos
                     $('input').removeClass('uk-form-danger');
                     $('label').removeClass('uk-form-danger');
                     for (var key in data.errores) {
-                        // console.log("key " + key + " has value " + data.errores[key]);
+                    // console.log("key " + key + " has value " + data.errores[key]);
                         UIkit.notification('<i class="fas fa-angle-double-right"></i> '+data.errores[key], { status: 'danger', pos: 'top-right' });
                         $('#'+key).addClass('uk-form-danger');
                         $('label[for="'+key+'"]').addClass('uk-form-danger');
@@ -321,7 +321,7 @@ Productos
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
-                UIkit.notification(data.mensaje, { status: 'warning' });
+                UIkit.notification('No se puede guardar la información.', { status: 'warning' });
             }
         });
     }

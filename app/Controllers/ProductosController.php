@@ -71,7 +71,7 @@ class ProductosController extends BaseController
 		);
 		if ($productosModel->save($data) === false) {
             $errores = $productosModel->errors();
-			echo json_encode( array( 'status' => FALSE, 'mensaje' => '<b><i class="fas fa-exclamation-circle"></i> LA INFO. NO SE GUARDÓ.</b>', 'errores' => $errores ));
+            echo json_encode( array( 'status' => FALSE, 'mensaje' => '<b><i class="fas fa-exclamation-circle"></i> LA INFO. NO SE GUARDÓ.</b>', 'errores' => $errores ));
 		} else {
             // Guardar en el inventario 
             $last_id = $productosModel->insertID();
@@ -124,7 +124,8 @@ class ProductosController extends BaseController
             echo json_encode(array("status" => TRUE, 'mensaje' => 'Información guardada.'));
         } else {
             $errores = $productosModel->errors();
-            echo json_encode(array("status" => TRUE, 'mensaje' => '<b><i class="fas fa-exclamation-circle"></i> LA INFO. NO SE GUARDÓ.</b>', 'errores' => $errores ));
+            echo json_encode(array("status" => TRUE, 'mensaje' => '<b><i class="fas fa-exclamation-circle"></i> LA INFO. NO SE GUARDÓ. asdasd</b>', 'errores' => $errores ));
+            console.log('error');
         }			
     }
     
