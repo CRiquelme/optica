@@ -14,9 +14,13 @@ Traslados
     </article>
 
     <article class="uk-margin-medium-right uk-margin-small-left uk-margin-medium-top" uk-grid>
-        <div class="uk-margin uk-width-1-4">
+        <div class="w-1/5">
             <div class="uk-card uk-card-default uk-card-body uk-margin-small-left">
                 <h2>FILTRO</h2>
+                <div class="uk-margin">
+                    <label>Buscar producto <small>(código de barras)</small></label>
+                    <input @keyup="buscarCodigoBarra()" id="searchProduct" v-model="searchProduct" class="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal" @change="revisarStock($event)" type="text" placeholder="12345">
+                </div>
                 <label>Producto</label>
                 <v-select 
                     :options="options" 
@@ -46,11 +50,12 @@ Traslados
             </div>
         </div>
     
-        <div class="uk-width-3-4" uk-grid>
-            <table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
+        <div class="w-4/5">
+            <table class="uk-table uk-table-divider uk-table-striped uk-table-hover"  id="trasladosProductos">
                 <thead>
                     <tr class="uk-text-bold">
                         <th class="uk-text-center">ID</th>
+                        <th class="uk-text-center">Cod. Barra</th>
                         <th class="uk-text-center">Producto</th>
                         <th class="uk-text-center">Tienda de origen</th>
                         <th class="uk-text-center">Tienda de destino</th>
@@ -64,12 +69,16 @@ Traslados
                         :key="index.id_producto"
                         v-if="(tras.modelo === valorProducto || !valorProducto) 
                                 && 
-                            (tras.tienda_id === valorTienda || !valorTienda) "
+                            (tras.tienda_id === valorTienda || !valorTienda) 
+                                &&
+                            (tras.cod_barra === codBarra || !codBarra)
+                            "
                     >
                     
                         <td class="uk-text-center">
                             <button class="uk-button uk-button-link uk-text-success uk-text-bolder" @click="editar_traslado(index, tras.id_producto_tienda)"><i class="far fa-edit uk-margin-small-left uk-text-success"></i> {{tras.id_producto_tienda}}</button>
                         </td>
+                        <td class="uk-text-center">{{tras.cod_barra}}</td>
                         <td class="uk-text-center">{{tras.modelo}}</td>
                         <td class="uk-text-center">{{tras.tienda_origen}}</td>
                         <td class="uk-text-center">{{tras.tienda_destino}}</td>
@@ -119,6 +128,12 @@ Traslados
                 </div>
             </div>
             <div class="uk-margin" uk-grid>
+
+                <div class="uk-width-1-1@s">
+                    <label>Buscar producto <small>(código de barras)</small></label>
+                    <input @keyup="buscarCodigoBarra2()" id="searchProduct2" v-model="searchProduct2" class="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal" @change="revisarStock2($event)" type="text" placeholder="12345">
+                    
+                </div>
                 
                 <div class="uk-width-1-2@s">
                     <label class="uk-form-label" for="op_productos">Producto</label>
@@ -218,11 +233,47 @@ Traslados
                 errores: [],
                 valorProducto: null,
                 valorTienda: null,
+                codBarra: null,
+                codBarra2: null,
+                searchProduct: null,
+                searchProduct2: null,
                 options: [],
                 tiendas: []
             }
         },
         methods: {
+            buscarCodigoBarra: function() {
+                var self = this
+                self.codBarra = self.searchProduct
+                console.log(self.codBarra)
+            },
+            getAllInfo() {
+                axios
+                    .get('<?=base_url('rest-traslados')?>')
+                    .then(response => {
+                        this.info = response.data.data;
+                        
+                        $(function() {
+                            var table = $('#trasladosProductos').DataTable( 
+                                {
+                                    "order": [ 3, "desc" ],
+                                    "info": false,
+                                    "language": { "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" },
+                                }
+                            )
+                        });
+                    });
+            },
+            buscarCodigoBarra2: function() {
+                var self = this
+                axios
+                    .get('<?=base_url("rest-stock/show-codigo")?>/' + self.searchProduct2)
+                    .then(response => {
+                        self.op_productos = response.data.data[0].producto_id,
+                        console.log(response.data.data[0].producto_id)
+                    });
+            },
+
             delete_traslado : function(index, id) {
                 const swalWithBootstrapButtons = Swal.mixin({
                                                     customClass: {
@@ -413,6 +464,8 @@ Traslados
             limpiarFiltro: function() {
                 this.valorProducto = null;
                 this.valorTienda = null;
+                this.codBarra = null;
+                this.searchProduct = null;
             }
 
         },
@@ -433,6 +486,8 @@ Traslados
             axios
                 .get('<?=base_url('rest-traslados/tiendas')?>')
                 .then(response => (this.tiendas = response.data.data));
+            
+            this.getAllInfo();
 
         }
     });

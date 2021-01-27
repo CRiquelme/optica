@@ -21,7 +21,7 @@ class RestTraslados extends MyRestApi
 		$db = db_connect();
 
 		$builder =	$db->table('productos_tiendas as pt');
-					$builder->select('pt.*, p.modelo as modelo, to.nombre_tienda as tienda_origen, td.nombre_tienda as tienda_destino');
+					$builder->select('pt.*, p.modelo as modelo, to.nombre_tienda as tienda_origen, td.nombre_tienda as tienda_destino, p.cod_barra');
 					$builder->join('productos as p', 'pt.producto_id = p.id_producto');
 					$builder->join('tiendas as to', 'pt.tienda_id = to.id_tienda');
 					$builder->join('tiendas as td', 'pt.tienda_destino_id = td.id_tienda');
