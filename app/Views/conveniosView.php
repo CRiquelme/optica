@@ -9,8 +9,9 @@ Convenios
 
 <section id="convenios">
   <article class="uk-margin-medium-right uk-margin-small-left uk-margin-medium-top" uk-grid>
-    
+    <!-- Formularios -->
     <div class="uk-width-1-4 uk-margin-large-bottom">
+      <!-- Nuevo/Editar -->
       <form class="uk-card uk-card-default uk-card-body">
         <h2 class="text-xl font-bold mb-5 uppercase">Nuevo convenio</h2>
         <fieldset class="uk-fieldset">
