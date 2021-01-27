@@ -76,19 +76,20 @@ class RestFacturasEmitidas extends MyRestApi
         $data = $this->request->getRawInput();
 
 		if ($this->validate('facturasEmitidasEdit')) {
+
 			$facturasEmitidas->update($id, [
-                'nc'                        => $data['nc'],
-                'anula_factura'             => $data['anula_factura'],
-				'numero_factura' 			=> $data['numero_factura'],
-				'fecha' 			        => $data['fecha'],
-				'cliente_id' 			    => $data['cliente_id'],
-				'monto' 			        => $data['monto'],
-				'forma_pago' 			    => $data['forma_pago'],
-				'numero_documento' 			=> $data['numero_documento'],
-				'fecha_emision' 			=> $data['fecha_emision'],
-				'fecha_recibo_documento' 	=> $data['fecha_recibo_documento'],
-				'comentario' 			    => $data['comentario'],
-				'tienda_id' 			    => $data['tienda_id']
+                'nc'                        => empty($data['nc']) ? null : $data['nc'],
+                'anula_factura'             => empty($data['anula_factura']) ? null : $data['anula_factura'],
+				'numero_factura' 			=> empty($data['numero_factura']) ? null : $data['numero_factura'],
+				'fecha' 			        => empty($data['fecha']) ? null : $data['fecha'],
+				'cliente_id' 			    => empty($data['cliente_id']) ? null :  $data['cliente_id'],
+				'monto' 			        => empty($data['monto']) ? null : $data['monto'],
+				'forma_pago' 			    => empty($data['forma_pago']) ? null : $data['forma_pago'],
+				'numero_documento' 			=> empty($data['numero_documento']) ? null : $data['numero_documento'],
+				'fecha_emision' 			=> empty($data['fecha_emision']) ? null : $data['fecha_emision'],
+				'fecha_recibo_documento' 	=> empty($data['fecha_recibo_documento']) ? null : $data['fecha_recibo_documento'],
+				'comentario' 			    => empty($data['comentario']) ? null : $data['comentario'],
+				'tienda_id' 			    => empty($data['tienda_id']) ? null : $data['tienda_id'],
 			]);
 			// return $this->respond($this->model->find($id));
 			return $this->genericResponse($this->model->find($id), null, 200);
