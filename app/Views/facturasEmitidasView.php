@@ -260,20 +260,6 @@ Facturas emitidas
 </section>
 
 <script>
-<<<<<<< HEAD
-var app = new Vue({
-    el      : '#facturasEmitidas',
-    data () {
-        return {
-
-        }
-    },
-    created () {
-        console.log('hola')
-    }
-});
-||||||| merged common ancestors
-=======
 var app = new Vue({
     el      : '#facturasEmitidas',
     data () {
@@ -475,7 +461,6 @@ var app = new Vue({
       }
     }
 });
->>>>>>> c8483cc7470e7d2d3300e4521c958b01fb947511
 
 </script>
 
