@@ -102,6 +102,7 @@ Salida de productos
             <table class="uk-table uk-table-striped uk-table-hover w-full" id="salidaProductos">
                 <thead>
                     <tr>
+                        <th>date</th>
                         <th>producto</th>
                         <th>tienda</th>
                         <th>cantidad</th>
@@ -117,6 +118,7 @@ Salida de productos
                                 && 
                             (ingresos.tienda_id === valorTienda || !valorTienda) "
                     >
+                        <td>{{ ingresos.created_at }}</td>
                         <td>
                             <button class="uk-button uk-button-link uk-text-success uk-text-bolder" @click="editar_ingreso(idinfo, ingresos.producto_id, ingresos.id_producto_salida)">
                                 <i class="far fa-edit uk-margin-small-left uk-text-success"></i> {{ ingresos.modelo }}
@@ -371,7 +373,19 @@ Salida de productos
                         $(function() {
                             var table = $('#salidaProductos').DataTable( 
                                 {
-                                    "order": [ 3, "desc" ],
+                                    columnDefs: [
+                                        {
+                                            "targets": [ 4 ],
+                                            "orderable": false
+                                        },
+                                        {
+                                            "targets": [ 0 ],
+                                            "visible": false,
+                                            "searchable": false
+                                        },
+                                
+                                    ],
+                                    "order": [ 0, "desc" ],
                                     "info": false,
                                     "language": { "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" },
                                 }
