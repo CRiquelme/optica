@@ -122,4 +122,16 @@ class RestIngresoProductos extends MyRestApi
 		$validation = \Config\Services::validation();
 		return $this->genericResponse(null, $validation->getErrors(), 500);
 	}
+
+	// Total de factura
+	public function totalFatura($id = null)
+	{
+		$db = db_connect();
+		$builder =	$db->table('productos_ingresos AS pi');
+		$builder->select('pi.producto_id, pi.cantidad_producto, p.modelo, p.precio_unitario');
+		$builder->join('productos as p', 'pi.producto_id = p.id_producto');
+		$builder->where('pi.factura', $id);
+		$query = $builder->get();
+		return  $this->genericResponse($query->getResultArray(), null, 200);
+	}
 }

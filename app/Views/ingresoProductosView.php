@@ -127,7 +127,7 @@ Ingreso de productos
                         </td>
                         <td>{{ ingresos.nombre_tienda }}</td>
                         <td>{{ ingresos.cantidad_producto }}</td>
-                        <td>{{ ingresos.factura }}</td>
+                        <td @click="totalFactura(ingresos.factura)">{{ ingresos.factura }}</td>
                         <td>{{ ingresos.created_at | fechaNormalSinHora }}</td>
                         <td class="uk-text-center">
                             <button class="uk-button uk-button-link uk-text-danger uk-text-bolder" @click="delete_ingreso(idinfo, ingresos.id_producto_ingreso)" v-bind:id="'delete-' + ingresos.id_producto_ingreso"><i class="fas fa-trash-alt uk-margin-small-left uk-text-danger" ></i></button>
@@ -224,14 +224,16 @@ Ingreso de productos
                     timer: 1500
                 });
             },
+
             delete_ingreso : function(index, id) {
-                const swalWithBootstrapButtons = Swal.mixin({
-                                                    customClass: {
-                                                        confirmButton: 'uk-button uk-button-primary',
-                                                        cancelButton: 'uk-button uk-button-danger'
-                                                    },
-                                                    buttonsStyling: false
-                                                });
+                const swalWithBootstrapButtons = 
+                    Swal.mixin({
+                        customClass: {
+                            confirmButton: 'uk-button uk-button-primary',
+                            cancelButton: 'uk-button uk-button-danger'
+                        },
+                        buttonsStyling: false
+                    });
                 
                 swalWithBootstrapButtons.fire({
                     title: '¿Está seguro que desea eliminarlo?',
@@ -297,6 +299,7 @@ Ingreso de productos
                     ));                
                 // var modal = UIkit.modal("#modal-container").show();
             },
+
             update_ingreso: function() {
                 console.log('guardando...');
                 id = this.id_producto_ingreso;
@@ -348,6 +351,7 @@ Ingreso de productos
                         }
                     );
             },
+
             limpiarFiltro: function() {
                 this.valorProducto = null;
                 this.valorTienda = null;
@@ -371,7 +375,18 @@ Ingreso de productos
                             )
                         });
                     });
-            }
+            },
+
+            totalFactura: function(idFactura){
+                console.log(idFactura);
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: idFactura,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            },
         },
 
         created () {
