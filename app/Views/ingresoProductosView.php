@@ -104,6 +104,7 @@ Ingreso de productos
             <table class="uk-table uk-table-striped uk-table-hover"  id="ingresosProductos">
                 <thead>
                     <tr>
+                        <th>Date</th>
                         <th>producto</th>
                         <th>tienda</th>
                         <th>cantidad</th>
@@ -120,14 +121,18 @@ Ingreso de productos
                                 && 
                             (ingresos.tienda_id === valorTienda || !valorTienda) "
                     >
+                        <td>{{ ingresos.created_at }}</td>
                         <td>
-                            <button class="uk-button uk-button-link uk-text-success uk-text-bolder" @click="editar_ingreso(idinfo, ingresos.producto_id, ingresos.id_producto_ingreso)">
-                                <i class="far fa-edit uk-margin-small-left uk-text-success"></i> {{ ingresos.modelo }}
+                            <button class="uk-button uk-button-link text-green-800 uk-text-bolder" @click="editar_ingreso(idinfo, ingresos.producto_id, ingresos.id_producto_ingreso)">
+                                <i class="far fa-edit uk-margin-small-left"></i> 
+                                {{ ingresos.modelo }}
                             </button>
                         </td>
                         <td>{{ ingresos.nombre_tienda }}</td>
                         <td>{{ ingresos.cantidad_producto }}</td>
-                        <td @click="totalFactura(ingresos.factura)">{{ ingresos.factura }}</td>
+                        <td @click="totalFactura(ingresos.factura)" class="text-green-800 cursor-pointer">
+                            <span class="font-bold">{{ ingresos.factura }}</span> <i class="fas fa-comment-dollar"></i>
+                        </td>
                         <td>{{ ingresos.created_at | fechaNormalSinHora }}</td>
                         <td class="uk-text-center">
                             <button class="uk-button uk-button-link uk-text-danger uk-text-bolder" @click="delete_ingreso(idinfo, ingresos.id_producto_ingreso)" v-bind:id="'delete-' + ingresos.id_producto_ingreso"><i class="fas fa-trash-alt uk-margin-small-left uk-text-danger" ></i></button>
@@ -177,7 +182,8 @@ Ingreso de productos
                 valorProducto: null,
                 valorTienda: null,
                 options: [],
-                tiendas: []
+                tiendas: [],
+                total: [],
             }
         },
         methods: {
@@ -366,26 +372,61 @@ Ingreso de productos
                         $(function() {
                             var table = $('#ingresosProductos').DataTable( 
                                 {
-                                    "order": [ 4, "desc" ],
+                                    "order": [ 0, "desc" ],
                                     "info": false,
                                     "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
                                     "infoFiltered": "(filtrado de un total de _MAX_ registros)",
                                     "language": { "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" },
+                                    "columnDefs": [ 
+                                        {
+                                            "targets": 5,
+                                            "orderable": false
+                                        },
+                                        {
+                                            "targets": [ 0 ],
+                                            "visible": false,
+                                            "searchable": false
+                                        }
+                                    ]
                                 }
                             )
                         });
                     });
             },
 
-            totalFactura: function(idFactura){
-                console.log(idFactura);
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: idFactura,
-                    showConfirmButton: false,
-                    timer: 1500
-                })
+            totalFactura(idFactura){
+                let self = this;
+                let url = '<?=base_url("rest-ingreso-productos/total_factura")?>/'+idFactura;
+                axios
+                    .get(url)
+                    .then(response => {
+                        this.total = response.data.data;
+                        let totalDeFact = this.total[0].totalDeFactura;
+
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        })
+
+                        
+
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Total de factura ('+idFactura+'): $'+totalDeFact.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+                        })
+                    });
+
+
+                
+                
+                
             },
         },
 

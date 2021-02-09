@@ -128,9 +128,11 @@ class RestIngresoProductos extends MyRestApi
 	{
 		$db = db_connect();
 		$builder =	$db->table('productos_ingresos AS pi');
-		$builder->select('pi.producto_id, pi.cantidad_producto, p.modelo, p.precio_unitario');
+		$builder->select('pi.producto_id, pi.factura, pi.cantidad_producto, p.modelo, p.precio_unitario, sum(pi.cantidad_producto * p.precio_unitario) AS totalDeFactura');
 		$builder->join('productos as p', 'pi.producto_id = p.id_producto');
-		$builder->where('pi.factura', $id);
+		$builder->where('pi.deleted IS NULL');
+		$builder->groupBy('pi.factura');
+		$builder->having('pi.factura', $id);
 		$query = $builder->get();
 		return  $this->genericResponse($query->getResultArray(), null, 200);
 	}

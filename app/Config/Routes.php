@@ -83,7 +83,7 @@ $routes->resource('rest-clientes-empresas', ['controller' => 'RestClientesEmpres
 $routes->put('rest-usuario/update-password', ['controller' => 'RestUsuario']); // genérica
 $routes->resource('rest-usuario', ['controller' => 'RestUsuario']); // genérica
 
-$routes->get('rest-ingreso-productos/total_fatura/(:any)', 'RestIngresoProductos::totalFatura/$1');
+$routes->get('rest-ingreso-productos/total_factura/(:any)', 'RestIngresoProductos::totalFatura/$1');
 $routes->resource('rest-ingreso-productos', ['controller' => 'RestIngresoProductos']); // genérica
 
 $routes->get('rest-salida-productos/fechas/(:any)', 'RestSalidaProductos::fechas/$1');
