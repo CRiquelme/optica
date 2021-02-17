@@ -130,7 +130,7 @@ Ingreso de productos
                         </td>
                         <td>{{ ingresos.nombre_tienda }}</td>
                         <td>{{ ingresos.cantidad_producto }}</td>
-                        <td @click="totalFactura(ingresos.factura)" class="text-green-800 cursor-pointer">
+                        <td @click="totalFactura(ingresos.factura); detalleDeFactura(ingresos.factura)" class="text-green-800 cursor-pointer">
                             <span class="font-bold">{{ ingresos.factura }}</span> <i class="fas fa-comment-dollar"></i>
                         </td>
                         <td>{{ ingresos.created_at | fechaNormalSinHora }}</td>
@@ -140,9 +140,40 @@ Ingreso de productos
                     </tr>
                 </tbody>
             </table>
+
+            <template v-if="idDeFactura">
+                
+                <h2 class="font-bold">Detalle de factura: {{ idDeFactura }} <i class="fas fa-sync-alt cursor-pointer text-green-800" @click="totalFactura(idDeFactura); detalleDeFactura(idDeFactura)"></i></h2>
+                <table class="uk-table uk-table-striped uk-table-hover">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Registrado</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(detFactu, idDetalleFact) in detalleFactura">
+                            <td>{{ detFactu.modelo }}</td>
+                            <td>{{ detFactu.created_at | fechaNormalSinHora }}</td>
+                            <td>{{ detFactu.cantidad_producto | thousand }}</td>
+                            <td>{{ detFactu.precio_unitario  | money}}</td>
+                            <td>{{ detFactu.cantidad_producto * detFactu.precio_unitario  | money }}</td>
+                        </tr>
+                        <tr>
+                            <td class="bg-gray-200 font-bold" colspan="4">Total</td>
+                            <td class="bg-gray-200 font-bold">{{totalDetalleFactura | money}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+            </template>
         </div>
 
     </article>
+
 </section>
 
 <script src="https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"></script>
@@ -184,6 +215,8 @@ Ingreso de productos
                 options: [],
                 tiendas: [],
                 total: [],
+                detalleFactura: [],
+                idDeFactura: '',
             }
         },
         methods: {
@@ -206,7 +239,7 @@ Ingreso de productos
                     .post('<?=base_url('rest-ingreso-productos')?>', params)
                     .then(
                         response => {
-                            console.log(response.data);
+                            // console.log(response.data);
                             if(response.data.code === 500) {
                                 console.log(response.data.msj);
                                 this.errores = response.data.msj;
@@ -414,20 +447,38 @@ Ingreso de productos
                                 toast.addEventListener('mouseleave', Swal.resumeTimer)
                             }
                         })
-
-                        
-
                         Toast.fire({
                             icon: 'success',
                             title: 'Total de factura ('+idFactura+'): $'+totalDeFact.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
                         })
                     });
-
-
-                
-                
-                
+                // this.detalleDeFactura(idFactura)
             },
+            
+            detalleDeFactura(idFactura){
+                this.idDeFactura = idFactura;
+                axios
+                    .get('<?=base_url("rest-ingreso-productos/detalle_factura")?>/'+idFactura)
+                    .then(response => {
+                        this.detalleFactura = response.data.data;
+                    });
+            },
+        },
+
+        computed: {
+            totalDetalleFactura: function () {
+                let precios = this.detalleFactura.map((det) => { return det.precio_unitario * det.cantidad_producto } );
+                let total = precios.reduce((a, b) => a + b)
+                return total;
+            }
+        },
+        filters: {
+            money: function (value) {
+                return '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            },
+            thousand: function (value) {
+                return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            }
         },
 
         created () {

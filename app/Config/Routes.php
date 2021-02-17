@@ -84,6 +84,7 @@ $routes->put('rest-usuario/update-password', ['controller' => 'RestUsuario']); /
 $routes->resource('rest-usuario', ['controller' => 'RestUsuario']); // genérica
 
 $routes->get('rest-ingreso-productos/total_factura/(:any)', 'RestIngresoProductos::totalFatura/$1');
+$routes->get('rest-ingreso-productos/detalle_factura/(:any)', 'RestIngresoProductos::detalleFatura/$1');
 $routes->resource('rest-ingreso-productos', ['controller' => 'RestIngresoProductos']); // genérica
 
 $routes->get('rest-salida-productos/fechas/(:any)', 'RestSalidaProductos::fechas/$1');

@@ -136,4 +136,17 @@ class RestIngresoProductos extends MyRestApi
 		$query = $builder->get();
 		return  $this->genericResponse($query->getResultArray(), null, 200);
 	}
+	
+	// Detalle de factura
+	public function detalleFatura($id = null)
+	{
+		$db = db_connect();
+		$builder =	$db->table('productos_ingresos AS pi');
+		$builder->select('pi.producto_id, pi.factura, pi.cantidad_producto, p.modelo, p.precio_unitario, pi.created_at');
+		$builder->join('productos as p', 'pi.producto_id = p.id_producto');
+		$builder->where('pi.deleted IS NULL');
+		$builder->having('pi.factura', $id);
+		$query = $builder->get();
+		return  $this->genericResponse($query->getResultArray(), null, 200);
+	}
 }
