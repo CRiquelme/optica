@@ -19,7 +19,7 @@ Traslados
                 <h2>FILTRO</h2>
                 <div class="uk-margin">
                     <label>Buscar producto <small>(código de barras)</small></label>
-                    <input @keyup="buscarCodigoBarra()" id="searchProduct" v-model="searchProduct" class="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal" @change="revisarStock($event)" type="text" placeholder="12345">
+                    <input @keyup="buscarCodigoBarra()" id="searchProduct" v-model="searchProduct" class="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal" type="text" placeholder="12345">
                 </div>
                 <label>Producto</label>
                 <v-select 
@@ -131,7 +131,7 @@ Traslados
 
                 <div class="uk-width-1-1@s">
                     <label>Buscar producto <small>(código de barras)</small></label>
-                    <input @keyup="buscarCodigoBarra2()" id="searchProduct2" v-model="searchProduct2" class="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal" @change="revisarStock2($event)" type="text" placeholder="12345">
+                    <input @keyup="buscarCodigoBarra2()" id="searchProduct2" v-model="searchProduct2" class="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal"  type="text" placeholder="12345">
                     
                 </div>
                 
@@ -169,8 +169,10 @@ Traslados
                 
                 <div class="uk-width-1-2@s">
                     <label class="uk-form-label" for="op_cantidad_productos">Cantidad de productos 
-                        <small v-if="op_stock > 0" class="uk-label uk-label-success">Valor máximo: {{op_stock}}</small>
-                        <small v-if="op_stock <= 0" class="uk-label uk-label-danger">Sin stock</small>
+                        <template v-if="(op_productos != null && op_productos != '') && (op_tienda_id !== null && op_tienda_id != '')">
+                            <small v-if="op_stock > 0" class="uk-label uk-label-success">Valor máximo: {{op_stock}}</small>
+                            <small v-if="op_stock <= 0" class="uk-label uk-label-danger">Sin stock</small>
+                        </template>
                     </label>
                     <input v-model.number="op_cantidad_productos" class="uk-input" id="op_cantidad_productos" name="op_cantidad_productos" type="number" placeholder="Cantidad" :max='op_stock' :min='1' autocomplete="off">
                 </div>
@@ -245,7 +247,7 @@ Traslados
             buscarCodigoBarra: function() {
                 var self = this
                 self.codBarra = self.searchProduct
-                console.log(self.codBarra)
+                // console.log(self.codBarra)
             },
             getAllInfo() {
                 axios
@@ -269,8 +271,8 @@ Traslados
                 axios
                     .get('<?=base_url("rest-stock/show-codigo")?>/' + self.searchProduct2)
                     .then(response => {
-                        self.op_productos = response.data.data[0].producto_id,
-                        console.log(response.data.data[0].producto_id)
+                        self.op_productos = response.data.data[0].producto_id
+                        // console.log(response.data.data[0].producto_id)
                     });
             },
 
@@ -343,7 +345,7 @@ Traslados
 
             // Hacer el update para guardar cambios
             update_traslado : function() {
-                console.log('guardando...');
+                // console.log('guardando...');
                 id = this.op_id_producto_tienda;                
                 const params = new URLSearchParams();
 
@@ -367,10 +369,10 @@ Traslados
                             // this.info.push(response.data.data);
                             // UIkit.modal("#modal-container").hide();
 
-                            console.log(response.data);
+                            // console.log(response.data);
 
                             if(response.data.code === 500) {
-                                console.log(response.data.msj);
+                                // console.log(response.data.msj);
                                 this.errores = response.data.msj;
                             } else {
                                 axios
@@ -406,6 +408,7 @@ Traslados
                 this.op_cantidad_productos = "";
                 this.op_tienda_id = "";
                 this.op_tienda_destino_id = "";
+                this.searchProduct2 = "";
                 
             },
 
@@ -433,9 +436,9 @@ Traslados
                             // this.info.push(response.data.data);
                             // UIkit.modal("#modal-container").hide();
 
-                            console.log(response.data);
+                            // console.log(response.data);
                             if(response.data.code === 500) {
-                                console.log(response.data.msj);
+                                // console.log(response.data.msj);
                                 this.errores = response.data.msj;
                             } else {
                                 //this.info.push(response.data.data);
@@ -449,6 +452,7 @@ Traslados
                         }
                     );
             },
+
             onChange : function(event)  {
                 // console.log('producto: ' + this.op_productos);
                 // console.log('tienda: ' + this.op_tienda_id);
