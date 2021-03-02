@@ -65,6 +65,7 @@ $routes->get('rest-traslados/productos', 'RestTraslados::productos'); // especí
 $routes->resource('rest-traslados', ['controller' => 'RestTraslados']); // genérica
 
 $routes->get('rest-stock/show-codigo/(:num)', 'RestStock::showCodigo/$1'); // específica
+$routes->get('rest-stock/estadisticaStock/', 'RestStock::estadisticaStock'); // específica
 // $routes->get('rest-stock/stock-producto-tienda/(:num)/(:num)', 'RestStock::stockProductoTienda/$1/$1'); // específica
 $routes->resource('rest-stock', ['controller' => 'RestStock']); // genérica
 
