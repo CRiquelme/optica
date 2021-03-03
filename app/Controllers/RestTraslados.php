@@ -184,4 +184,27 @@ class RestTraslados extends MyRestApi
 		return 'asd ' . $buscar;
 	}
 
+	//------------------------------
+	// INFORMES
+
+	public function informeTraslados($fecha = null, $tiendaOrigen, $tiendaDestino) {
+		$db = db_connect();
+
+		$builder =	$db->table('productos_tiendas AS pt');
+
+		$builder->select('pt.id_producto_tienda, pt.id_producto_tienda, pt.producto_id, p.modelo, pt.tienda_id, tOrigen.nombre_tienda AS origen, pt.tienda_destino_id, tDestino.nombre_tienda AS destino, p.cod_barra, pt.cantidad_productos, p.precio_unitario, pt.created_at');
+
+		$builder->join('productos as p', 'p.id_producto = pt.producto_id');
+		$builder->join('tiendas AS tOrigen', 'tOrigen.id_tienda = pt.tienda_id');
+		$builder->join('tiendas AS tDestino', 'tDestino.id_tienda = pt.tienda_destino_id');
+
+		$builder->where('DATE(pt.created_at)', $fecha);
+		$builder->where('pt.tienda_id', $tiendaOrigen);
+		$builder->where('pt.tienda_destino_id', $tiendaDestino);
+		$builder->where('pt.deleted IS null');
+
+		$query = $builder->get();
+		return  $this->genericResponse($query->getResultArray(), null, 200);
+	}
+
 }

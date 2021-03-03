@@ -53,6 +53,7 @@ $routes->get('clientes_empresas', 'ClientesEmpresasController::index');
 
 $routes->get('sobre', 'SobreController::index');
 $routes->get('traslados', 'TrasladosController::index');
+$routes->get('informe-traslados', 'TrasladosController::informeTraslados');
 $routes->get('stock_productos', 'StockController::index');
 $routes->get('ingreso_productos', 'ProductosController::ingreso_productos');
 $routes->get('salida_productos', 'ProductosController::salida_productos');
@@ -60,8 +61,9 @@ $routes->get('consulta_salida_productos', 'ConsultasController::cSalidaProductos
 
 // REST
 // Primero las routes más específicas y luego las genéricas
-$routes->get('rest-traslados/tiendas', 'RestTraslados::tiendas'); // específica
-$routes->get('rest-traslados/productos', 'RestTraslados::productos'); // específica
+$routes->get('rest-traslados/tiendas/', 'RestTraslados::tiendas'); // específica
+$routes->get('rest-traslados/productos/', 'RestTraslados::productos'); // específica
+$routes->get('rest-traslados/informeTraslados/(:any)', 'RestTraslados::informeTraslados/$1'); // específica
 $routes->resource('rest-traslados', ['controller' => 'RestTraslados']); // genérica
 
 $routes->get('rest-stock/show-codigo/(:num)', 'RestStock::showCodigo/$1'); // específica

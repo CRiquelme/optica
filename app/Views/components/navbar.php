@@ -40,6 +40,12 @@
                 </ul>
             </li>
             <li class="uk-parent"><a href="<?=base_url('cristales')?>">Cristales</a></li>
+            <li class="uk-parent">
+                <a href="#">Informes</a>
+                <ul class="uk-nav-sub">
+                    <li><a href="<?=base_url('informe-traslados')?>">Traslados</a></li>
+                </ul>
+            </li>
             <!-- <li class="uk-parent"><a href="<?//=base_url('sobre')?>">Registro sobre</a></li> -->
             <li class="uk-nav-divider"></li>
             <li class="uk-parent"><a href="<?=base_url('password')?>">Cambiar contraseña personal</a></li>
