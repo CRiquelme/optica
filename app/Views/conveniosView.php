@@ -48,7 +48,6 @@ Convenios
             <label class="uk-form-label">Estado</label>
             <div class="uk-form-controls">
               <select v-model="selected_estado" class="uk-select">
-                <option value="Todos">Todos</option>
                 <option value="Activo">Activo</option>
                 <option value="Inactivo">Inactivo</option>
               </select>
@@ -75,7 +74,8 @@ Convenios
           <!-- {{valorTienda}} -->
           <tr 
             v-for="(convenio, n) in info" 
-            :key="n" 
+            :key="n"
+            v-if="(convenio.estado === selected_estado || !selected_estado)"
           >
             <td>
               <button class="uk-button uk-button-link uk-text-success uk-text-bolder" @click="seleccionar(n)">
@@ -108,7 +108,7 @@ Convenios
         action:"nuevo",
         id_convenio:null,
         errores:null,
-        selected_estado:"Todos"
+        selected_estado: null
        }
   },
   created(){
@@ -126,8 +126,8 @@ Convenios
     limpiar(){
       this.action="nuevo"
     },
-    limpiarFiltro(){
-      cargar()
+    limpiarFiltro: function() {
+      this.selected_estado  = null
     },
     agregar(){
       this.errores=null
