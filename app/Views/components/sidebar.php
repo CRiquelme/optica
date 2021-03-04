@@ -16,6 +16,7 @@
         <a href="#">Informes</a>
         <ul class="uk-nav-sub">
             <li><a href="<?=base_url('informe-traslados')?>">Traslados</a></li>
+            <li><a href="<?=base_url('informe-stock-precios')?>">Precios stock</a></li>
         </ul>
     </li>
     <!-- <li class="uk-parent"><a href="<?=base_url('sobre')?>">Registro sobre</a></li> -->

@@ -55,6 +55,7 @@ $routes->get('sobre', 'SobreController::index');
 $routes->get('traslados', 'TrasladosController::index');
 $routes->get('informe-traslados', 'TrasladosController::informeTraslados');
 $routes->get('stock_productos', 'StockController::index');
+$routes->get('informe-stock-precios', 'StockController::informeStockPrecios');
 $routes->get('ingreso_productos', 'ProductosController::ingreso_productos');
 $routes->get('salida_productos', 'ProductosController::salida_productos');
 $routes->get('consulta_salida_productos', 'ConsultasController::cSalidaProductos');

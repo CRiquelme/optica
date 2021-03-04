@@ -89,7 +89,7 @@ class RestStock extends MyRestApi
 		$db = db_connect();
 
 		$builder =	$db->table('inventario AS i');
-		$builder->select('i.producto_id, p.modelo, p.cat_prod_id, cp.nombre_cat_pro, i.tienda_id, p.precio_unitario, p.precio_venta, SUM(i.cantidad) AS stock, SUM(p.precio_unitario*i.cantidad) AS total_precio_compra_stock, SUM(p.precio_venta*i.cantidad) AS total_precio_venta_stock');
+		$builder->select('i.producto_id, p.modelo, p.cod_barra, p.cat_prod_id, cp.nombre_cat_pro, i.tienda_id, p.precio_unitario, p.precio_venta, SUM(i.cantidad) AS stock, SUM(p.precio_unitario*i.cantidad) AS total_precio_compra_stock, SUM(p.precio_venta*i.cantidad) AS total_precio_venta_stock');
 		$builder->join('productos as p', 'p.id_producto = i.producto_id');
 		$builder->join('tiendas AS t', 'i.tienda_id = t.id_tienda');
 		$builder->join('categoria_productos AS cp', 'cp.id_cat_prod = p.cat_prod_id');
