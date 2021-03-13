@@ -221,6 +221,21 @@ class ProductosController extends BaseController
 			return redirect()->route('login');
         }
     }
+    
+    public function salidasDiaria()
+	{
+		$data = array();
+
+		// Trabajar con las variables de sesión que vienen de basecontroller
+		if($this->dataUser) { 			// Comprobar si tenemos sesión si no redirige a login
+			$data = $this->dataUser; 	// Variables de la session
+
+			return view('salidasDiaria', $data);
+
+		}  else {
+			return redirect()->route('login');
+		}
+	}
 
 
 }

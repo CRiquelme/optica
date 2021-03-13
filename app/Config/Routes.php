@@ -58,6 +58,7 @@ $routes->get('stock_productos', 'StockController::index');
 $routes->get('informe-stock-precios', 'StockController::informeStockPrecios');
 $routes->get('ingreso_productos', 'ProductosController::ingreso_productos');
 $routes->get('salida_productos', 'ProductosController::salida_productos');
+$routes->get('informe-salidas-diaria', 'ProductosController::salidasDiaria');
 $routes->get('consulta_salida_productos', 'ConsultasController::cSalidaProductos');
 
 // REST
@@ -91,6 +92,7 @@ $routes->get('rest-ingreso-productos/total_factura/(:any)', 'RestIngresoProducto
 $routes->get('rest-ingreso-productos/detalle_factura/(:any)', 'RestIngresoProductos::detalleFatura/$1');
 $routes->resource('rest-ingreso-productos', ['controller' => 'RestIngresoProductos']); // genérica
 
+$routes->get('rest-salida-productos/informeSalidasDiarias/(:any)', 'RestSalidaProductos::salidasDiaria/$1'); // específica
 $routes->get('rest-salida-productos/fechas/(:any)', 'RestSalidaProductos::fechas/$1');
 $routes->resource('rest-salida-productos', ['controller' => 'RestSalidaProductos']);
 

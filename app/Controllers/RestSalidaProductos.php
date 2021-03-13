@@ -131,4 +131,26 @@ class RestSalidaProductos extends MyRestApi
 		$query = $builder->get();
 		return  $this->genericResponse($query->getResultArray(), null, 200);
 	}
+
+	//--------------------------------------------------------------------
+
+	public function salidasDiaria($fecha = null) {
+		$db = db_connect();
+
+		$builder =	$db->table('productos_salida AS ps');
+
+		$builder->select('ps.id_producto_salida, p.cod_barra, p.modelo, ps.tienda_id, t.nombre_tienda, ps.cantidad_producto, p.precio_unitario, p.precio_venta, SUM(p.precio_venta*ps.cantidad_producto) AS total_venta, SUM( (p.precio_venta*ps.cantidad_producto) - (p.precio_unitario*ps.cantidad_producto) ) AS utilidades');
+
+		$builder->join('productos as p', 'p.id_producto = ps.producto_id');
+		$builder->join('tiendas AS t', 't.id_tienda = ps.tienda_id');
+
+		$builder->where('DATE(ps.created_at)', $fecha);
+		$builder->where('ps.deleted', null);
+
+		// $builder->orderBy('pt.created_at', 'DESC');
+		$builder->groupby('ps.id_producto_salida');
+		$query = $builder->get();
+		return  $this->genericResponse($query->getResultArray(), null, 200);
+	}
+
 }
