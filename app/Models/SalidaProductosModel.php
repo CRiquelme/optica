@@ -9,7 +9,7 @@ class SalidaProductosModel extends Model {
     protected $returnType       = 'array';
     protected $useSoftDeletes   = true;
 
-    protected $allowedFields    = ['producto_id', 'cantidad_producto', 'tienda_id'];
+    protected $allowedFields    = ['producto_id', 'cantidad_producto', 'tienda_id', 'sobre_id'];
 
     protected $useTimestamps    = false;
     protected $createdField     = 'created_at';

@@ -5,19 +5,14 @@ use CodeIgniter\Controller;
 use App\Models\ClientesModel;
 use App\Models\ServiciosModel;
 
-class Dashboard extends BaseController
-{
-
-	public function index()
-	{
+class Dashboard extends BaseController {
+	public function index() {
 		$data = array();
 
 		// Trabajar con las variables de sesión que vienen de basecontroller
 		if($this->dataUser) { 			// Comprobar si tenemos sesión si no redirige a login
 			$data = $this->dataUser; 	// Variables de la session
-
 			return view('dashboardView', $data);
-
 		}  else {
 			return redirect()->route('login');
 		}

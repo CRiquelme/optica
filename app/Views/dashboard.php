@@ -5,7 +5,6 @@ Dashboard
 <?= $this->endSection();?>
 
 <?= $this->section('page_content'); ?>
-    
 
     <div class="uk-margin-medium-right uk-margin-small-left uk-margin-medium-top" uk-grid>
         <div>
@@ -47,7 +46,7 @@ Dashboard
                                 <button class="uk-button uk-button-link uk-text-danger uk-text-bolder" onclick="delete_cliente(<?php echo $cliente['id_cliente'];?>)"><i class="fas fa-trash-alt uk-margin-small-left uk-text-danger" ></i></button>
                             </td>
                         </tr>
-                    <?php endforeach; ?>                    
+                    <?php endforeach; ?>
                 </tbody>
             
             </table>
@@ -83,8 +82,6 @@ Dashboard
             </tbody>
         
         </table>
-       
-        
 
         <a :href="url">{{ms}}</a>
         <div v-for="cliente in clientes" :key="cliente.id_cliente">

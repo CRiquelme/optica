@@ -69,6 +69,14 @@ class Validation
 		'tienda_id'		=> 'required',
 		'cantidad'		=> 'required|numeric'
 	];
+
+	public $libros = [
+		'cliente_id' => 'required'
+	];
+
+	public $libro_editar = [
+		'cliente_id' => 'required'
+	];
 	
 	public $ingresoConvenios = [
 		'nombre_empresa'	=> 'required',
@@ -217,6 +225,10 @@ class Validation
         'ap_pat' => [
             'required'              => 'Requerido.'
         ]
+	];
+
+	public $sobre_editar = [
+		'id_sobre' => 'required|numeric'
 	];
 
 	/**

@@ -233,7 +233,6 @@ Salida de productos
                 
                 swalWithBootstrapButtons.fire({
                     title: '¿Está seguro que desea eliminarlo?',
-                    // text: "You won't be able to revert this!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonText: 'Sí, quiero eliminarlo',

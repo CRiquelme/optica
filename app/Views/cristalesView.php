@@ -6,122 +6,136 @@ Cristales
 
 <?= $this->section('page_content'); ?>
 <section id="cristales">
-    <article class="uk-margin-medium-right uk-margin-small-left uk-margin-medium-top" uk-grid>
-        <titulo class="text-4xl"></titulo>
-    </article>
+	<article class="uk-margin-medium-right uk-margin-small-left uk-margin-medium-top" uk-grid>
+		<titulo class="text-4xl"></titulo>
+	</article>
 
-    <article class="uk-margin-medium-right uk-margin-small-left uk-margin-medium-top" uk-grid>
-        <div class="uk-width-1-4 uk-margin-large-bottom">
-            <form class="uk-card uk-card-default uk-card-body">
-                <h2 class="text-xl font-bold mb-5 uppercase">Nuevo cristal</h2>
-                <fieldset class="uk-fieldset">
-                    <div class="uk-margin">
-                        <label class="uk-form-label" for="cajon">Cajón</label>
-                        <input v-model="op_cajon" class="uk-input" id="cajon" name="cajon" type="text" placeholder="Nombre del cajón">
-                    </div>
-                    <div class="uk-margin">
-                        <label class="uk-form-label" for="tienda_id">Tienda</label>
-                        <div class="uk-form-controls">
-                            <select v-model="op_tienda_id" class="uk-select" id="tienda_id" name="tienda_id">
-                                <option value="">Seleccione una tienda</option>
-                                <option v-for="(tienda, index) in tiendas" :key="tiendas.id_tienda" v-bind:value="tienda.id_tienda">
-                                    {{tienda.nombre_tienda}}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="uk-margin">
-                        <label class="uk-form-label" for="material">Material</label>
-                        <input v-model="op_material" class="uk-input" id="material" name="material" type="text" placeholder="Material">
-                    </div>
-                    <div class="uk-margin">
-                        <label class="uk-form-label" for="potencia1">Potencia 1</label>
-                        <input v-model="op_potencia1" class="uk-input" id="potencia1" name="potencia1" type="text" placeholder="Potencia 1">
-                    </div>
-                    <div class="uk-margin">
-                        <label class="uk-form-label" for="potencia2">Potencia 2</label>
-                        <input v-model="op_potencia2" class="uk-input" id="potencia2" name="potencia2" type="text" placeholder="Potencia 2">
-                    </div>
-                    <div class="uk-margin">
-                        <label class="uk-form-label" for="cantidad">Cantidad</label>
-                        <input v-model="op_cantidad" class="uk-input" id="cantidad" name="cantidad" type="number" placeholder="Cantidad" :min="1" autocomplete="off">
-                    </div>
+	<article class="m-10">
+		<div class="grid md:grid-cols-5 gap-4">
+			<div class="md:row-span-3 border-r-2 border-gray-100 pb-5 pt-3">
+					<form class="uk-card uk-card-default uk-card-body">
+							<h2 class="text-xl font-bold mb-5 uppercase">Nuevo cristal</h2>
+							<fieldset class="uk-fieldset">
+									<div class="uk-margin">
+											<label class="uk-form-label" for="cajon">Cajón</label>
+											<input v-model="op_cajon" class="uk-input" id="cajon" name="cajon" type="text" placeholder="Nombre del cajón">
+									</div>
+									<div class="uk-margin">
+											<label class="uk-form-label" for="tienda_id">Tienda</label>
+											<div class="uk-form-controls">
+													<select v-model="op_tienda_id" class="uk-select" id="tienda_id" name="tienda_id">
+															<option value="">Seleccione una tienda</option>
+															<option v-for="(tienda, index) in tiendas" :key="tiendas.id_tienda" v-bind:value="tienda.id_tienda">
+																	{{tienda.nombre_tienda}}
+															</option>
+													</select>
+											</div>
+									</div>
+									<div class="uk-margin">
+											<label class="uk-form-label" for="material">Material</label>
+											<input v-model="op_material" class="uk-input" id="material" name="material" type="text" placeholder="Material">
+									</div>
+									<div class="uk-margin">
+											<label class="uk-form-label" for="potencia1">Potencia 1</label>
+											<input v-model="op_potencia1" class="uk-input" id="potencia1" name="potencia1" type="text" placeholder="Potencia 1">
+									</div>
+									<div class="uk-margin">
+											<label class="uk-form-label" for="potencia2">Potencia 2</label>
+											<input v-model="op_potencia2" class="uk-input" id="potencia2" name="potencia2" type="text" placeholder="Potencia 2">
+									</div>
+									<div class="uk-margin">
+											<label class="uk-form-label" for="cantidad">Cantidad</label>
+											<input v-model="op_cantidad" class="uk-input" id="cantidad" name="cantidad" type="number" placeholder="Cantidad" :min="1" autocomplete="off">
+									</div>
 
-                    
-                    <div class="uk-margin" v-if="op_cajon && op_material && op_potencia1 && op_potencia2 && op_cantidad && action === 'editar'">
-                        <button class="uk-button uk-button-primary" type="button" @click="update_ingreso()">Editar</button>
-                        <button class="uk-button uk-button-secondary" type="button" @click="limpiar_form()">Limpiar</button> 
-                    </div>
-                    <div class="uk-margin" v-else-if="op_cajon && op_material && op_potencia1 && op_potencia2 && op_cantidad">
-                        <button class="uk-button uk-button-primary uk-width-1-1" type="button" @click="agregar()">Guardar</button>
-                    </div>
-                </fieldset>
-            </form>
+									
+									<div class="uk-margin" v-if="op_cajon && op_material && op_potencia1 && op_potencia2 && op_cantidad && action === 'editar'">
+											<button class="uk-button uk-button-primary" type="button" @click="update_ingreso()">Editar</button>
+											<button class="uk-button uk-button-secondary" type="button" @click="limpiar_form()">Limpiar</button> 
+									</div>
+									<div class="uk-margin" v-else-if="op_cajon && op_material && op_potencia1 && op_potencia2 && op_cantidad">
+											<button class="uk-button uk-button-primary uk-width-1-1" type="button" @click="agregar()">Guardar</button>
+									</div>
+							</fieldset>
+					</form>
+			</div>
 
-            <div class="uk-card uk-card-default uk-card-body uk-margin-medium-top">
-                <h2 class="uk-text-uppercase">FILTROS</h2>
-                <label>Cajón</label>
-                <v-select 
-                    :options="listaCajonesUnicos" 
-                    label="cajon" 
-                    :value="selected" 
-                    v-model="valorCajon"
-                    class="uk-form-width-large uk-width-1-1@m"
-                >
-                    <span slot="no-options">No hay datos para su búsqueda.</span>
-                </v-select>
-                <button @click="limpiarFiltro" class="uk-button uk-button-secondary uk-margin-medium-top uk-align-center">Limpiar filtros</button>
-            </div>
-        </div>
+			<div class="md:row-span-1 md:col-span-4">
+					
+				<div v-if="cargar" class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
 
-        <div class="uk-width-3-4" uk-grid>
-            
-            <div v-if="cargar" class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+				<table v-if="!cargar" class="uk-table uk-table-divider uk-table-striped uk-table-hover" id="table_cristales">
+						<thead>
+								<tr>
+										<th>ID</th>
+										<th>Cajón</th>
+										<th>Tienda</th>
+										<th>Material</th>
+										<th>Potencia 1</th>
+										<th>Potencia 2</th>
+										<th>Cantidad</th>
+										<th class="uk-text-center">Opciones</th>
+								</tr>
+						</thead>
+						<tbody>
+								<tr 
+										v-for="(ingresos, idinfo) in info" 
+										:key="ingresos.id_cristal" 
+										v-if="(ingresos.cajon === valorCajon || !valorCajon)"
+								>
+										<td>
+												<button class="uk-button uk-button-link uk-text-success uk-text-bolder" @click="editar_ingreso(idinfo, ingresos.id_cristal)">
+														<i class="far fa-edit uk-margin-small-left uk-text-success"></i> {{ ingresos.id_cristal }}
+												</button>
+										</td>
+										<td>{{ ingresos.cajon }}</td>
+										<td>{{ ingresos.nombre_tienda }}</td>
+										<td>{{ ingresos.material }}</td>
+										<td>{{ ingresos.potencia1 }}</td>
+										<td>{{ ingresos.potencia2 }}</td>
+										<td>{{ ingresos.cantidad }}</td>
+										<td class="uk-text-center">
+												<i class="fas fa-trash-alt cursor-pointer text-red-500" @click="delete_ingreso(idinfo, ingresos.id_cristal)" title="Borrar cristal"></i>
 
-            <table v-else class="uk-table uk-table-divider uk-table-striped uk-table-hover">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Cajón</th>
-                        <th>Tienda</th>
-                        <th>Material</th>
-                        <th>Potencia 1</th>
-                        <th>Potencia 2</th>
-                        <th>Cantidad</th>
-                        <th class="uk-text-center">Opciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- {{valorTienda}} -->
-                    <tr 
-                        v-for="(ingresos, idinfo) in info" 
-                        :key="ingresos.id_cristal" 
-                        v-if="(ingresos.cajon === valorCajon || !valorCajon)"
-                    >
-                        <td>
-                            <button class="uk-button uk-button-link uk-text-success uk-text-bolder" @click="editar_ingreso(idinfo, ingresos.id_cristal)">
-                                <i class="far fa-edit uk-margin-small-left uk-text-success"></i> {{ ingresos.id_cristal }}
-                            </button>
-                        </td>
-                        <td>{{ ingresos.cajon }}</td>
-                        <td>{{ ingresos.nombre_tienda }}</td>
-                        <td>{{ ingresos.material }}</td>
-                        <td>{{ ingresos.potencia1 }}</td>
-                        <td>{{ ingresos.potencia2 }}</td>
-                        <td>{{ ingresos.cantidad }}</td>
-                        <td class="uk-text-center">
-                            <i class="fas fa-trash-alt cursor-pointer text-red-500" @click="delete_ingreso(idinfo, ingresos.id_cristal)" title="Borrar cristal"></i>
+												<i class="fas fa-sign-out-alt ml-5 cursor-pointer text-green-800" @click="salida(idinfo, ingresos.id_cristal, ingresos.tienda_id, ingresos.cantidad)" title="Registrar salida"></i>
 
-                            <i class="fas fa-sign-out-alt ml-5 cursor-pointer text-green-800" @click="salida(idinfo, ingresos.id_cristal, ingresos.tienda_id, ingresos.cantidad)" title="Registrar salida"></i>
+												<i class="fas fa-reply-all ml-5 cursor-pointer text-orange-800" title="Deshacer última salida" @click="deshacer(ingresos.id_cristal, ingresos.cajon, ingresos.tienda_id, ingresos.material, ingresos.potencia1, ingresos.potencia2, ingresos.cantidad)"></i>
+										</td>
+								</tr>
+						</tbody>
+				</table>
 
-                            <i class="fas fa-reply-all ml-5 cursor-pointer text-orange-800" title="Deshacer última salida" @click="deshacer(ingresos.id_cristal, ingresos.cajon, ingresos.tienda_id, ingresos.material, ingresos.potencia1, ingresos.potencia2, ingresos.cantidad)"></i>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+				<h2 v-if="!cargar" class="text-2xl">Resumen de cristales</h2>
 
-    </article>
+				<table v-if="!cargar" class="uk-table uk-table-divider uk-table-striped uk-table-hover" id="resumen_cristales">
+					<thead>
+						<tr>
+							<th>Material</th>
+							<th>Potencia 1</th>
+							<th>Potencia 2</th>
+							<th>Cajón</th>
+							<th>Tienda</th>
+							<th>Cantidad</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr 
+							v-for="(resumen, idResumen) in resumenCristales" 
+							:key="resumen.id_cristal" 
+						>
+							<td>{{ resumen.material }}</td>
+							<td>{{ resumen.potencia1 }}</td>
+							<td>{{ resumen.potencia2 }}</td>
+							<td>{{ resumen.cajon }}</td>
+							<td>{{ resumen.nombre_tienda }}</td>
+							<td>{{ resumen.cantidad_cristales }}</td>
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+	</article>
 
 </section>
 
@@ -138,26 +152,27 @@ Cristales
     var app = new Vue({
         el      : '#cristales',
         data () {
-            return {
-                info: null,
-                infoedit: null,
-                op_cajon: null,
-                op_material: null,
-                op_potencia1: null,
-                op_potencia2: null,
-                op_cantidad: null,
-                op_tienda_id: 1,
-                action: null,
-                valorCajon: null,
-                selected: 1,
-                listaCajones: [],
-                listaCajonesUnicos: [],
-                id_cristal: null,
-                cargar: true,
-                tiendas: [],
-                ultimo: [],
-                errores: null
-            }
+					return {
+						info: null,
+						infoedit: null,
+						op_cajon: null,
+						op_material: null,
+						op_potencia1: null,
+						op_potencia2: null,
+						op_cantidad: null,
+						op_tienda_id: 1,
+						action: null,
+						valorCajon: null,
+						selected: 1,
+						listaCajones: [],
+						listaCajonesUnicos: [],
+						id_cristal: null,
+						cargar: true,
+						tiendas: [],
+						ultimo: [],
+						errores: null,
+						resumenCristales: null
+					}
         },
         methods: {
             agregar: function() {
@@ -182,20 +197,23 @@ Cristales
                     .post('<?=base_url('rest-cristales')?>', params)
                     .then(
                         response => {
-                            console.log(response.data);
-                            if(response.data.code === 500) {
-                                console.log(response.data.msj);
-                                this.errores = response.data.msj;
-                            } else {
-                                axios
-                                    .get('<?=base_url('rest-cristales')?>')
-                                    .then(response => (this.info = response.data.data));
-                                this.errores        = null;
-                                this.op_cajon       = null;
-                                this.op_material    = null;
-                                this.op_potencia1   = null;
-                                this.op_potencia2   = null;
-                            }
+													console.log(response.data);
+													if(response.data.code === 500) {
+															console.log(response.data.msj);
+															this.errores = response.data.msj;
+													} else {
+														axios
+															.get('<?=base_url('rest-cristales')?>')
+															.then(response => (this.info = response.data.data));
+														axios
+															.get('<?=base_url('resumen-cristales')?>')
+															.then(response => (this.resumenCristales = response.data.data));
+														this.errores        = null;
+														this.op_cajon       = null;
+														this.op_material    = null;
+														this.op_potencia1   = null;
+														this.op_potencia2   = null;
+													}
                         }
                     );
                 Swal.fire({
@@ -440,21 +458,47 @@ Cristales
             }
         },
         created () {
-            axios
-                .get('<?=base_url('rest-cristales')?>')
-                .then(response => (this.info = response.data.data))
-                .then(response => ( 
-                                    this.listaCajones = this.info.map(c => c.cajon),
-                                    this.listaCajonesUnicos = [...new Set(this.listaCajones)] 
-                                ) )
-                .then(response => (this.cargar = false))
+					axios
+							.get('<?=base_url('rest-cristales')?>')
+							.then(response => {
+									this.info = response.data.data
+									$(function() {
+											let table = $('#table_cristales').DataTable( 
+													{
+														"order": [ 0, "desc" ],
+														"info": false,
+														"infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+														"infoFiltered": "(filtrado de un total de _MAX_ registros)",
+														"language": { "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" },
+													}
+											)
+									});
+							})
+							.then(response => (this.cargar = false))
+							
             
             axios
                 .get('<?=base_url('rest-traslados/tiendas')?>')
                 .then(response => (this.tiendas = response.data.data));
+
+            axios
+                .get('<?=base_url('resumen-cristales')?>')
+                .then(response => {
+                    this.resumenCristales = response.data.data
+                    $(function() {
+                        let table = $('#resumen_cristales').DataTable(
+                            {
+                                "order": [ 0, "desc" ],
+                                "info": false,
+                                "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                                "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+                                "language": { "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" },
+                            }
+                        )
+                    })
+                })
+                .then(response => (this.cargar = false))
         }
-
-
     });
 </script>
 <?= $this->endSection();?>

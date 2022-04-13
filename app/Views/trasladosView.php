@@ -15,6 +15,86 @@ Traslados
 
     <article class="uk-margin-medium-right uk-margin-small-left uk-margin-medium-top" uk-grid>
         <div class="w-1/5">
+            <div class="uk-card uk-card-default uk-card-body uk-margin-small-left mb-10">
+                <h2>Agregar</h2>
+                <div class="uk-width-1-1@s">
+                    <label>Buscar producto <small>(código de barras)</small></label>
+                    <input @keyup="buscarCodigoBarra3($event)" id="searchProduct3" v-model="searchProduct3" class="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal"  type="text" placeholder="12345">
+                </div>
+                <!-- Nombre producto -->
+                <label class="uk-form-label">Producto</label>
+                <div class="uk-form-controls">
+                    <v-select 
+                        :options="productos2" 
+                        :reduce="producto => producto.id_producto" 
+                        label="modelo" 
+                        :value="selected2" 
+                        v-model="op_productos3"
+                        class="uk-form-width-large uk-width-1-1@m"
+                        id="op_productos3"
+                    >
+                        <span slot="no-options">
+                            No hay datos para su búsqueda.
+                        </span>
+                    </v-select>
+                </div>
+                <!-- Tienda origen -->
+                <label class="uk-form-label" for="tienda_id">Tienda de origen</label>
+                <div class="uk-form-controls">
+                    <select v-model="op_tienda_id" class="uk-select" id="op_tienda_id" name="op_tienda_id" @change="onChange2($event)">
+                        <option v-for="(tienda, index) in tiendas" :key="tiendas.id_tienda" v-bind:value="tienda.id_tienda">
+                            {{tienda.nombre_tienda}}
+                        </option>
+                    </select>
+                </div>
+                <!-- Tienda destino -->
+                <label class="uk-form-label" for="tienda_destino_id">Tienda de destino</label>
+                <div class="uk-form-controls">
+                    <select v-model="op_tienda_destino_id" class="uk-select" id="op_tienda_destino_id" name="op_tienda_destino_id">
+                        <option v-for="(tienda, index) in tiendas" :key="tiendas.id_tienda" v-bind:value="tienda.id_tienda">
+                            {{tienda.nombre_tienda}}
+                        </option>
+                    </select>
+                </div>
+                <!-- Cantidad de producto -->
+                <label class="uk-form-label" for="op_cantidad_productos">Cantidad de productos 
+                    <template v-if="(op_productos3 != null && op_productos != '') 
+                        && (op_tienda_id !== null && op_tienda_id != '')
+                        && cargando === false">
+                        <small v-if="op_stock2 > 0" class="uk-label uk-label-success">Valor máximo: {{op_stock2}}</small>
+                        <small v-if="op_stock2 <= 0" class="uk-label uk-label-danger">Sin stock</small>
+                    </template>
+                    <template v-if="cargando === true"> 
+                        <span class="bg-black text-white p-1 block">Comprobando stock...</span>
+                    </template>
+                </label>
+                <input v-model.number="op_cantidad_productos" class="uk-input" id="op_cantidad_productos" name="op_cantidad_productos" type="number" placeholder="Cantidad" :max='op_stock2' :min='1' autocomplete="off">
+
+                <!-- Guardar -->
+                <button 
+                    v-if="action === null 
+                    && op_stock2 != null 
+                    && op_stock2 != 0 
+                    && op_cantidad_productos <= op_stock2 
+                    && op_tienda_id !== op_tienda_destino_id
+                    && op_tienda_id !== null
+                    && op_tienda_destino_id !== null
+                    && op_productos3 != null"
+                    class="uk-button uk-button-primary" 
+                    type="button" 
+                    @click="agregar_traslado2()">
+                        Guardar
+                </button>
+                <span 
+                    v-if="op_tienda_id === op_tienda_destino_id
+                        && op_tienda_id !== null
+                        && op_tienda_destino_id !== null"
+                    class="bg-black text-white py-2 px-3 block"
+                >
+                    No puede seleccionar la misma tienda
+                </span>
+            </div>
+
             <div class="uk-card uk-card-default uk-card-body uk-margin-small-left">
                 <h2>FILTRO</h2>
                 <div class="uk-margin">
@@ -49,8 +129,10 @@ Traslados
                 <button @click="limpiarFiltro" class="uk-button uk-button-secondary uk-margin-medium-top uk-align-center">Limpiar filtros</button>
             </div>
         </div>
-    
-        <div class="w-4/5">
+        
+        <div v-if="cargar" class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+
+        <div v-if="!cargar" class="w-4/5">
             <table class="uk-table uk-table-divider uk-table-striped uk-table-hover"  id="trasladosProductos">
                 <thead>
                     <tr class="uk-text-bold">
@@ -60,6 +142,7 @@ Traslados
                         <th class="uk-text-center">Tienda de origen</th>
                         <th class="uk-text-center">Tienda de destino</th>
                         <th class="uk-text-center">Cantidad de productos</th>
+                        <th class="uk-text-center">Fecha registro</th>
                         <th class="uk-text-center">Opciones</th>
                     </tr>
                 </thead>
@@ -83,6 +166,7 @@ Traslados
                         <td class="uk-text-center">{{tras.tienda_origen}}</td>
                         <td class="uk-text-center">{{tras.tienda_destino}}</td>
                         <td class="uk-text-center">{{tras.cantidad_productos}}</td>
+                        <td class="uk-text-center">{{tras.created_at | fechaSinHora}}</td>
                         <td  class="uk-text-center">
                             <div class="uk-button-group">
                                 <button class="uk-button uk-button-default">OPCIONES</button>
@@ -146,7 +230,7 @@ Traslados
                             v-model="op_productos"
                             class="uk-form-width-large uk-width-1-1@m"
                             id="op_productos"
-                            @input="onChange($event)"
+                            @input="onChange2($event)"
                         >
                             <span slot="no-options">
                                 No hay datos para su búsqueda.
@@ -169,8 +253,9 @@ Traslados
                 
                 <div class="uk-width-1-2@s">
                     <label class="uk-form-label" for="op_cantidad_productos">Cantidad de productos 
-                        <template v-if="(op_productos != null && op_productos != '') && (op_tienda_id !== null && op_tienda_id != '')">
-                            <small v-if="op_stock > 0" class="uk-label uk-label-success">Valor máximo: {{op_stock}}</small>
+                        <template v-if="(op_productos != null && op_productos != '') && 
+                            (op_tienda_id !== null && op_tienda_id != '')">
+                            <small v-if="op_stock > 0" class="uk-label uk-label-success">Valor máximo: {{ op_stock }}</small>
                             <small v-if="op_stock <= 0" class="uk-label uk-label-danger">Sin stock</small>
                         </template>
                     </label>
@@ -221,15 +306,19 @@ Traslados
                 info: null,
                 infoedit: null,
                 tiendas: null,
-                productos: null,
+                // productos: null,
                 selected: null,
+                selected2: null,
                 op_id_producto_tienda: null,
                 op_productos: null,
-                op_cantidad_productos: null,
+                op_productos3: null,
+                op_cantidad_productos: 1,
                 op_tienda_id: null,
                 op_tienda_destino_id: null,
                 op_stock: null,
+                op_stock2: null,
                 productos: [],
+                productos2: [],
                 action: null,
                 stocks: null,
                 errores: [],
@@ -239,8 +328,11 @@ Traslados
                 codBarra2: null,
                 searchProduct: null,
                 searchProduct2: null,
+                searchProduct3: null,
                 options: [],
-                tiendas: []
+                tiendas: [],
+                cargando: false,
+                cargar: false,
             }
         },
         methods: {
@@ -249,23 +341,34 @@ Traslados
                 self.codBarra = self.searchProduct
                 // console.log(self.codBarra)
             },
-            getAllInfo() {
-                axios
+
+            async getAllInfo() {
+                await axios
                     .get('<?=base_url('rest-traslados')?>')
                     .then(response => {
                         this.info = response.data.data;
                         
-                        $(function() {
-                            var table = $('#trasladosProductos').DataTable( 
-                                {
-                                    "order": [ 3, "desc" ],
-                                    "info": false,
-                                    "language": { "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" },
-                                }
-                            )
-                        });
+                        // $(function() {
+                        //     $('#trasladosProductos').DataTable( 
+                        //         {
+                        //             "order": [ 0, "desc" ],
+                        //             "info": false,
+                        //             "language": { "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" },
+                        //         }
+                        //     )
+                        // });
                     });
+                $(function() {
+                    $('#trasladosProductos').DataTable( 
+                        {
+                            "order": [ 0, "desc" ],
+                            "info": false,
+                            "language": { "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" },
+                        }
+                    )
+                });
             },
+
             buscarCodigoBarra2: function() {
                 var self = this
                 axios
@@ -274,6 +377,47 @@ Traslados
                         self.op_productos = response.data.data[0].producto_id
                         // console.log(response.data.data[0].producto_id)
                     });
+            },
+
+            buscarCodigoBarra3: async function(event) {
+                let self = this;
+                this.cargando = true;
+                // Get id of product3
+                await axios
+                    .get('<?=base_url("rest-stock/show-codigo")?>/' + self.searchProduct3)
+                    .then(response => {
+                        self.op_productos3 = response.data.data[0].producto_id
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        self.op_productos3 = null;
+                    })
+
+                const stockTienda = await self.getStocks2();
+
+                stockTienda.forEach(s => {
+                    if( self.op_productos3 === s.producto_id && 
+                        self.op_tienda_id === s.tienda_id) 
+                    {
+                        return self.op_stock2 = s.stock;
+                    } 
+                    self.op_stock2 = 0;
+                })
+                self.cargando = false;
+            },
+
+            getStocks2: async function() {
+                var self = this
+                self.stocks2 = null; 
+                await axios
+                    .get('<?=base_url('rest-stock')?>')
+                    .then(response => (self.stocks2 = response.data.data));
+                
+                // Get all stocks of the product3
+                const stockTienda = self.stocks2.filter(
+                    s => (s.producto_id === self.op_productos3 && s.tienda_id === self.op_tienda_id)
+                )
+                return stockTienda;
             },
 
             delete_traslado : function(index, id) {
@@ -328,7 +472,9 @@ Traslados
                     .then(response => (this.tiendas = response.data.data));
                 axios
                     .get('<?=base_url('rest-traslados/productos')?>')
-                    .then(response => (this.productos = response.data.data));
+                    .then(response => {
+                        this.productos  = response.data.data
+                    });
                 axios
                     .get('<?=base_url('rest-traslados')?>/' + id)
                     .then(response => (
@@ -452,6 +598,46 @@ Traslados
                         }
                     );
             },
+            
+            agregar_traslado2 : async function() {
+                
+                const params = new URLSearchParams();
+
+                if(this.op_productos3 !== null) {
+                    params.append('producto_id', this.op_productos3);
+                }
+                if(this.op_tienda_id !== null) {
+                    params.append('tienda_id', this.op_tienda_id);
+                }
+                if(this.op_tienda_destino_id !== null) {
+                    params.append('tienda_destino_id', this.op_tienda_destino_id);
+                }
+                if(this.op_cantidad_productos !== null) {
+                    params.append('cantidad_productos', this.op_cantidad_productos);
+                }
+
+                await axios
+                    .post('<?=base_url('rest-traslados')?>', params)
+                    .then(
+                        response => {
+                            if(response.data.code === 500) {
+                                this.errores = response.data.msj;
+                                console.log(response.data.msj);
+                            } else {
+                                axios
+                                    .get('<?=base_url('rest-traslados')?>')
+                                    .then(response => {
+                                        this.info = response.data.data
+                                    })
+                                this.errores = null;
+                            }
+                        }
+                    );
+                this.searchProduct3 = null;
+                this.op_productos3  = null;
+                this.op_stock2      = null;
+
+            },
 
             onChange : function(event)  {
                 // console.log('producto: ' + this.op_productos);
@@ -465,6 +651,37 @@ Traslados
                 }
             },
 
+            onChange2 : async function(event)  {
+                // Get all stocks
+                let self = this;
+                this.cargando = true;
+                self.stocks2 = null; 
+                await axios
+                    .get('<?=base_url('rest-stock')?>')
+                    .then(response => (self.stocks2 = response.data.data));
+                
+                // Get all stocks of the product3
+                const stockTienda = self.stocks2.filter(
+                    s => (s.producto_id === self.op_productos3 && s.tienda_id === self.op_tienda_id)
+                )
+
+
+                if(stockTienda.length > 0) {
+                    stockTienda.forEach(s => {
+                        if( self.op_productos3 === s.producto_id && 
+                            self.op_tienda_id === s.tienda_id) 
+                        {
+                            return self.op_stock2 = s.stock;
+                        } 
+                        self.op_stock2 = 0;
+                    })
+                } else {
+                    self.op_stock2 = 0;
+                };
+                self.cargando = false;
+                
+            },
+
             limpiarFiltro: function() {
                 this.valorProducto = null;
                 this.valorTienda = null;
@@ -474,24 +691,40 @@ Traslados
 
         },
 
-        mounted () {
-            axios
+        filters: {
+            fechaSinHora: function(value) {
+                if(!value) return '';
+                return moment(String(value)).format('DD/MM/YYYY');
+            }
+        },
+
+        async mounted () {
+            this.cargar = true;
+            await axios
             .get('<?=base_url('rest-traslados')?>')
             .then(response => (this.info = response.data.data));
 
-            axios
+            await axios
             .get('<?=base_url('rest-stock')?>')
             .then(response => (this.stocks = response.data.data));
 
-            axios
+            await axios
             .get('<?=base_url('rest-traslados/productos')?>')
             .then(response => (this.options = response.data.data));
 
-            axios
+            await axios
                 .get('<?=base_url('rest-traslados/tiendas')?>')
                 .then(response => (this.tiendas = response.data.data));
+
+            await axios
+                .get('<?=base_url('rest-traslados/productos')?>')
+                .then(response => {
+                    this.productos2  = response.data.data
+                });
             
-            this.getAllInfo();
+            await this.getAllInfo();
+
+            this.cargar = false;
 
         }
     });

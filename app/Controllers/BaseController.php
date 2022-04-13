@@ -27,9 +27,7 @@ class BaseController extends Controller
 	 * @var array
 	 */
 	protected $helpers = [];
-
 	public $session = null;
-
 	protected $dataUser = [];
 
 	/**
@@ -45,9 +43,10 @@ class BaseController extends Controller
 
 		// Variables de sesión para ser compartida en controladores
 		if($this->session->has('id_usuario')) :
-			$this->dataUser['id_usuario'] = $this->session->get('id_usuario');
-			$this->dataUser['nombre'] = $this->session->get('nombre');
-			$this->dataUser['logged_in'] = $this->session->get('logged_in');
+			$this->dataUser['id_usuario'] 			= $this->session->get('id_usuario');
+			$this->dataUser['nombre'] 					= $this->session->get('nombre');
+			$this->dataUser['tipo_de_usuario'] 	= $this->session->get('tipo_de_usuario');
+			$this->dataUser['logged_in'] 				= $this->session->get('logged_in');
 		endif;
 
 		//--------------------------------------------------------------------
@@ -56,5 +55,4 @@ class BaseController extends Controller
 		// E.g.:
 		// $this->session = \Config\Services::session();
 	}
-
 }

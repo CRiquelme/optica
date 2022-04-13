@@ -11,7 +11,7 @@ class RestSalidaProductos extends MyRestApi
     protected $format	 = 'json'; 
     
 
-    public function index()
+  public function index()
 	{
         // return $this->genericResponse($this->model->findAll(), null, 200);
         $db = db_connect();
@@ -25,17 +25,18 @@ class RestSalidaProductos extends MyRestApi
 		return  $this->genericResponse($query->getResultArray(), null, 200);
     }
 
-    public function create() 
+  public function create() 
 	{
 		$salidaProductos = new SalidaProductosModel();
 		$inventario = new InventarioModel();
 
-        if ($this->validate('salidaProductos')) {
-            $id = $salidaProductos->insert([
-				'producto_id' 			=> $this->request->getPost('producto_id'),
-				'tienda_id' 			=> $this->request->getPost('tienda_id'),
-				'cantidad_producto'		=> $this->request->getPost('cantidad_producto')
-			]);
+      if ($this->validate('salidaProductos')) {
+        $id = $salidaProductos->insert([
+					'producto_id' 			=> $this->request->getPost('producto_id'),
+					'tienda_id' 				=> $this->request->getPost('tienda_id'),
+					'cantidad_producto'	=> $this->request->getPost('cantidad_producto'),
+					'sobre_id'					=> $this->request->getPost('sobre_id') ? $this->request->getPost('sobre_id') : null,
+				]);
 
 			// return $this->respond($this->model->find($id));
 			

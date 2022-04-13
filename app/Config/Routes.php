@@ -1,12 +1,13 @@
-<?php namespace Config;
+<?php
+
+namespace Config;
 
 // Create a new instance of our RouteCollection class.
 $routes = Services::routes(true);
 
 // Load the system's routing file first, so that the app and ENVIRONMENT
 // can override as needed.
-if (file_exists(SYSTEMPATH . 'Config/Routes.php'))
-{
+if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
 	require SYSTEMPATH . 'Config/Routes.php';
 }
 
@@ -51,7 +52,15 @@ $routes->get('facturas_emitidas', 'FacturasEmitidasController::index');
 
 $routes->get('clientes_empresas', 'ClientesEmpresasController::index');
 
+
+
 $routes->get('sobre', 'SobreController::index');
+$routes->get('sobre/(:any)', 'SobreController::cliente/$1');
+$routes->get('libros', 'LibrosController::index');
+$routes->get('libro/(:any)', 'LibrosController::libro/$1');
+
+$routes->get('rendicion-caja', 'RendicionCajaController::index');
+
 $routes->get('traslados', 'TrasladosController::index');
 $routes->get('informe-traslados', 'TrasladosController::informeTraslados');
 $routes->get('stock_productos', 'StockController::index');
@@ -61,12 +70,20 @@ $routes->get('salida_productos', 'ProductosController::salida_productos');
 $routes->get('informe-salidas-diaria', 'ProductosController::salidasDiaria');
 $routes->get('consulta_salida_productos', 'ConsultasController::cSalidaProductos');
 
+
 // REST
 // Primero las routes más específicas y luego las genéricas
 $routes->get('rest-traslados/tiendas/', 'RestTraslados::tiendas'); // específica
 $routes->get('rest-traslados/productos/', 'RestTraslados::productos'); // específica
 $routes->get('rest-traslados/informeTraslados/(:any)', 'RestTraslados::informeTraslados/$1'); // específica
 $routes->resource('rest-traslados', ['controller' => 'RestTraslados']); // genérica
+
+// $routes->get('rest-salida-productos/fechas/(:any)', 'RestSalidaProductos::fechas/$1');
+$routes->get('rest-rendicion-caja/fecha/(:any)', 'RestRendicionCaja::fecha/$1');
+$routes->resource('rest-rendicion-caja', ['controller' => 'RestRendicionCaja']); // genérica
+
+$routes->get('cliente_info/fromRut/(:any)', 'RestClientes::fromRut/$1');
+$routes->resource('rest-clientes', ['controller' => 'RestClientes']); // genérica
 
 $routes->get('rest-stock/show-codigo/(:num)', 'RestStock::showCodigo/$1'); // específica
 $routes->get('rest-stock/estadisticaStock/', 'RestStock::estadisticaStock'); // específica
@@ -77,7 +94,12 @@ $routes->resource('rest-productos', ['controller' => 'RestProductos']); // gené
 
 $routes->resource('rest-cristales', ['controller' => 'RestCristales']); // genérica
 $routes->get('rest-salida-cristales/ultimo/(:any)', 'RestSalidaCristales::ultimo/$1');
+$routes->get('resumen-cristales', 'RestCristales::resumenCristales');
 $routes->resource('rest-salida-cristales', ['controller' => 'RestSalidaCristales']);
+
+$routes->get('rest-libros/cliente/(:num)', 'RestLibros::cliente/$1'); // genérica
+$routes->get('rest-libros/fecha/(:any)', 'RestLibros::fecha/$1'); // genérica
+$routes->resource('rest-libros', ['controller' => 'RestLibros']); // genérica
 
 $routes->resource('rest-convenios', ['controller' => 'RestConvenios']); // genérica
 
@@ -96,6 +118,7 @@ $routes->get('rest-salida-productos/informeSalidasDiarias/(:any)', 'RestSalidaPr
 $routes->get('rest-salida-productos/fechas/(:any)', 'RestSalidaProductos::fechas/$1');
 $routes->resource('rest-salida-productos', ['controller' => 'RestSalidaProductos']);
 
+$routes->get('rest-sobre/cliente/(:num)', 'RestSobre::cliente/$1');
 $routes->resource('rest-sobre', ['controller' => 'RestSobre']); // genérica
 
 
@@ -112,7 +135,6 @@ $routes->resource('rest-sobre', ['controller' => 'RestSobre']); // genérica
  * You will have access to the $routes object within that file without
  * needing to reload it.
  */
-if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php'))
-{
+if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
 	require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }
