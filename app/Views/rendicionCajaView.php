@@ -155,7 +155,7 @@ Rendición de caja
       </div>
 
       <div class="sm:col-span-2">
-        <label class="<?= $labelClass ?>" for="tbkSombra">tbk Sombra <i class="fas fa-question-circle cursor-pointer text-sm" @click="getRendicionCaja()" uk-tooltip="title: Sirve para cuadrar caja, luego hay que eliminarlo para no duplicar datos.; pos: right"></i></label>
+        <label class="<?= $labelClass ?>" for="tbkSombra">tbk Sombra <i class="fas fa-question-circle cursor-pointer text-sm" @click="getRendicionCaja()" uk-tooltip="title: Sirve para cuadrar caja, luego hay que eliminarlo.; pos: right"></i></label>
         <div class="mt-1">
           <input type="text" v-model="tbkSombra" class="<?= $inputClass ?>" id="tbkSombra" name="tbkSombra">
         </div>
@@ -176,6 +176,15 @@ Rendición de caja
           type="button" 
           @click="guardar()">
               Editar
+        </button>
+      </div>
+      <div class="sm:col-span-2">
+        <label>&nbsp;</label>
+        <button
+          class="uk-button uk-button-secondary | w-full" 
+          type="button" 
+          @click="deleteTbkSombra()">
+              Eliminar tbk sombra
         </button>
       </div>
       
@@ -227,7 +236,7 @@ Rendición de caja
               <!-- <td class="text-sm">{{rendicion.saldo_folio | money}}</td> -->
               <td class="text-sm">{{rendicion.efectivo | money}}</td>
               <td class="text-sm">{{rendicion.tbk | money}}</td>
-              <td class="text-sm">{{rendicion.tbk | money}}</td>
+              <td class="text-sm">{{rendicion.tbkSombra | money}}</td>
               <td class="text-sm">{{rendicion.cheques | money}}</td>
               <td class="text-sm">{{rendicion.webpay | money}}</td>
               <td class="text-sm">{{rendicion.tf | money}}</td>
@@ -420,6 +429,44 @@ var app = new Vue({
       });
     },
 
+    deleteTbkSombra() {
+      this.tbkSombra  = 0;
+      let fecha       = moment(this.fecha).format('YYYY-MM-DD');
+
+      Swal.fire({
+        title: 'Eliminar registro',
+        text: "¿Desea eliminar tdk sombra (todas las de la fecha)?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminarlos!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.put('<?= base_url('rest-rendicion-caja') ?>/eliminar-tbk-sombras/' + fecha)
+            .then( response => {
+              if(response.data.code === 500) {
+                this.errores = response.data.msj;
+                Swal.fire({
+                    title: 'Registro no eliminado',
+                    icon: 'error',
+                    confirmButtonText: 'Confirmar'
+                });
+              } else {
+                this.getRendicionCaja();
+                Swal.fire({
+                  position: 'top-end',
+                  title: 'Registro eliminado',
+                  icon: 'success',
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+              }
+            });
+        }
+      });
+    },
+
     eliminar(id_rendicion_caja) {
       Swal.fire({
         title: 'Eliminar registro',
@@ -590,8 +637,8 @@ var app = new Vue({
       let total = 0
       if(this.allRendiciones != null) {
         let tbkSombra = this.allRendiciones.map((det) => { 
-          if(det.tbk_sombra != null ) {
-            return det.tbk_sombra 
+          if(det.tbkSombra != null ) {
+            return det.tbkSombra 
           }
         });
         total = tbkSombra.length > 0 ? tbkSombra.reduce((a, b) => parseInt(a) + parseInt(b)) : 0

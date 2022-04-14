@@ -31,6 +31,7 @@ class RestRendicionCaja extends MyRestApi
       "numero_factura"        => $this->request->getPost("numeroFactura"),
       "efectivo"              => $this->request->getPost("efectivo"),
       "tbk"                   => $this->request->getPost("tbk"),
+      "tbkSombra"             => $this->request->getPost("tbkSombra"),
       "cheques"               => $this->request->getPost("cheques"),
       "webpay"                => $this->request->getPost("webpay"),
       "tf"                    => $this->request->getPost("tf"),
@@ -55,6 +56,7 @@ class RestRendicionCaja extends MyRestApi
       "numero_factura"        => $data['numeroFactura'] !== (null) ? $data['numeroFactura'] : (null),
       "efectivo"              => $data['efectivo'] !== (null) ? $data['efectivo'] : (null),
       "tbk"                   => $data['tbk'] !== (null) ? $data['tbk'] : (null),
+      "tbkSombra"             => $data['tbkSombra'] !== (null) ? $data['tbkSombra'] : (null),
       "cheques"               => $data['cheques'] !== (null) ? $data['cheques'] : (null),
       "webpay"                => $data['webpay'] !== (null) ? $data['webpay'] : (null),
       "tf"                    => $data['tf'] !== (null) ? $data['tf'] : (null),
@@ -91,5 +93,17 @@ class RestRendicionCaja extends MyRestApi
 		$query = $builder->get();
 		return  $this->genericResponse($query->getResultArray(), null, 200);
 	}
+
+  public function eliminarTbkSombras($fecha = null) {
+    // $rendicionCaja = new RendicionCajaModel();
+    // $rendicionCaja->update(array('fecha' => $fecha), [
+    //   "tbkSombra" => 0
+    // ]);
+    $db = db_connect();
+    $data = [ 'tbkSombra' => 0 ];
+    $builder = $db->table('rendicion_caja AS rc');
+    $builder->where('rc.fecha', $fecha);
+    $builder->update($data);
+  }
 
 }
