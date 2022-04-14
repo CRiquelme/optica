@@ -23,6 +23,7 @@ class RendicionCajaModel  extends Model {
       "numero_factura",
       "efectivo",
       "tbk",
+      "tbkSombra",
       "cheques",
       "webpay",
       "tf",
