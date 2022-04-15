@@ -282,7 +282,7 @@ Registro en sobre
               </div>
               <div>
                 <label class="<?= $labelClass ?>" for="abono">abono
-                  <span class="text-sm" v-if="abonoTotal > 0">: {{abonoTotal}} (abonado) + {{ abono }} = {{ parseInt(abonoTotal) + parseInt(abono) }}</span></label>
+                  <span class="text-sm" v-if="abonoTotal > 0 && abono_pagar">: {{abonoTotal}} (abonado) + {{ abono }} = {{ parseInt(abonoTotal) + parseInt(abono) }}</span></label>
                 <input v-model="abono" class="<?= $inputClass ?>" id="abono" name="abono" type="number" placeholder="Abono" min="0" :max="saldo ? saldo : total" @change="abonar($event)" :disabled="abonoTotal === total && total > 0">
                 
                 <input v-model="abono_pagar" class="<?= $inputClass ?>" id="abono_pagar" name="abono_pagar" type="hidden" placeholder="abono_pagar">
@@ -457,6 +457,7 @@ var app = new Vue({
       saldo_diferencia            : 0,
       observaciones               : '',
       forma_de_pago               : [],
+      forma_de_pago_old           : [],
       allSobres                   : [],
       tiendas                     : [],
       tienda_armazon_lejos        : '',
@@ -657,6 +658,7 @@ var app = new Vue({
               this.saldo                      = data.saldo !== null ? data.total - data.abono : '';
               this.observaciones              = data.observaciones !== null ? data.observaciones : '';
               this.forma_de_pago              = data.forma_de_pago !== null ? data.forma_de_pago.split(',') : [];
+              this.forma_de_pago_old          = data.forma_de_pago !== null ? data.forma_de_pago.split(',') : [];
               this.$refs.formWiz.activateAll();
             }
           }
@@ -665,6 +667,7 @@ var app = new Vue({
 
     // Guardar datos actualizados
     updateSobre: function() {
+      let diferencia_seleccion_forma_de_pago =  [];
       const params = new URLSearchParams();
       inputs.forEach(input => {
         if(input === 'forma_de_pago') {
@@ -697,6 +700,10 @@ var app = new Vue({
             console.log(error);
           }
         )
+      // console.log(this.forma_de_pago);
+      // console.log(this.forma_de_pago_old);
+      // console.log(this.forma_de_pago.filter(e => !this.forma_de_pago_old.includes(e)));
+      diferencia_seleccion_forma_de_pago = this.forma_de_pago.filter(e => !this.forma_de_pago_old.includes(e))
     },
 
     delete_registro: function(id_sobre) {
