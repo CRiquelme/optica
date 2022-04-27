@@ -126,7 +126,7 @@ Clientes
 
 </div> <!-- clientes -->
 
-<script src="//validarRut.js"></script>
+<!-- <script src="//validarRut.js"></script> -->
 
 <script>
 Vue.component('titulo', {

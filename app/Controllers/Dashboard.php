@@ -60,10 +60,10 @@ class Dashboard extends BaseController {
 		$clientesModel  = new ClientesModel($db);
 		$data = array(
 			'nombre_cliente' 	=> $request->getPostGet('nombre_cliente'),
-			'rut' 				=> $request->getPostGet('rut'),
-			'direccion'			=> $request->getPostGet('direccion'),
-			'telefono'			=> $request->getPostGet('telefono'),
-			'celular'			=> $request->getPostGet('celular')
+			'rut' 						=> $request->getPostGet('rut'),
+			'direccion'				=> $request->getPostGet('direccion'),
+			'telefono'				=> $request->getPostGet('telefono'),
+			'celular'					=> $request->getPostGet('celular')
 		);
 		if ($clientesModel->save($data) === false) {
 			echo json_encode(array("status" => FALSE, 'mensaje' => 'Información no se guardó.'));
