@@ -63,6 +63,8 @@ class RestSobre extends MyRestApi
 			"saldo" 									=> $this->request->getPost('saldo_diferencia'),
 			"observaciones" 					=> $this->request->getPost('observaciones'),
 			"forma_de_pago" 					=> $this->request->getPost('forma_de_pago'),
+			"n_folio" 								=> $this->request->getPost('n_folio'),
+			"n_voucher" 							=> $this->request->getPost('n_voucher'),
 		]);
 
 		// Crear libro de óptica
@@ -109,6 +111,7 @@ class RestSobre extends MyRestApi
 		$pagoTbk 	= (in_array('TBK', $formaPago, true)) ? $this->request->getPost("abono_pagar") : 0;
 		$pagoTf 	= (in_array('TF', $formaPago, true)) ? $this->request->getPost("abono_pagar") : 0;
 		$pagoOc 	= (in_array('OC', $formaPago, true)) ? $this->request->getPost("abono_pagar") : 0;
+		$pagoWpay	= (in_array('WPAY', $formaPago, true)) ? $this->request->getPost("abono_pagar") : 0;
 
 		$idRendicionCaja = $rendicionCaja->insert([
       "fecha"                 => date("Y-m-d"),
@@ -127,6 +130,7 @@ class RestSobre extends MyRestApi
       "webpay"                => 0,
       "tf"                    => $pagoTf,
       "oc"                    => $pagoOc,
+      "wpay"                  => $pagoWpay,
       "saldo"                 => $this->request->getPost("saldo")
 		]);
 
@@ -205,7 +209,9 @@ class RestSobre extends MyRestApi
 			"abono" 									=> $data['abono_pagar'] !== (null) ? $data['abono_pagar'] : (null),
 			"saldo" 									=> $data['saldo_diferencia'] !== (null) ? $data['saldo_diferencia'] : (null),
 			"observaciones" 					=> $data['observaciones'] !== (null) ? $data['observaciones'] : (null),
-			"forma_de_pago" 					=> $data['forma_de_pago'] !== (null) ? $data['forma_de_pago'] : (null)
+			"forma_de_pago" 					=> $data['forma_de_pago'] !== (null) ? $data['forma_de_pago'] : (null),
+			"n_folio" 								=> $data['n_folio'] !== (null) ? $data['n_folio'] : (null),
+			"n_voucher" 							=> $data['n_voucher'] !== (null) ? $data['n_voucher'] : (null),
 		]);
 		return $this->genericResponse($this->model->find($id), null, 200);
 	}
