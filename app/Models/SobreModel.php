@@ -47,7 +47,9 @@ class SobreModel extends Model {
         "abono",
         "saldo",
         "observaciones",
-        "forma_de_pago"
+        "forma_de_pago",
+        "n_folio",
+        "n_voucher",
     ];
 
     protected $useTimestamps    = false;

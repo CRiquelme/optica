@@ -272,6 +272,7 @@ Registro en sobre
                 <label class="uk-margin-small-right"><input class="uk-checkbox" type="checkbox" v-model="forma_de_pago" id="TF" value="TF" :disabled="abonoTotal === total && total > 0"> TF </label>
                 <label class="uk-margin-small-right"><input class="uk-checkbox" type="checkbox" v-model="forma_de_pago" id="TBK" value="TBK" :disabled="abonoTotal === total && total > 0"> TBK </label>
                 <label class="uk-margin-small-right"><input class="uk-checkbox" type="checkbox" v-model="forma_de_pago" id="CD" value="CD" :disabled="abonoTotal === total && total > 0"> CD </label>
+                <label class="uk-margin-small-right"><input class="uk-checkbox" type="checkbox" v-model="forma_de_pago" id="WPAY" value="WPAY" :disabled="abonoTotal === total && total > 0"> WPAY </label>
               </div>
             </div>
 
@@ -299,12 +300,20 @@ Registro en sobre
                 <input v-model="saldo_diferencia" class="<?= $inputClass ?>" id="saldo_diferencia" name="saldo_diferencia" type="hidden" placeholder="saldo_diferencia">
                 <span v-if="abonoTotal === total && total !== 0" class="bg-blue-800 text-white | text-sm px-5 py-2 mt-2 w-full">Pagado en su totalidad.</span>
               </div>
+              <div>
+                <label class="<?= $labelClass ?>" for="n_folio">Número de folio</label>
+                <input v-model="n_folio" class="<?= $inputClass ?>" id="n_folio" name="n_folio" type="text" placeholder="Número de folio">
+              </div>
+              <div>
+                <label class="<?= $labelClass ?>" for="n_voucher">Número de voucher</label>
+                <input v-model="n_voucher" class="<?= $inputClass ?>" id="n_voucher" name="n_voucher" type="text" placeholder="Número de voucher">
+              </div>
             </div>
           </div>
 
           <div class="sm:col-span-3">
             <label class="<?= $labelClass ?>" for="observaciones">observaciones</label>
-            <textarea v-model="observaciones" rows="10" class="<?= $textareaClass ?>" id="observaciones"
+            <textarea v-model="observaciones" rows="18" class="<?= $textareaClass ?>" id="observaciones"
               name="observaciones"></textarea>
           </div>
 
@@ -394,6 +403,8 @@ const inputs = [
   "saldo_diferencia",
   "observaciones",
   "forma_de_pago",
+  "n_folio",
+  "n_voucher"
 ];
 
 Vue.use(VueFormWizard);
@@ -479,6 +490,8 @@ var app = new Vue({
       idSobre                     : '',
       cercaId                     : '',
       lejosId                     : '',
+      n_folio                     : '',
+      n_voucher                   : '',
     }
   },
   methods: {
@@ -657,6 +670,8 @@ var app = new Vue({
               this.saldo                      = data.saldo !== null ? data.total - data.abono : '';
               this.observaciones              = data.observaciones !== null ? data.observaciones : '';
               this.forma_de_pago              = data.forma_de_pago !== null ? data.forma_de_pago.split(',') : [];
+              this.n_folio                    = data.n_folio !== null ? data.n_folio : '';
+              this.n_voucher                  = data.n_voucher !== null ? data.n_voucher : '';
               this.$refs.formWiz.activateAll();
             }
           }
