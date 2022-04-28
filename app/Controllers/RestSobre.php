@@ -111,6 +111,7 @@ class RestSobre extends MyRestApi
 		$pagoTbk 	= (in_array('TBK', $formaPago, true)) ? $this->request->getPost("abono_pagar") : 0;
 		$pagoTf 	= (in_array('TF', $formaPago, true)) ? $this->request->getPost("abono_pagar") : 0;
 		$pagoOc 	= (in_array('OC', $formaPago, true)) ? $this->request->getPost("abono_pagar") : 0;
+		$pagoWpay	= (in_array('WPAY', $formaPago, true)) ? $this->request->getPost("abono_pagar") : 0;
 
 		$idRendicionCaja = $rendicionCaja->insert([
       "fecha"                 => date("Y-m-d"),
@@ -129,6 +130,7 @@ class RestSobre extends MyRestApi
       "webpay"                => 0,
       "tf"                    => $pagoTf,
       "oc"                    => $pagoOc,
+      "wpay"                  => $pagoWpay,
       "saldo"                 => $this->request->getPost("saldo")
 		]);
 
