@@ -283,7 +283,13 @@ Registro en sobre
               </div>
               <div>
                 <label class="<?= $labelClass ?>" for="abono">abono
-                  <span class="text-sm" v-if="abonoTotal > 0">: {{abonoTotal}} (abonado) + {{ abono }} = {{ parseInt(abonoTotal) + parseInt(abono) }}</span></label>
+                  <span class="text-sm" v-if="abonoTotal > 0 && abono_pagar">: 
+                    {{abonoTotal}} (abonado) + {{ abono }} = {{ parseInt(abonoTotal) + parseInt(abono) }}
+                  </span>
+                  <span class="text-sm" v-if="abono > 0 && abonoTotal < 1"> 
+                    << El saldo es: {{ parseInt(total) - parseInt(abono) }} >>
+                  </span>
+                </label>
                 <input v-model="abono" class="<?= $inputClass ?>" id="abono" name="abono" type="number" placeholder="Abono" min="0" :max="saldo ? saldo : total" @change="abonar($event)" :disabled="abonoTotal === total && total > 0">
                 
                 <input v-model="abono_pagar" class="<?= $inputClass ?>" id="abono_pagar" name="abono_pagar" type="hidden" placeholder="abono_pagar">
@@ -468,6 +474,7 @@ var app = new Vue({
       saldo_diferencia            : 0,
       observaciones               : '',
       forma_de_pago               : [],
+      forma_de_pago_old           : [],
       allSobres                   : [],
       tiendas                     : [],
       tienda_armazon_lejos        : '',
@@ -507,7 +514,7 @@ var app = new Vue({
           }
         )
     },
-    // get all sobres
+    // getSobres get all sobres from cliente id and store in allSobres array
     getSobres: function() {
       this.cargar = true;
       axios.get('<?= base_url('rest-sobre') ?>/cliente/' + this.cliente_id)
@@ -534,7 +541,7 @@ var app = new Vue({
           }
         });
 
-        if (this.rut !== '') {
+        if (this.nombre !== '') {
           await axios
               .post('<?=base_url('rest-sobre')?>', params)
               .then(
@@ -638,6 +645,7 @@ var app = new Vue({
             } else {
               const {data} = response.data;
               this.tipo_de_lente              = data.tipo_de_lente;
+              this.abono                      = 0;
               this.numero_pedido              = data.numero_pedido !== null ? data.numero_pedido : '';
               this.fono                       = data.fono !== null ? data.fono : '';
               this.email                      = data.email !== null ? data.email : '';
@@ -672,6 +680,7 @@ var app = new Vue({
               this.forma_de_pago              = data.forma_de_pago !== null ? data.forma_de_pago.split(',') : [];
               this.n_folio                    = data.n_folio !== null ? data.n_folio : '';
               this.n_voucher                  = data.n_voucher !== null ? data.n_voucher : '';
+              this.forma_de_pago_old          = data.forma_de_pago !== null ? data.forma_de_pago.split(',') : [];
               this.$refs.formWiz.activateAll();
             }
           }
@@ -680,6 +689,7 @@ var app = new Vue({
 
     // Guardar datos actualizados
     updateSobre: function() {
+      let diferencia_seleccion_forma_de_pago =  [];
       const params = new URLSearchParams();
       inputs.forEach(input => {
         if(input === 'forma_de_pago') {
@@ -712,6 +722,10 @@ var app = new Vue({
             console.log(error);
           }
         )
+      // console.log(this.forma_de_pago);
+      // console.log(this.forma_de_pago_old);
+      // console.log(this.forma_de_pago.filter(e => !this.forma_de_pago_old.includes(e)));
+      diferencia_seleccion_forma_de_pago = this.forma_de_pago.filter(e => !this.forma_de_pago_old.includes(e))
     },
 
     delete_registro: function(id_sobre) {
@@ -771,7 +785,8 @@ var app = new Vue({
         (input !== 'cliente_id') && (this[input] = '');
       });
 
-      this.total = 0;
+      this.abono = 0;
+      this.saldo = 0;
       await this.cliente();
       this.cargarForm = false;
     },

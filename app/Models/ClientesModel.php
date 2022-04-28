@@ -16,9 +16,7 @@ class ClientesModel extends Model {
     protected $updatedField     = 'updated_at';
     protected $deletedField     = 'deleted';
 
-    protected $validationRules  = [
-        'nombre_cliente'        => 'required|alpha_numeric_space|min_length[4]',
-    ];
+    protected $validationRules  = [];
 
     protected $validationMessages = [];
 

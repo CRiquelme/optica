@@ -8,6 +8,7 @@ use App\Models\SobreModel;
 use App\Models\LibrosModel;
 use App\Models\SalidaProductosModel;
 use App\Models\InventarioModel;
+use App\Models\RendicionCajaModel;
 
 class RestSobre extends MyRestApi
 {
@@ -21,7 +22,8 @@ class RestSobre extends MyRestApi
 	}
 
 	public function create() {
-		$sobre = new SobreModel();
+		$sobre = new SobreModel();		
+
 		$idSobre = $sobre->insert([
 			'rut' 										=> $this->request->getPost('rut'),
 			"cliente_id" 							=> $this->request->getPost('cliente_id'),
@@ -98,6 +100,38 @@ class RestSobre extends MyRestApi
 			'cristales'         => $this->request->getPost(''),
 			'observaciones'     => $this->request->getPost('observaciones')
 		]);
+
+		// Crear registro en rendición de caja
+		$rendicionCaja = new RendicionCajaModel();
+
+		$formaPago 	= explode(",", $this->request->getPost('forma_de_pago'));
+		
+		$pagoEf 	= (in_array('EF', $formaPago, true)) ? $this->request->getPost("abono_pagar") : 0;
+		$pagoCh 	= (in_array('CH', $formaPago, true)) ? $this->request->getPost("abono_pagar") : 0;
+		$pagoTbk 	= (in_array('TBK', $formaPago, true)) ? $this->request->getPost("abono_pagar") : 0;
+		$pagoTf 	= (in_array('TF', $formaPago, true)) ? $this->request->getPost("abono_pagar") : 0;
+		$pagoOc 	= (in_array('OC', $formaPago, true)) ? $this->request->getPost("abono_pagar") : 0;
+
+		$idRendicionCaja = $rendicionCaja->insert([
+      "fecha"                 => date("Y-m-d"),
+      "rut"                   => $this->request->getPost("rut"),
+      "nombre_cliente"        => $this->request->getPost("nombre"),
+      "total_folio"           => $this->request->getPost("total"),
+      "saldo_folio"           => $this->request->getPost(""),
+      "numero_folio"          => $this->request->getPost(""),
+      "numero_boleta"         => $this->request->getPost(""),
+      "numero_operacion_tbk"  => $this->request->getPost(""),
+      "numero_guia_despacho"  => $this->request->getPost(""),
+      "numero_factura"        => $this->request->getPost(""),
+      "efectivo"              => $pagoEf,
+      "tbk"                   => $pagoTbk,
+      "cheques"               => $pagoCh,
+      "webpay"                => 0,
+      "tf"                    => $pagoTf,
+      "oc"                    => $pagoOc,
+      "saldo"                 => $this->request->getPost("saldo")
+		]);
+
 		return $this->genericResponse($this->model->find($idSobre), null, 200);
 	}
 
