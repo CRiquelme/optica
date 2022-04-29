@@ -279,7 +279,7 @@ Registro en sobre
             <div class="sm:col-span-3 | flex flex-col gap-y-3 gap-x-4 | pt-4">
               <div>
                 <label class="<?= $labelClass ?>" for="total">Total</label>
-                <input v-model="total" class="<?= $inputClass ?>" id="total" name="total" type="text" placeholder="Total" :disabled="edit">
+                <input v-model="total" class="<?= $inputClass ?>" id="total" name="total" type="text" placeholder="Total" :disabled="edit" @keypress="NumbersOnly">
               </div>
               <div>
                 <label class="<?= $labelClass ?>" for="abono">abono
@@ -290,7 +290,7 @@ Registro en sobre
                     << El saldo es: {{ parseInt(total) - parseInt(abono) }} >>
                   </span>
                 </label>
-                <input v-model="abono" class="<?= $inputClass ?>" id="abono" name="abono" type="number" placeholder="Abono" min="0" :max="saldo ? saldo : total" @change="abonar($event)" :disabled="abonoTotal === total && total > 0">
+                <input v-model="abono" class="<?= $inputClass ?>" id="abono" name="abono" type="number" placeholder="Abono" min="0" :max="saldo ? saldo : total" @change="abonar($event)" @keypress="NumbersOnly" :disabled="abonoTotal === total && total > 0">
                 
                 <input v-model="abono_pagar" class="<?= $inputClass ?>" id="abono_pagar" name="abono_pagar" type="hidden" placeholder="abono_pagar">
                 
@@ -301,7 +301,7 @@ Registro en sobre
               <div>
                 <label class="<?= $labelClass ?>" for="saldo">saldo</label>
                 <input v-model="saldo" class="<?= $inputClass ?>" id="saldo" name="saldo" type="text"
-                  placeholder="Saldo" :disabled="abonoTotal === total && total > 0">
+                  placeholder="Saldo" :disabled="abonoTotal === total && total > 0" @keypress="NumbersOnly">
 
                 <input v-model="saldo_diferencia" class="<?= $inputClass ?>" id="saldo_diferencia" name="saldo_diferencia" type="hidden" placeholder="saldo_diferencia">
                 <span v-if="abonoTotal === total && total !== 0" class="bg-blue-800 text-white | text-sm px-5 py-2 mt-2 w-full">Pagado en su totalidad.</span>
@@ -675,7 +675,7 @@ var app = new Vue({
               this.armazon_cerca_cantidad     = data.armazon_cerca_cantidad !== null ? data.armazon_cerca_cantidad : '';
               this.total                      = data.total !== null ? data.total : '';
               this.abonoTotal                 = data.abono !== null ? data.abono : '';
-              this.saldo                      = data.saldo !== null ? data.total - data.abono : '';
+              this.saldo                      = (data.saldo !== null || data.saldo !== 0) ? data.total - data.abono : 0;
               this.observaciones              = data.observaciones !== null ? data.observaciones : '';
               this.forma_de_pago              = data.forma_de_pago !== null ? data.forma_de_pago.split(',') : [];
               this.n_folio                    = data.n_folio !== null ? data.n_folio : '';
@@ -914,7 +914,17 @@ var app = new Vue({
     saldar: function(event) {
       let self = this;
       self.saldo_diferencia = self.total - self.abono_pagar;
-    }
+    },
+
+    NumbersOnly(evt) {
+      evt = (evt) ? evt : window.event;
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if (((charCode < 48 || charCode > 57))) {
+        evt.preventDefault();;
+      } else {
+        return true;
+      }
+    },
   },
 
   filters: {
