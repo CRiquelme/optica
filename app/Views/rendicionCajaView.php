@@ -50,7 +50,7 @@ Rendición de caja
       </div>
       
       <!-- Folio -->
-      <div class="sm:col-span-4">
+      <div class="sm:col-span-3">
         <label class="<?= $labelClass ?>" for="totalFolio">Total folio</label>
         <div class="mt-1">
           <input type="text" v-model="totalFolio" class="<?= $inputClass ?>" id="totalFolio" name="totalFolio" @change="updateSaldo($event)">
@@ -66,35 +66,49 @@ Rendición de caja
         </div>
       </div> -->
       
-      <div class="sm:col-span-4">
+      <div class="sm:col-span-3">
         <label class="<?= $labelClass ?>" for="numeroFolio">Número folio</label>
         <div class="mt-1">
           <input type="text" v-model="numeroFolio" class="<?= $inputClass ?>" id="numeroFolio" name="numeroFolio">
         </div>
       </div>
+      
+      <div class="sm:col-span-3">
+        <label class="<?= $labelClass ?>" for="n_voucher_efectivo">Número voucher efectivo</label>
+        <div class="mt-1">
+          <input type="text" v-model="n_voucher_efectivo" class="<?= $inputClass ?>" id="n_voucher_efectivo" name="n_voucher_efectivo">
+        </div>
+      </div>
+      
+      <div class="sm:col-span-3">
+        <label class="<?= $labelClass ?>" for="n_voucher_tarjeta">Número voucher tarjeta</label>
+        <div class="mt-1">
+          <input type="text" v-model="n_voucher_tarjeta" class="<?= $inputClass ?>" id="n_voucher_tarjeta" name="n_voucher_tarjeta">
+        </div>
+      </div>
 
-      <div class="sm:col-span-4">
+      <div class="sm:col-span-3">
         <label class="<?= $labelClass ?>" for="numeroBoleta">Número boleta</label>
         <div class="mt-1">
           <input type="text" v-model="numeroBoleta" class="<?= $inputClass ?>" id="numeroBoleta" name="numeroBoleta">
         </div>
       </div>
       
-      <div class="sm:col-span-4">
+      <div class="sm:col-span-3">
         <label class="<?= $labelClass ?>" for="numeroOperacionTbk">Número operación TBK</label>
         <div class="mt-1">
           <input type="text" v-model="numeroOperacionTbk" class="<?= $inputClass ?>" id="numeroOperacionTbk" name="numeroOperacionTbk">
         </div>
       </div>
 
-      <div class="sm:col-span-4">
+      <div class="sm:col-span-3">
         <label class="<?= $labelClass ?>" for="numeroGuiaDespacho">Número guía despacho</label>
         <div class="mt-1">
           <input type="text" v-model="numeroGuiaDespacho" class="<?= $inputClass ?>" id="numeroGuiaDespacho" name="numeroGuiaDespacho">
         </div>
       </div>
 
-      <div class="sm:col-span-4">
+      <div class="sm:col-span-3">
         <label class="<?= $labelClass ?>" for="numeroFactura">Número factura</label>
         <div class="mt-1">
           <input type="text" v-model="numeroFactura" class="<?= $inputClass ?>" id="numeroFactura" name="numeroFactura">
@@ -204,10 +218,12 @@ Rendición de caja
               <th>#</th>
               <th>RUT</th>
               <th>N° Folio</th>
+              <th>V. efec.</th>
+              <th>V. tarj.</th>
               <th>N° boleta</th>
               <th>N° op. TBK</th>
               <th>N° guía desp.</th>
-              <th>N° factura</th>
+              <th>N° fact.</th>
               <th>Total Folio</th>
               <!-- <th>Saldo Folio</th> -->
               <th>Efec.</th>
@@ -223,25 +239,27 @@ Rendición de caja
           </thead>
           <tbody>
             <tr v-for="rendicion in allRendiciones" :key="rendicion.id_rendicion_caja">
-              <td class="text-sm">
-                <a class="uk-button uk-button-link uk-text-primary uk-text-bolder" @click="editar(rendicion.id_rendicion_caja)">{{rendicion.id_rendicion_caja}}</a>
+              <td class="text-xs">
+                <a class="text-xs text-blue-900" @click="editar(rendicion.id_rendicion_caja)">{{rendicion.id_rendicion_caja}}</a>
               </td>
-              <td class="text-sm">{{rendicion.rut}}</td>
-              <td class="text-sm">{{rendicion.numero_folio}}</td>
-              <td class="text-sm">{{rendicion.numero_boleta}}</td>
-              <td class="text-sm">{{rendicion.numero_operacion_tbk}}</td>
-              <td class="text-sm">{{rendicion.numero_guia_despacho}}</td>
-              <td class="text-sm">{{rendicion.numero_factura}}</td>
-              <td class="text-sm">{{rendicion.total_folio | money}}</td>
-              <!-- <td class="text-sm">{{rendicion.saldo_folio | money}}</td> -->
-              <td class="text-sm">{{rendicion.efectivo | money}}</td>
-              <td class="text-sm">{{rendicion.tbk | money}}</td>
-              <td class="text-sm">{{rendicion.tbkSombra | money}}</td>
-              <td class="text-sm">{{rendicion.cheques | money}}</td>
-              <td class="text-sm">{{rendicion.webpay | money}}</td>
-              <td class="text-sm">{{rendicion.tf | money}}</td>
-              <td class="text-sm">{{rendicion.oc | money}}</td>
-              <td class="text-sm">{{rendicion.saldo | money}}</td>
+              <td class="text-xs">{{rendicion.rut}}</td>
+              <td class="text-xs">{{rendicion.numero_folio}}</td>
+              <td class="text-xs">{{rendicion.n_voucher_efectivo}}</td>
+              <td class="text-xs">{{rendicion.n_voucher_tarjeta}}</td>
+              <td class="text-xs">{{rendicion.numero_boleta}}</td>
+              <td class="text-xs">{{rendicion.numero_operacion_tbk}}</td>
+              <td class="text-xs">{{rendicion.numero_guia_despacho}}</td>
+              <td class="text-xs">{{rendicion.numero_factura}}</td>
+              <td class="text-xs">{{rendicion.total_folio | money}}</td>
+              <!-- <td class="text-xs">{{rendicion.saldo_folio | money}}</td> -->
+              <td class="text-xs">{{rendicion.efectivo | money}}</td>
+              <td class="text-xs">{{rendicion.tbk | money}}</td>
+              <td class="text-xs">{{rendicion.tbkSombra | money}}</td>
+              <td class="text-xs">{{rendicion.cheques | money}}</td>
+              <td class="text-xs">{{rendicion.webpay | money}}</td>
+              <td class="text-xs">{{rendicion.tf | money}}</td>
+              <td class="text-xs">{{rendicion.oc | money}}</td>
+              <td class="text-xs">{{rendicion.saldo | money}}</td>
               <td>
                 <a class="uk-button uk-button-link uk-text-danger uk-text-bolder" @click="eliminar(rendicion.id_rendicion_caja)">
                   <i class="fas fa-trash-alt uk-margin-small-left uk-text-danger"></i>
@@ -249,7 +267,7 @@ Rendición de caja
               </td>
             </tr>
             <tr>
-              <td class="bg-gray-200 font-bold" colspan="8">
+              <td class="bg-gray-200 font-bold" colspan="10">
                 Total: 
                 {{parseInt(totalEfectivo) + parseInt(totalTbk) + parseInt(totalTbkSombra) + parseInt(totalCheques) + parseInt(totalWebpay) + parseInt(totalTf) + parseInt(totalOc) | money}}
               </td>
@@ -282,6 +300,8 @@ const inputs = [
   "totalFolio",
   "saldoFolio",
   "numeroFolio",
+  "n_voucher_efectivo",
+  "n_voucher_tarjeta",
   "numeroBoleta",
   "numeroOperacionTbk",
   "numeroGuiaDespacho",
@@ -313,40 +333,42 @@ var app = new Vue({
   data() {
     <?php $uri = new \CodeIgniter\HTTP\URI(uri_string(true)); ?>
     return {
-      cliente_id          : '<?= $uri->getSegment(2); ?>', // Capturar el id al cargar la pagina
-      id_rendicion_caja   : '',
-      cargar              : true,
-      cargarForm          : true,
-      edit                : false,
-      fecha               : new Date().toJSON().slice(0,10),
-      rut                 : '',
-      nombreCliente       : '',
-      totalFolio          : 0,
-      saldoFolio          : 0,
-      oldSaldoFolio       : 0,
-      numeroFolio         : 0,
-      numeroBoleta        : 0,
-      numeroOperacionTbk  : 0,
-      numeroGuiaDespacho  : 0,
-      numeroFactura       : 0,
-      efectivo            : 0,
-      tbk                 : 0,
-      tbkSombra           : 0,
-      cheques             : 0,
-      webpay              : 0,
-      tf                  : 0,
-      oc                  : 0,
-      oldEfectivo         : 0,
-      oldTbk              : 0,
-      oldTbkSombra        : 0,
-      oldCheques          : 0,
-      oldWebpay           : 0,
-      oldTf               : 0,
-      oldOc               : 0,
-      saldo               : 0,
-      oldSaldo            : 0,
-      allRendiciones      : [],
-      totalIngresos       : 0,
+      cliente_id            : '<?= $uri->getSegment(2); ?>', // Capturar el id al cargar la pagina
+      id_rendicion_caja     : '',
+      cargar                : true,
+      cargarForm            : true,
+      edit                  : false,
+      fecha                 : new Date().toJSON().slice(0,10),
+      rut                   : '',
+      nombreCliente         : '',
+      totalFolio            : 0,
+      saldoFolio            : 0,
+      oldSaldoFolio         : 0,
+      numeroFolio           : 0,
+      n_voucher_efectivo    : 0,
+      n_voucher_tarjeta     : 0,
+      numeroBoleta          : 0,
+      numeroOperacionTbk    : 0,
+      numeroGuiaDespacho    : 0,
+      numeroFactura         : 0,
+      efectivo              : 0,
+      tbk                   : 0,
+      tbkSombra             : 0,
+      cheques               : 0,
+      webpay                : 0,
+      tf                    : 0,
+      oc                    : 0,
+      oldEfectivo           : 0,
+      oldTbk                : 0,
+      oldTbkSombra          : 0,
+      oldCheques            : 0,
+      oldWebpay             : 0,
+      oldTf                 : 0,
+      oldOc                 : 0,
+      saldo                 : 0,
+      oldSaldo              : 0,
+      allRendiciones        : [],
+      totalIngresos         : 0,
     }
   },
   methods: {
@@ -359,6 +381,7 @@ var app = new Vue({
     },
 
     async guardar() {
+      console.log(this.id_rendicion_caja);
       if(this.id_rendicion_caja === '') {
         const params    = new URLSearchParams();
 
@@ -516,53 +539,66 @@ var app = new Vue({
             const {
               data
             } = response.data;
-            this.id_rendicion_caja  = data.id_rendicion_caja;
-            this.fecha              = data.fecha;
-            this.rut                = data.rut;
-            this.nombreCliente      = data.nombre_cliente;
-            this.totalFolio         = data.total_folio;
-            this.saldoFolio         = data.saldo_folio;
-            this.oldSaldoFolio      = data.saldo_folio;
-            this.numeroFolio        = data.numero_folio;
-            this.numeroBoleta       = data.numero_boleta;
-            this.numeroOperacionTbk = data.numero_operacion_tbk;
-            this.numeroGuiaDespacho = data.numero_guia_despacho;
-            this.numeroFactura      = data.numero_factura;
-            this.efectivo           = 0;
-            this.tbk                = 0;
-            this.tbkSombra          = 0;
-            this.cheques            = 0;
-            this.webpay             = 0;
-            this.tf                 = 0;
-            this.oc                 = 0;
-            this.saldo              = data.saldo;
-            this.oldSaldo           = data.saldo;
-            this.oldEfectivo        = data.efectivo;
-            this.oldTbk             = data.tbk;
-            this.oldTbkSombra       = data.tbk_sombra;
-            this.oldCheques         = data.cheques;
-            this.oldWebpay          = data.webpay;
-            this.oldTf              = data.tf;
-            this.oldOc              = data.oc;
-            this.cargarForm         = false;
-            this.edit               = true;
+            this.id_rendicion_caja      = data.id_rendicion_caja;
+            this.fecha                  = data.fecha;
+            this.rut                    = data.rut;
+            this.nombreCliente          = data.nombre_cliente;
+            this.totalFolio             = data.total_folio;
+            this.saldoFolio             = data.saldo_folio;
+            this.oldSaldoFolio          = data.saldo_folio;
+            this.numeroFolio            = data.numero_folio;
+            this.n_voucher_efectivo     = data.n_voucher_efectivo;
+            this.n_voucher_tarjeta      = data.n_voucher_tarjeta;
+            this.numeroBoleta           = data.numero_boleta;
+            this.numeroOperacionTbk     = data.numero_operacion_tbk;
+            this.numeroGuiaDespacho     = data.numero_guia_despacho;
+            this.numeroFactura          = data.numero_factura;
+            this.efectivo               = 0;
+            this.tbk                    = 0;
+            this.tbkSombra              = 0;
+            this.cheques                = 0;
+            this.webpay                 = 0;
+            this.tf                     = 0;
+            this.oc                     = 0;
+            this.saldo                  = data.saldo;
+            this.oldSaldo               = data.saldo;
+            this.oldEfectivo            = data.efectivo;
+            this.oldTbk                 = data.tbk;
+            this.oldTbkSombra           = data.tbk_sombra;
+            this.oldCheques             = data.cheques;
+            this.oldWebpay              = data.webpay;
+            this.oldTf                  = data.tf;
+            this.oldOc                  = data.oc;
+            this.cargarForm             = false;
+            this.edit                   = true;
           }
         )
     },
 
     // Guardar actualización
     updateRendicion() {
+      const self = this;
       const params    = new URLSearchParams();
 
-      this.fecha = moment(this.fecha).format('YYYY-MM-DD');
-
-      this.efectivo   = parseInt(this.oldEfectivo) + parseInt(this.efectivo);
-      this.tbk        = parseInt(this.oldTbk) + parseInt(this.tbk);
-      this.tbkSombra  = parseInt(this.oldTbkSombra) + parseInt(this.tbkSombra);
-      this.cheques    = parseInt(this.oldCheques) + parseInt(this.cheques);
-      this.webpay     = parseInt(this.oldWebpay) + parseInt(this.webpay);
-      this.tf         = parseInt(this.oldTf) + parseInt(this.tf);
-      this.oc         = parseInt(this.oldOc) + parseInt(this.oc);
+      this.fecha                = moment(this.fecha).format('YYYY-MM-DD');
+      this.efectivo             = parseInt(this.oldEfectivo) + parseInt(this.efectivo);
+      this.tbk                  = parseInt(this.oldTbk) + parseInt(this.tbk);
+      this.tbkSombra            = (this.oldTbkSombra !== undefined) ? parseInt(this.oldTbkSombra) + parseInt(this.tbkSombra) : parseInt(this.tbkSombra);
+      this.cheques              = parseInt(this.oldCheques) + parseInt(this.cheques);
+      this.webpay               = parseInt(this.oldWebpay) + parseInt(this.webpay);
+      this.tf                   = parseInt(this.oldTf) + parseInt(this.tf);
+      this.oc                   = parseInt(this.oldOc) + parseInt(this.oc);
+      this.saldo                = parseInt(this.saldo);
+      this.totalFolio           = parseInt(this.totalFolio);
+      this.saldoFolio           = parseInt(this.saldoFolio);
+      this.numeroFolio          = parseInt(this.numeroFolio);
+      this.numero_voucher       = parseInt(this.numero_voucher);
+      this.numeroBoleta         = parseInt(this.numeroBoleta);
+      this.numeroOperacionTbk   = parseInt(this.numeroOperacionTbk);
+      this.numeroGuiaDespacho   = parseInt(this.numeroGuiaDespacho);
+      this.numeroFactura        = parseInt(this.numeroFactura);
+      this.n_voucher_efectivo   = parseInt(this.n_voucher_efectivo);
+      this.n_voucher_tarjeta    = parseInt(this.n_voucher_tarjeta);
 
       inputs.forEach(input => {
         if (this[input] !== '') {
@@ -583,8 +619,8 @@ var app = new Vue({
                 timer: 1500
             });
             inputs.forEach(input => {
-                  (input !== 'fecha') && (this[input] = 0);
-                });
+              (input !== 'fecha') && (this[input] = 0);
+            });
 
             this.rut                = '';
             this.nombreCliente      = '';
@@ -592,6 +628,8 @@ var app = new Vue({
             this.edit               = false;
           }
         )
+
+      
     },
 
     getName(event) {

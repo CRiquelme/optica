@@ -50,6 +50,8 @@ class SobreModel extends Model {
         "forma_de_pago",
         "n_folio",
         "n_voucher",
+        "n_voucher_efectivo",
+        "n_voucher_tarjeta",
     ];
 
     protected $useTimestamps    = false;

@@ -279,7 +279,7 @@ Registro en sobre
             <div class="sm:col-span-3 | flex flex-col gap-y-3 gap-x-4 | pt-4">
               <div>
                 <label class="<?= $labelClass ?>" for="total">Total</label>
-                <input v-model="total" class="<?= $inputClass ?>" id="total" name="total" type="text" placeholder="Total" :disabled="edit">
+                <input v-model="total" class="<?= $inputClass ?>" id="total" name="total" type="text" placeholder="Total" :disabled="edit" @keypress="NumbersOnly">
               </div>
               <div>
                 <label class="<?= $labelClass ?>" for="abono">abono
@@ -290,7 +290,7 @@ Registro en sobre
                     << El saldo es: {{ parseInt(total) - parseInt(abono) }} >>
                   </span>
                 </label>
-                <input v-model="abono" class="<?= $inputClass ?>" id="abono" name="abono" type="number" placeholder="Abono" min="0" :max="saldo ? saldo : total" @change="abonar($event)" :disabled="abonoTotal === total && total > 0">
+                <input v-model="abono" class="<?= $inputClass ?>" id="abono" name="abono" type="number" placeholder="Abono" min="0" :max="saldo ? saldo : total" @change="abonar($event)" @keypress="NumbersOnly" :disabled="abonoTotal === total && total > 0">
                 
                 <input v-model="abono_pagar" class="<?= $inputClass ?>" id="abono_pagar" name="abono_pagar" type="hidden" placeholder="abono_pagar">
                 
@@ -301,7 +301,7 @@ Registro en sobre
               <div>
                 <label class="<?= $labelClass ?>" for="saldo">saldo</label>
                 <input v-model="saldo" class="<?= $inputClass ?>" id="saldo" name="saldo" type="text"
-                  placeholder="Saldo" :disabled="abonoTotal === total && total > 0">
+                  placeholder="Saldo" :disabled="abonoTotal === total && total > 0" @keypress="NumbersOnly">
 
                 <input v-model="saldo_diferencia" class="<?= $inputClass ?>" id="saldo_diferencia" name="saldo_diferencia" type="hidden" placeholder="saldo_diferencia">
                 <span v-if="abonoTotal === total && total !== 0" class="bg-blue-800 text-white | text-sm px-5 py-2 mt-2 w-full">Pagado en su totalidad.</span>
@@ -312,7 +312,17 @@ Registro en sobre
               </div>
               <div>
                 <label class="<?= $labelClass ?>" for="n_voucher">Número de voucher</label>
-                <input v-model="n_voucher" class="<?= $inputClass ?>" id="n_voucher" name="n_voucher" type="text" placeholder="Número de voucher">
+                <input v-model="n_voucher" class="<?= $inputClass ?>" id="n_voucher" name="n_voucher" type="text" placeholder="Número de voucher" disabled>
+              </div>
+              <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+                <div>
+                  <label class="<?= $labelClass ?>" for="n_voucher_efectivo">Número de voucher efectivo</label>
+                  <input v-model="n_voucher_efectivo" class="<?= $inputClass ?>" id="n_voucher_efectivo" name="n_voucher_efectivo" type="text" placeholder="Número de voucher efectivo">
+                </div>
+                <div>
+                  <label class="<?= $labelClass ?>" for="n_voucher_tarjeta">Número de voucher tarjeta</label>
+                  <input v-model="n_voucher_tarjeta" class="<?= $inputClass ?>" id="n_voucher_tarjeta" name="n_voucher_tarjeta" type="text" placeholder="Número de voucher tarjeta">
+                </div>
               </div>
             </div>
           </div>
@@ -410,7 +420,9 @@ const inputs = [
   "observaciones",
   "forma_de_pago",
   "n_folio",
-  "n_voucher"
+  "n_voucher",
+  "n_voucher_efectivo",
+  "n_voucher_tarjeta",
 ];
 
 Vue.use(VueFormWizard);
@@ -499,6 +511,8 @@ var app = new Vue({
       lejosId                     : '',
       n_folio                     : '',
       n_voucher                   : '',
+      n_voucher_efectivo          : '',
+      n_voucher_tarjeta           : '',
     }
   },
   methods: {
@@ -675,11 +689,13 @@ var app = new Vue({
               this.armazon_cerca_cantidad     = data.armazon_cerca_cantidad !== null ? data.armazon_cerca_cantidad : '';
               this.total                      = data.total !== null ? data.total : '';
               this.abonoTotal                 = data.abono !== null ? data.abono : '';
-              this.saldo                      = data.saldo !== null ? data.total - data.abono : '';
+              this.saldo                      = (data.saldo !== null || data.saldo !== 0) ? data.total - data.abono : 0;
               this.observaciones              = data.observaciones !== null ? data.observaciones : '';
               this.forma_de_pago              = data.forma_de_pago !== null ? data.forma_de_pago.split(',') : [];
               this.n_folio                    = data.n_folio !== null ? data.n_folio : '';
               this.n_voucher                  = data.n_voucher !== null ? data.n_voucher : '';
+              this.n_voucher_efectivo         = data.n_voucher_efectivo !== null ? data.n_voucher_efectivo : '';
+              this.n_voucher_tarjeta          = data.n_voucher_tarjeta !== null ? data.n_voucher_tarjeta : '';
               this.forma_de_pago_old          = data.forma_de_pago !== null ? data.forma_de_pago.split(',') : [];
               this.$refs.formWiz.activateAll();
             }
@@ -914,7 +930,17 @@ var app = new Vue({
     saldar: function(event) {
       let self = this;
       self.saldo_diferencia = self.total - self.abono_pagar;
-    }
+    },
+
+    NumbersOnly(evt) {
+      evt = (evt) ? evt : window.event;
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if (((charCode < 48 || charCode > 57))) {
+        evt.preventDefault();;
+      } else {
+        return true;
+      }
+    },
   },
 
   filters: {
