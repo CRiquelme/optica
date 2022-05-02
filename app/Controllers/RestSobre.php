@@ -65,6 +65,8 @@ class RestSobre extends MyRestApi
 			"forma_de_pago" 					=> $this->request->getPost('forma_de_pago'),
 			"n_folio" 								=> $this->request->getPost('n_folio'),
 			"n_voucher" 							=> $this->request->getPost('n_voucher'),
+			"n_voucher_efectivo" 			=> $this->request->getPost('n_voucher_efectivo'),
+			"n_voucher_tarjeta" 			=> $this->request->getPost('n_voucher_tarjeta'),
 		]);
 
 		// Crear libro de óptica
@@ -103,7 +105,6 @@ class RestSobre extends MyRestApi
 
 		// Crear registro en rendición de caja
 		$rendicionCaja = new RendicionCajaModel();
-
 		$formaPago 	= explode(",", $this->request->getPost('forma_de_pago'));
 		
 		$pagoEf 	= (in_array('EF', $formaPago, true)) ? $this->request->getPost("abono_pagar") : 0;
@@ -119,7 +120,7 @@ class RestSobre extends MyRestApi
       "nombre_cliente"        => $this->request->getPost("nombre"),
       "total_folio"           => $this->request->getPost("total"),
       "saldo_folio"           => $this->request->getPost(""),
-      "numero_folio"          => $this->request->getPost(""),
+      "numero_folio"          => $this->request->getPost('n_folio'),
       "numero_boleta"         => $this->request->getPost(""),
       "numero_operacion_tbk"  => $this->request->getPost(""),
       "numero_guia_despacho"  => $this->request->getPost(""),
@@ -130,8 +131,11 @@ class RestSobre extends MyRestApi
       "webpay"                => 0,
       "tf"                    => $pagoTf,
       "oc"                    => $pagoOc,
-      "wpay"                  => $pagoWpay,
-      "saldo"                 => $this->request->getPost("saldo")
+      "webpay"                => $pagoWpay,
+      "saldo"                 => $this->request->getPost("saldo"),
+			"n_voucher_efectivo" 		=> $this->request->getPost('n_voucher_efectivo'),
+			"n_voucher_tarjeta" 		=> $this->request->getPost('n_voucher_tarjeta'),
+			"sobre_id"							=> $idSobre,
 		]);
 
 		return $this->genericResponse($this->model->find($idSobre), null, 200);
@@ -212,6 +216,8 @@ class RestSobre extends MyRestApi
 			"forma_de_pago" 					=> $data['forma_de_pago'] !== (null) ? $data['forma_de_pago'] : (null),
 			"n_folio" 								=> $data['n_folio'] !== (null) ? $data['n_folio'] : (null),
 			"n_voucher" 							=> $data['n_voucher'] !== (null) ? $data['n_voucher'] : (null),
+			"n_voucher_efectivo" 			=> $data['n_voucher_efectivo'] !== (null) ? $data['n_voucher_efectivo'] : (null),
+			"n_voucher_tarjeta" 			=> $data['n_voucher_tarjeta'] !== (null) ? $data['n_voucher_tarjeta'] : (null),
 		]);
 		return $this->genericResponse($this->model->find($id), null, 200);
 	}

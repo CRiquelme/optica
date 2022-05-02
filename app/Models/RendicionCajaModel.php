@@ -17,6 +17,9 @@ class RendicionCajaModel  extends Model {
       "total_folio",
       "saldo_folio",
       "numero_folio",
+      "numero_voucher",
+      "n_voucher_efectivo",
+      "n_voucher_tarjeta",
       "numero_boleta",
       "numero_operacion_tbk",
       "numero_guia_despacho",
@@ -28,7 +31,8 @@ class RendicionCajaModel  extends Model {
       "webpay",
       "tf",
       "oc",
-      "saldo"
+      "saldo",
+      "sobre_id"
     ];
 
     protected $useTimestamps    = false;
