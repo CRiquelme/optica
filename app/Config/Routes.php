@@ -80,6 +80,7 @@ $routes->resource('rest-traslados', ['controller' => 'RestTraslados']); // gené
 
 // $routes->get('rest-salida-productos/fechas/(:any)', 'RestSalidaProductos::fechas/$1');
 $routes->get('rest-rendicion-caja/fecha/(:any)', 'RestRendicionCaja::fecha/$1');
+$routes->get('rest-rendicion-caja/fecha-tienda/(:any)/(:any)', 'RestRendicionCaja::fecha/$1/$2');
 $routes->put('rest-rendicion-caja/eliminar-tbk-sombras/(:any)', 'RestRendicionCaja::eliminarTbkSombras/$1');
 $routes->resource('rest-rendicion-caja', ['controller' => 'RestRendicionCaja']); // genérica
 

@@ -32,7 +32,8 @@ class RendicionCajaModel  extends Model {
       "tf",
       "oc",
       "saldo",
-      "sobre_id"
+      "sobre_id",
+      "tienda_id",
     ];
 
     protected $useTimestamps    = false;
