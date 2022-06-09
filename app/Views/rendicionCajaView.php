@@ -30,10 +30,21 @@ Rendición de caja
     <div v-if="!cargarForm" class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-12" ref="formRendicionCaja">
 
       <input type="hidden" name="id_rendicion_caja" name="id_rendicion_caja" v-model="id_rendicion_caja">
-      <div class="sm:col-span-4">
+      <div class="sm:col-span-2">
         <label class="<?= $labelClass ?>" for="fecha">fecha</label>
         <div class="mt-1">
           <input type="date" v-model="fecha" class="<?= $inputClass ?>" id="fecha" name="fecha" @change="getRendicionCaja">
+        </div>
+      </div>
+      <div class="sm:col-span-2">
+        <label for="tienda" class="<?= $labelClass ?>">Tienda</label>
+        <div class="mt-1">
+          <select v-model="tienda" class="uk-select" id="tienda" name="tienda" @change="getRendicionCaja">
+            <option value="">Tienda</option>
+            <option v-for="(t, index) in tiendas" :key="tiendas.id_tienda" :value="t.id_tienda">
+                {{t.nombre_tienda}}
+            </option>
+          </select>
         </div>
       </div>
       <div class="sm:col-span-4">
@@ -175,6 +186,8 @@ Rendición de caja
         </div>
       </div>
 
+      
+
       <div class="sm:col-span-2">
         <label>&nbsp;</label>
         <button
@@ -314,6 +327,7 @@ const inputs = [
   "tf",
   "oc",
   "saldo",
+  "tienda",
 ];
 
 Vue.use(VueFormWizard);
@@ -369,6 +383,8 @@ var app = new Vue({
       oldSaldo              : 0,
       allRendiciones        : [],
       totalIngresos         : 0,
+      tiendas               : [],
+      tienda                : '',
     }
   },
   methods: {
@@ -428,10 +444,17 @@ var app = new Vue({
     },
 
     getRendicionCaja() {
+      let self = this;
       this.cargar         = true;
       this.totalIngresos  = 0;
       let fecha   = moment(this.fecha).format('YYYY-MM-DD');
-      axios.get('<?= base_url('rest-rendicion-caja') ?>/fecha/' + fecha)
+      let url = '';
+      if(self.tienda !== '' && fecha !== null) {
+        url = '<?= base_url('rest-rendicion-caja') ?>/fecha-tienda/' + fecha + '/' + self.tienda;
+      } else if(self.tienda === '' && fecha !== null) {
+        url = '<?= base_url('rest-rendicion-caja') ?>/fecha/' + fecha;
+      }
+      axios.get( url )
         .then( response => {
             const { data } = response.data;
             this.allRendiciones   = data;
@@ -571,6 +594,7 @@ var app = new Vue({
             this.oldOc                  = data.oc;
             this.cargarForm             = false;
             this.edit                   = true;
+            this.tienda                 = data.tienda_id;
           }
         )
     },
@@ -599,6 +623,7 @@ var app = new Vue({
       this.numeroFactura        = parseInt(this.numeroFactura);
       this.n_voucher_efectivo   = parseInt(this.n_voucher_efectivo);
       this.n_voucher_tarjeta    = parseInt(this.n_voucher_tarjeta);
+      this.tienda               = parseInt(this.tienda);
 
       inputs.forEach(input => {
         if (this[input] !== '') {
@@ -754,6 +779,9 @@ var app = new Vue({
   mounted() {
     this.getRendicionCaja();
     this.cargarForm = false;
+    axios
+      .get('<?=base_url('rest-traslados/tiendas')?>')
+      .then(response => (this.tiendas = response.data.data));
   },
 
 });

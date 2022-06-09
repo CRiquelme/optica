@@ -423,6 +423,8 @@ const inputs = [
   "n_voucher",
   "n_voucher_efectivo",
   "n_voucher_tarjeta",
+  "tienda_armazon_lejos",
+  "tienda_armazon_cerca",
 ];
 
 Vue.use(VueFormWizard);
@@ -747,7 +749,7 @@ var app = new Vue({
     delete_registro: function(id_sobre) {
       Swal.fire({
         title: 'Eliminar registro',
-        text: "¿Desea eliminar este registro?, si está haciendo un registro por favor cambie y vuelva a la tienda correcta para asegurar el stock correcto.",
+        text: "¿Desea eliminar este registro?.", // , si está haciendo un registro por favor cambie y vuelva a la tienda correcta para asegurar el stock correcto
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -770,7 +772,7 @@ var app = new Vue({
                   this.getSobres();
                   Swal.fire({
                     position: 'top-end',
-                    title: 'Registro en libro eliminado',
+                    title: 'Registro eliminado',
                     icon: 'success',
                     showConfirmButton: false,
                     timer: 1500

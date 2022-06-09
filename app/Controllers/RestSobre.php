@@ -113,6 +113,7 @@ class RestSobre extends MyRestApi
 		$pagoTf 	= (in_array('TF', $formaPago, true)) ? $this->request->getPost("abono_pagar") : 0;
 		$pagoOc 	= (in_array('OC', $formaPago, true)) ? $this->request->getPost("abono_pagar") : 0;
 		$pagoWpay	= (in_array('WPAY', $formaPago, true)) ? $this->request->getPost("abono_pagar") : 0;
+		$idTienda = ($this->request->getPost("tienda_armazon_cerca")) ? $this->request->getPost("tienda_armazon_cerca") : $this->request->getPost("tienda_armazon_lejos");
 
 		$idRendicionCaja = $rendicionCaja->insert([
       "fecha"                 => date("Y-m-d"),
@@ -136,6 +137,7 @@ class RestSobre extends MyRestApi
 			"n_voucher_efectivo" 		=> $this->request->getPost('n_voucher_efectivo'),
 			"n_voucher_tarjeta" 		=> $this->request->getPost('n_voucher_tarjeta'),
 			"sobre_id"							=> $idSobre,
+			"tienda_id"							=> $idTienda,
 		]);
 
 		return $this->genericResponse($this->model->find($idSobre), null, 200);

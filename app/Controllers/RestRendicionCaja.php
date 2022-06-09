@@ -39,7 +39,8 @@ class RestRendicionCaja extends MyRestApi
       "webpay"                => $this->request->getPost("webpay"),
       "tf"                    => $this->request->getPost("tf"),
       "oc"                    => $this->request->getPost("oc"),
-      "saldo"                 => $this->request->getPost("saldo")
+      "saldo"                 => $this->request->getPost("saldo"),
+      "tienda_id"             => $this->request->getPost("tienda"),
 		]);
 	}
 
@@ -66,7 +67,8 @@ class RestRendicionCaja extends MyRestApi
       "webpay"                => $data['webpay'] !== (null) ? $data['webpay'] : (null),
       "tf"                    => $data['tf'] !== (null) ? $data['tf'] : (null),
       "oc"                    => $data['oc'] !== (null) ? $data['oc'] : (null),
-      "saldo"                 => $data['saldo'] !== (null) ? $data['saldo'] : (null)
+      "saldo"                 => $data['saldo'] !== (null) ? $data['saldo'] : (null),
+      "tienda_id"             => $data['tienda'] !== (null) ? $data['tienda'] : (null),
     ]);
   }
 
@@ -88,13 +90,33 @@ class RestRendicionCaja extends MyRestApi
 
 
   // Consultas
-	public function fecha($fecha = null) {
+	/**
+   * It returns the last record of the table rendicion_caja where the field deleted is null, the field
+   * fecha is equal to the parameter  and the field tienda_id is equal to the parameter .
+   * 
+   * @param fecha 2020-01-01
+   * @param tienda 1
+   * 
+   * @return <code>{
+   *     "status": 200,
+   *     "data": [
+   *         {
+   *             "id_rendicion_caja": "1",
+   *             "fecha": "2020-01-01",
+   *             "tienda_id": "1",
+   *             "deleted": null
+   *         },
+   *         {
+   *             "id_rend
+   */
+  public function fecha($fecha = null, $tienda = NULL) {
 		$db = db_connect();
 		$builder =	$db->table('rendicion_caja AS rc');
-					$builder->select('rc.*');
-					$builder->where('rc.deleted', null);
-					$builder->where('rc.fecha', $fecha);
-          $builder->orderBy('rc.id_rendicion_caja', 'DESC');
+      $builder->select('rc.*');
+      $builder->where('rc.deleted', null);
+      $builder->where('rc.fecha', $fecha);
+      $builder->where('rc.tienda_id', $tienda);
+      $builder->orderBy('rc.id_rendicion_caja', 'DESC');
 		$query = $builder->get();
 		return  $this->genericResponse($query->getResultArray(), null, 200);
 	}
