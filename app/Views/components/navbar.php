@@ -1,4 +1,4 @@
-<nav class="uk-navbar-container" uk-navbar>
+<nav class="uk-navbar-container no-print" uk-navbar>
     <div class="uk-navbar-left uk-margin-medium-left">
         <a class="uk-navbar-item uk-logo" href="<?=base_url('dashboard');?>">
             <img src="<?php echo base_url('public/images/logo.jpg');?>">
@@ -19,8 +19,8 @@
     </div>
 </nav>
 
-<div id="offcanvas-nav" uk-offcanvas="overlay: true">
-	<div class="uk-offcanvas-bar">
+<div id="offcanvas-nav" uk-offcanvas="overlay: true" class="no-print">
+	<div class="uk-offcanvas-bar no-print">
 		<?php if(isset($tipo_de_usuario) && $tipo_de_usuario === "1") : ?>
 			<a class="uk-navbar-item uk-logo" href="<?=base_url('dashboard');?>">
 				<img src="<?php echo base_url('public/images/logo.jpg');?>">
@@ -47,6 +47,7 @@
 								<li><a href="<?=base_url('libros')?>">Libros</a></li>
 						</ul>
 				</li>
+				<li class="uk-parent"><a href="<?=base_url('detalle-compra')?>">Detalle de compra</a></li>
 				<li class="uk-parent"><a href="<?=base_url('rendicion-caja')?>">Rendición de caja</a></li>
 				<li class="uk-nav-divider"></li>
 				<li class="uk-parent"><a href="<?=base_url('password')?>">Cambiar contraseña personal</a></li>
@@ -67,6 +68,7 @@
 							<li><a href="<?=base_url('stock_productos')?>">Stock por tiendas</a></li>
 						</ul>
 				</li>
+				<li class="uk-parent"><a href="<?=base_url('detalle-compra')?>">Detalle de compra</a></li>
 				<li class="uk-parent"><a href="<?=base_url('rendicion-caja')?>">Rendición de caja</a></li>
 				<li class="uk-nav-divider"></li>
 				<li class="uk-parent"><a href="<?=base_url('logout')?>">Cerrar sesión</a></li>

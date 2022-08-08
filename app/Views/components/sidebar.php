@@ -1,6 +1,6 @@
-<h2 class="my-2 mx-3 flex-none uppercase">Menú principal</h2>
+<h2 class="my-2 mx-3 flex-none uppercase no-print">Menú principal</h2>
 <?php if($tipo_de_usuario === "1") : ?>
-<ul class="uk-nav uk-nav-default mx-3 text-lg text-black">
+<ul class="uk-nav uk-nav-default mx-3 text-lg text-black no-print">
     <li class="uk-parent"><a href="<?=base_url('dashboard')?>">Dashboard</a></li>
     <li class="uk-parent"><a href="<?=base_url('clientes')?>">Clientes</a></li>
     <li class="uk-parent">
@@ -22,6 +22,7 @@
             <li><a href="<?=base_url('libros')?>">Libros</a></li>
         </ul>
     </li>
+    <li class="uk-parent"><a href="<?=base_url('detalle_compra')?>">Detalle de compra</a></li>
     <li class="uk-parent"><a href="<?=base_url('rendicion-caja')?>">Rendición de caja</a></li>
     <!-- <li class="uk-parent"><a href="<?=base_url('sobre')?>">Registro sobre</a></li> -->
     <li class="uk-nav-divider"></li>
@@ -31,7 +32,7 @@
 		<li class="uk-parent"><a href="<?=base_url('logout')?>">Cerrar sesión</a></li>
 </ul>
 <?php elseif($tipo_de_usuario === "2") : ?>
-	<ul class="uk-nav uk-nav-default mx-3 text-lg text-black">
+<ul class="uk-nav uk-nav-default mx-3 text-lg text-black no-print">
     <li class="uk-parent"><a href="<?=base_url('dashboard')?>">Dashboard</a></li>
     <li class="uk-parent"><a href="<?=base_url('clientes')?>">Clientes</a></li>
     <li class="uk-parent">
@@ -40,6 +41,7 @@
             <li><a href="<?=base_url('stock_productos')?>">Stock por tiendas</a></li>
         </ul>
     </li>
+    <li class="uk-parent"><a href="<?=base_url('detalle_compra')?>">Detalle de compra</a></li>
     <li class="uk-parent"><a href="<?=base_url('rendicion-caja')?>">Rendición de caja</a></li>
     <!-- <li class="uk-parent"><a href="<?=base_url('sobre')?>">Registro sobre</a></li> -->
     <li class="uk-nav-divider"></li>

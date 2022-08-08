@@ -70,6 +70,9 @@ $routes->get('salida_productos', 'ProductosController::salida_productos');
 $routes->get('informe-salidas-diaria', 'ProductosController::salidasDiaria');
 $routes->get('consulta_salida_productos', 'ConsultasController::cSalidaProductos');
 
+// detalle de compra
+$routes->get('detalle_compra', 'DetalleCompraController::index');
+
 
 // REST
 // Primero las routes más específicas y luego las genéricas
@@ -122,6 +125,9 @@ $routes->resource('rest-salida-productos', ['controller' => 'RestSalidaProductos
 
 $routes->get('rest-sobre/cliente/(:num)', 'RestSobre::cliente/$1');
 $routes->resource('rest-sobre', ['controller' => 'RestSobre']); // genérica
+
+// Detalle de compra
+$routes->resource('rest-detalle-compra', ['controller' => 'RestDetalleCompra']); // genérica
 
 
 /**
