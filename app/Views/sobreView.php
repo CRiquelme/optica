@@ -947,7 +947,7 @@ var app = new Vue({
 
   filters: {
     fecha: function (value) {
-      return moment(String(value)).format('MM/DD/YYYY hh:mm')
+      return moment(String(value)).format('DD/MM/YYYY')
     },
     grados: function (value) {
       return value + '°';
