@@ -24,7 +24,9 @@ Registro en sobre
           Limpiar formulario
         </button>
       </div>
+
       <h2 v-else class="text-lg font-medium">Agregar registro</h2>
+
       <form-wizard v-if="!cargarForm" next-button-text="Siguiente" back-button-text="Anterior" finish-button-text="Guardar" title=""
         subtitle="" color="#009db0" shape="circle" step-size="sm" @on-complete="onComplete" ref="formWiz">
         <?php
@@ -339,22 +341,31 @@ Registro en sobre
       
       <!-- Registro de sobres -->
       <div class="w-full | mt-3">
-        <h2 class="text-gray-500 text-xs font-medium uppercase tracking-wide">
+        <h2 class="text-gray-500 text-sm font-medium uppercase tracking-wide">
           Registros de sobres
           <i class="fas fa-sync cursor-pointer text-sm" @click="getSobres()" uk-tooltip="title: Refrescar la información; pos: right"></i>
         </h2>
+        <p class="text-xs">Solo administradores pueden editar y borrar.</p>
         <div v-if="cargar" class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
           <ul v-if="!cargar" role="list" class="mt-3 grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <li v-for="libro in allSobres" :key="libro.id_sobre" class="col-span-1 flex shadow-sm rounded-md">
-              <div :class="[id_sobre === libro.id_sobre ? 'bg-black' : 'bg-blue-500' ,' flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-l-md cursor-pointer']"  @click="editar(libro.id_sobre)"> <!-- @click="editar(libro.id_sobre)" -->
-                <i class="fas fa-edit"></i>
-              </div>
+              <?php if($tipo_de_usuario === "1") : ?>
+                <div :class="[id_sobre === libro.id_sobre ? 'bg-black' : 'bg-blue-500' ,' flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-l-md cursor-pointer']" @click="editar(libro.id_sobre)"> <!-- @click="editar(libro.id_sobre)" -->
+                  <i class="fas fa-edit"></i>
+                </div>
+              <?php elseif($tipo_de_usuario === "2") : ?>
+                <div :class="[id_sobre === libro.id_sobre ? 'bg-black' : 'bg-blue-100' ,' flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-l-md cursor-pointer']">
+                  <i class="fas fa-edit"></i>
+                </div>
+              <?php endif; ?>
               <div class="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
                 <div class="flex-1 px-4 py-2 text-sm truncate">
                   <span class="text-gray-900 font-medium hover:text-gray-600">
                     {{ libro.created_at | fecha }} <small>ID: {{libro.id_sobre}}</small>
                   </span>
-                  <p class="text-gray-500 text-red-700 cursor-pointer" @click="delete_registro(libro.id_sobre)"><i class="fas fa-trash-alt"></i> Borrar</p> <!-- @click="delete_registro(libro.id_libro)" -->
+                  <?php if($tipo_de_usuario === "1") : ?>
+                    <p class="text-gray-500 text-red-700 cursor-pointer" @click="delete_registro(libro.id_sobre)"><i class="fas fa-trash-alt"></i> Borrar</p> <!-- @click="delete_registro(libro.id_libro)" -->
+                  <?php endif; ?>
                 </div>
               </div>
             </li>
