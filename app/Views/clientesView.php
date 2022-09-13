@@ -24,6 +24,7 @@ Clientes
       <table class="uk-table uk-table-hover uk-table-striped" id="table_clientes">
         <thead>
           <tr>
+            <th>Created_at</th>
             <th>Nombre del cliente</th>
             <th>RUT</th>
             <th>Teléfono</th>
@@ -33,6 +34,7 @@ Clientes
         </thead>
         <tbody>
           <tr v-for="(cliente, index) in clientes" :key="cliente.id_cliente">
+            <td>{{cliente.created_at}}</td>
             <td>
               <button class="uk-button uk-button-link uk-text-primary uk-text-bolder"
                 @click="editar_cliente(index, cliente.id_cliente)"><i class="far fa-edit"></i></button>
@@ -208,14 +210,20 @@ var app = new Vue({
 
   mounted: function() {
     this.$nextTick(function() {
-      //console.log(<?= json_encode($clientes); ?>);
+      // console.log('<? json_encode($clientes); ?>' );
       $('#table_clientes').DataTable({
         "language": {
           "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
         },
         "paging": true,
+        // Hide first column
+        "columnDefs": [{
+          "targets": [0],
+          "visible": false,
+          "searchable": false
+        }],
         "order": [
-          [0, "asc"]
+          [0, "desc"]
         ],
         "info": false,
         "responsive": true

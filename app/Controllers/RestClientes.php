@@ -12,7 +12,7 @@ class RestClientes extends MyRestApi {
     $db = db_connect();
     $builder = $db->table('clientes');
     $builder->select('*');
-    $builder->orderBy('id_cliente', 'DESC');
+    $builder->orderBy('created_at', 'DESC');
     $query = $builder->get();
     return $this->genericResponse($query->getResultArray(), null, 200);
   } // index()
