@@ -67,13 +67,13 @@ Registro en sobre
             </div>
           </div>
           <div class="sm:col-span-1">
-            <label class="<?= $labelClass ?>" for="numero_pedido">número pedido</label>
+            <label class="<?= $labelClass ?>" for="n_folio">número de folio</label>
             <div class="mt-1">
-              <input v-model="numero_pedido" class="<?= $inputClass ?>" id="numero_pedido" name="numero_pedido"
-                type="text" placeholder="Número pedido">
+              <input v-model="n_folio" class="<?= $inputClass ?>" id="n_folio" name="n_folio"
+                type="text" placeholder="Número de folio">
             </div>
           </div>
-          <div class="sm:col-span-2">
+          <div class="sm:col-span-1">
             <label class="<?= $labelClass ?>" for="fono">Fono (celular)</label>
             <div class="mt-1">
               <input v-model="fono" class="<?= $inputClass ?>" id="fono" name="fono" type="text" placeholder="Fono">
@@ -83,6 +83,12 @@ Registro en sobre
             <label class="<?= $labelClass ?>" for="email">Email</label>
             <div class="mt-1">
               <input v-model="email" class="<?= $inputClass ?>" id="email" name="email" type="text" placeholder="Email">
+            </div>
+          </div>
+          <div class="sm:col-span-1">
+            <label class="<?= $labelClass ?>" for="fecha">Fecha</label>
+            <div class="mt-1">
+              <input v-model="fecha" class="<?= $inputClass ?>" id="fecha" name="fecha" type="date" placeholder="Fecha">
             </div>
           </div>
         </tab-content>
@@ -281,7 +287,11 @@ Registro en sobre
             <div class="sm:col-span-3 | flex flex-col gap-y-3 gap-x-4 | pt-4">
               <div>
                 <label class="<?= $labelClass ?>" for="total">Total</label>
-                <input v-model="total" class="<?= $inputClass ?>" id="total" name="total" type="text" placeholder="Total" :disabled="edit" @keypress="NumbersOnly">
+                <?php if(isset($tipo_de_usuario) && $tipo_de_usuario === "1") : ?>
+                  <input v-model="total" class="<?= $inputClass ?>" id="total" name="total" type="text" placeholder="Total" @keypress="NumbersOnly">
+                <?php else : ?>
+                  <input v-model="total" class="<?= $inputClass ?>" id="total" name="total" type="text" placeholder="Total" :disabled="edit" @keypress="NumbersOnly">
+                <?php endif; ?>
               </div>
               <div>
                 <label class="<?= $labelClass ?>" for="abono">abono
@@ -388,6 +398,7 @@ const inputs = [
   "numero_pedido",
   "fono",
   "email",
+  "fecha",
   "lejos_od",
   "lejos_esf1",
   "lejos_cil1",
@@ -467,6 +478,7 @@ var app = new Vue({
       numero_pedido               : '',
       fono                        : '',
       email                       : '',
+      fecha                       : '',
       lejos_od                    : '',
       lejos_esf1                  : '',
       lejos_cil1                  : '',
@@ -676,6 +688,7 @@ var app = new Vue({
               this.numero_pedido              = data.numero_pedido !== null ? data.numero_pedido : '';
               this.fono                       = data.fono !== null ? data.fono : '';
               this.email                      = data.email !== null ? data.email : '';
+              this.fecha                      = data.fecha !== null ? data.fecha : '';
               this.lejos_od                   = data.lejos_od !== null ? data.lejos_od : '';
               this.lejos_esf1                 = data.lejos_esf1 !== null ? data.lejos_esf1 : '';
               this.lejos_cil1                 = data.lejos_cil1 !== null ? data.lejos_cil1 : '';

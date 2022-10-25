@@ -92,6 +92,7 @@ $routes->get('rest-stock/estadisticaStock/', 'RestStock::estadisticaStock'); // 
 // $routes->get('rest-stock/stock-producto-tienda/(:num)/(:num)', 'RestStock::stockProductoTienda/$1/$1'); // específica
 $routes->resource('rest-stock', ['controller' => 'RestStock']); // genérica
 
+$routes->get('rest-productos/buscar_producto/(:any)', 'RestProductos::buscar_producto/$1');
 $routes->resource('rest-productos', ['controller' => 'RestProductos']); // genérica
 
 $routes->resource('rest-cristales', ['controller' => 'RestCristales']); // genérica

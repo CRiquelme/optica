@@ -11,36 +11,31 @@ class RestIngresoProductos extends MyRestApi
     protected $format	 = 'json'; 
     
 
-    public function index()
-	{
-        // return $this->genericResponse($this->model->findAll(), null, 200);
-        $db = db_connect();
-
-		$builder =	$db->table('productos_ingresos AS pi');
-		$builder->select('pi.id_producto_ingreso, p.modelo, t.nombre_tienda, pi.producto_id, pi.tienda_id, pi.cantidad_producto, pi.factura, pi.created_at');
-					$builder->join('productos as p', 'pi.producto_id = p.id_producto');
-					$builder->join('tiendas AS t', 'pi.tienda_id = t.id_tienda');
-		// 			$builder->join('marcas AS m', 'm.id_marca = p.marca_id');
-					$builder->where('pi.deleted', null);
-	            	$builder->orderBy('pi.created_at', 'DESC');
-        //             $builder->groupby('i.producto_id, i.tienda_id');
-		$query = $builder->get();
-		return  $this->genericResponse($query->getResultArray(), null, 200);
+    public function index() {
+			$db = db_connect();
+			$builder =	$db->table('productos_ingresos AS pi');
+			$builder->select('pi.id_producto_ingreso, p.modelo, t.nombre_tienda, pi.producto_id, pi.tienda_id, pi.cantidad_producto, pi.factura, pi.created_at');
+			$builder->join('productos as p', 'pi.producto_id = p.id_producto');
+			$builder->join('tiendas AS t', 'pi.tienda_id = t.id_tienda');
+			$builder->where('pi.deleted', null);
+			//$builder->where('pi.created_at >', date('Y-m-d', strtotime('-2 months')));
+			$builder->orderBy('pi.created_at', 'DESC');
+			$query = $builder->get();
+			return  $this->genericResponse($query->getResultArray(), null, 200);
     }
 
-    public function create() 
-	{
-		$ingresoProductos = new IngresoProductosModel();
-		$inventario = new InventarioModel();
+    public function create(){
+			$ingresoProductos = new IngresoProductosModel();
+			$inventario = new InventarioModel();
 
 
-        if ($this->validate('ingresoProductos')) {
-            $id = $ingresoProductos->insert([
-				'producto_id' 			=> $this->request->getPost('producto_id'),
-				'tienda_id' 			=> $this->request->getPost('tienda_id'),
-				'cantidad_producto'		=> $this->request->getPost('cantidad_producto'),
-				'factura' 	            => $this->request->getPost('factura')
-			]);
+			if ($this->validate('ingresoProductos')) {
+					$id = $ingresoProductos->insert([
+			'producto_id' 			=> $this->request->getPost('producto_id'),
+			'tienda_id' 			=> $this->request->getPost('tienda_id'),
+			'cantidad_producto'		=> $this->request->getPost('cantidad_producto'),
+			'factura' 	            => $this->request->getPost('factura')
+		]);
 
 			// return $this->respond($this->model->find($id));
 			

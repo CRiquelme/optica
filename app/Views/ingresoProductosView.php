@@ -35,7 +35,7 @@ Ingreso de productos
                             class="uk-form-width-large uk-width-1-1@m"
                             id="producto_id"
                         >
-                        <span slot="no-options">No hay datos del productos. <a href="<?=base_url('productos')?>" class="bg-blue-200 text-blue-800 hover:bg-blue-800 hover:text-blue-200 px-1 block">Por favor ingreselo.</a> </span>
+                        E<span slot="no-options">No hay datos del productos. <a href="<?=base_url('productos')?>" class="bg-blue-200 text-blue-800 hover:bg-blue-800 hover:text-blue-200 px-1 block">Por favor ingreselo.</a> </span>
                         </v-select>
                     </div>
 
@@ -101,17 +101,18 @@ Ingreso de productos
         </div>
 
         <div class="w-4/5">
+            <!-- <p class="text-xs font-medium mb-5">Esta tabla muestra solos los <u class="font-bold">últimos 2 meses</u > de ingresos.</p> -->
             <table class="uk-table uk-table-striped uk-table-hover"  id="ingresosProductos">
                 <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>producto</th>
-                        <th>tienda</th>
-                        <th>cantidad</th>
-                        <th>factura</th>
-                        <th>Fecha registro</th>
-                        <th class="uk-text-center">Opciones</th>
-                    </tr>
+                  <tr>
+                    <th>Date</th>
+                    <th>producto</th>
+                    <th>tienda</th>
+                    <th>cantidad</th>
+                    <th>factura</th>
+                    <th>Fecha registro</th>
+                    <th class="uk-text-center">Opciones</th>
+                  </tr>
                 </thead>
                 <tbody>
                     <tr 

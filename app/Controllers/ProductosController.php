@@ -29,8 +29,10 @@ class ProductosController extends BaseController
             $builder->join('proveedores', 'FIND_IN_SET(proveedores.id_proveedor, productos.proveedor_id) > 0', 'left');
             $builder->join('marcas', 'marcas.id_marca = productos.marca_id', 'inner');
             // $builder->where('productos.deleted', null);
+            // $builder->where('productos.created_at >', date('Y-m-d', strtotime('-2 months')));
             $builder->orderBy('productos.created_at', 'DESC');
             $builder->groupBy("id_producto");
+
             $productos   = $builder->get()->getResultArray();  // Produces: SELECT * FROM mytable
             
             $data['productos']      = $productos;

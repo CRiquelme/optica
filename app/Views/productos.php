@@ -16,7 +16,7 @@ Productos
 </div>
 
 
-<section class="m-10" id="sobre">
+<section class="m-10" id="productos">
     <!-- <h1 class="text-4xl uppercase border-b-2 pb-5 border-gray-100 mb-4">Registro sobre</h1> -->
 
     <div class="grid md:grid-cols-5 gap-4">
@@ -25,6 +25,7 @@ Productos
         </div>
 
         <div class="md:row-span-1 md:col-span-4 ">
+        <p class="mb-5">Esta tabla solo muestra los productos registrados los <u class="font-bold">últimos 2 meses</u>.</p>
         <table class="uk-table uk-table-striped uk-table-hover" id="table_productos">
             <thead>
                 <tr>
@@ -90,34 +91,53 @@ Productos
                     </tr>
                 <?php endforeach; ?>
             </tbody>
-        
         </table>
-    </div>
+
+        
 </section>
 
 
 <script type="text/javascript">
-    $(document).ready( function () {
+  let app = new Vue({
+    el: '#productos',
+    data() {
+      return {
+        productos: [],
+        producto_buscar: '',
+      }
+    },
+    methods: {
+      buscar_producto: function() {
+        let self = this;
+        console.log(self.producto_buscar)
+        <?//=base_url()?>
+        axios.get('https://sis.uvoptik.cl/rest-productos/buscar_producto/' + self.producto_buscar)
+          .then(response => {
+            self.productos = response.data.data
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
+    }
+  });
 
-        
-        var table = $('#table_productos').DataTable( {
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-            },
-            // "scrollY":          "50vh",
-            // "scrollCollapse":   true,
-            "paging":           true,
-            "columnDefs": [
-                {
-                    "targets": [ 0 ],
-                    "visible": false,
-                    "searchable": false
-                }
-            ],
-            "order":            [[ 0, "desc" ]],
-            "info"          : false,
-            "responsive"    : true
-        });
+    $(document).ready( function () {
+      var table = $('#table_productos').DataTable( {
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+        },
+        "paging": true,
+        "columnDefs": [{
+            "targets": [ 0 ],
+            "visible": false,
+            "searchable": false
+          }
+        ],
+        "order"      : [[ 0, "desc" ]],
+        "info"       : false,
+        "responsive" : true
+      });
 
         $( '#table_productos_filter' ).addClass( "dataTables_filter uk-search uk-search-default" );
         $( '[type="search"]' ).addClass( "uk-search-input" );
@@ -159,7 +179,7 @@ Productos
                 source: modelo
             }
         );
-       
+
         $('#cat_prod_id').typeahead({
                 hint: true,
                 highlight: true,
@@ -201,7 +221,6 @@ Productos
     function printBarCode(id) {
         var img = document.createElement('img'); 
         img.src = document.getElementById('img_'+id).getAttribute('src');
-       
         document.getElementById('sobre').appendChild(img);
         
 
@@ -265,9 +284,6 @@ Productos
         printJS({printable: imgCanvas, type: 'image', imageStyle: 'width:100%;'});
     }
 
-
-    
-
     var save_method; //for save method string
 
     function add_producto()
@@ -280,8 +296,6 @@ Productos
         $('[name="stock"]').prop( "disabled", false );
         $('.uk-modal-title').text('Agregar producto');
     }
-
-    
 
     function save()
     {

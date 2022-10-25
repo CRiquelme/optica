@@ -34,6 +34,7 @@ class RendicionCajaModel  extends Model {
       "saldo",
       "sobre_id",
       "tienda_id",
+      "comentario",
     ];
 
     protected $useTimestamps    = false;

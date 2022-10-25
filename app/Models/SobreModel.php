@@ -17,6 +17,7 @@ class SobreModel extends Model {
         "numero_pedido",
         "fono",
         "email",
+        "fecha",
         "lejos_od",
         "lejos_esf1",
         "lejos_cil1",
