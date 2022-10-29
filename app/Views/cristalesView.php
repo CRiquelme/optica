@@ -95,17 +95,17 @@ Cristales
 										<td>{{ ingresos.potencia2 }}</td>
 										<td>{{ ingresos.cantidad }}</td>
 										<td class="uk-text-center">
-												<i class="fas fa-trash-alt cursor-pointer text-red-500" @click="delete_ingreso(idinfo, ingresos.id_cristal)" title="Borrar cristal"></i>
+                                            <i class="fas fa-trash-alt cursor-pointer text-red-500" @click="delete_ingreso(idinfo, ingresos.id_cristal)" title="Borrar cristal"></i>
 
-												<i class="fas fa-sign-out-alt ml-5 cursor-pointer text-green-800" @click="salida(idinfo, ingresos.id_cristal, ingresos.tienda_id, ingresos.cantidad)" title="Registrar salida"></i>
+                                            <i class="fas fa-sign-out-alt ml-5 cursor-pointer text-green-800" @click="salida(idinfo, ingresos.id_cristal, ingresos.tienda_id, ingresos.cantidad)" title="Registrar salida"></i>
 
-												<i class="fas fa-reply-all ml-5 cursor-pointer text-orange-800" title="Deshacer última salida" @click="deshacer(ingresos.id_cristal, ingresos.cajon, ingresos.tienda_id, ingresos.material, ingresos.potencia1, ingresos.potencia2, ingresos.cantidad)"></i>
+                                            <i class="fas fa-reply-all ml-5 cursor-pointer text-orange-800" title="Deshacer última salida" @click="deshacer(ingresos.id_cristal, ingresos.cajon, ingresos.tienda_id, ingresos.material, ingresos.potencia1, ingresos.potencia2, ingresos.cantidad)"></i>
 										</td>
 								</tr>
 						</tbody>
 				</table>
 
-				<h2 v-if="!cargar" class="text-2xl">Resumen de cristales</h2>
+				<h2 v-if="!cargar" class="text-2xl">Stock de cristales</h2>
 
 				<table v-if="!cargar" class="uk-table uk-table-divider uk-table-striped uk-table-hover" id="resumen_cristales">
 					<thead>
@@ -116,6 +116,7 @@ Cristales
 							<th>Cajón</th>
 							<th>Tienda</th>
 							<th>Cantidad</th>
+              <th>Opciones</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -129,6 +130,19 @@ Cristales
 							<td>{{ resumen.cajon }}</td>
 							<td>{{ resumen.nombre_tienda }}</td>
 							<td>{{ resumen.cantidad_cristales }}</td>
+              <td>
+                <button 
+                  :disabled="resumen.cantidad_cristales == 0" 
+                  @click="sacar_cristal(resumen.cantidad_cristales, resumen.id_tienda, resumen.id_cristal)" 
+                  :class="{'cursor-auto': resumen.cantidad_cristales == 0, 'cursor-pointer': resumen.cantidad_cristales > 0}"
+                >
+                  <i
+                    :class="resumen.cantidad_cristales == 0 ? 'fas fa-arrow-circle-up text-green-100' : 'fas fa-arrow-circle-down text-red-700'"
+                    class="fas fa-sign-out-alt"
+                    title="Salida de producto"
+                  ></i>
+                </button>
+              </td>
 						</tr>
 					</tbody>
 				</table>
@@ -140,7 +154,7 @@ Cristales
 </section>
 
 <script>
-    Vue.component('v-select', VueSelect.VueSelect);
+    // Vue.component('v-select', VueSelect.VueSelect);
 
     Vue.component('titulo', {
         template: '<h1 class="uppercase">{{titulo}}</h1>',
@@ -171,7 +185,8 @@ Cristales
 						tiendas: [],
 						ultimo: [],
 						errores: null,
-						resumenCristales: null
+						resumenCristales: null,
+            crystal_sell: 0,
 					}
         },
         methods: {
@@ -179,41 +194,44 @@ Cristales
                 const params = new URLSearchParams();
 
                 if(this.op_cajon !== null) {
-                    params.append('cajon', this.op_cajon);
+                  params.append('cajon', this.op_cajon);
+                }
+                if(this.op_tienda_id !== null) {
+                  params.append('tienda_id', this.op_tienda_id);
                 }
                 if(this.op_material !== null) {
-                    params.append('material', this.op_material);
+                  params.append('material', this.op_material);
                 }
                 if(this.op_potencia1 !== null) {
-                    params.append('potencia1', this.op_potencia1);
+                  params.append('potencia1', this.op_potencia1);
                 }
                 if(this.op_potencia2 !== null) {
-                    params.append('potencia2', this.op_potencia2);
+                  params.append('potencia2', this.op_potencia2);
                 }
                 if(this.op_cantidad !== null) {
-                    params.append('cantidad', this.op_cantidad);
+                  params.append('cantidad', this.op_cantidad);
                 }
                 axios
                     .post('<?=base_url('rest-cristales')?>', params)
                     .then(
                         response => {
-													console.log(response.data);
-													if(response.data.code === 500) {
-															console.log(response.data.msj);
-															this.errores = response.data.msj;
-													} else {
-														axios
-															.get('<?=base_url('rest-cristales')?>')
-															.then(response => (this.info = response.data.data));
-														axios
-															.get('<?=base_url('resumen-cristales')?>')
-															.then(response => (this.resumenCristales = response.data.data));
-														this.errores        = null;
-														this.op_cajon       = null;
-														this.op_material    = null;
-														this.op_potencia1   = null;
-														this.op_potencia2   = null;
-													}
+                            console.log(response.data);
+                            if(response.data.code === 500) {
+                                    console.log(response.data.msj);
+                                    this.errores = response.data.msj;
+                            } else {
+                                axios
+                                    .get('<?=base_url('rest-cristales')?>')
+                                    .then(response => (this.info = response.data.data));
+                                axios
+                                    .get('<?=base_url('resumen-cristales')?>')
+                                    .then(response => (this.resumenCristales = response.data.data));
+                                this.errores        = null;
+                                this.op_cajon       = null;
+                                this.op_material    = null;
+                                this.op_potencia1   = null;
+                                this.op_potencia2   = null;
+                            }
                         }
                     );
                 Swal.fire({
@@ -455,7 +473,77 @@ Cristales
                         })
                     }
                 });
-            }
+            },
+            sacar_cristal: function(stock, id_tienda, id_cristal) {
+                Swal.mixin({
+                    input: 'text',
+                    confirmButtonText: 'Siguiente &rarr;',
+                    showCancelButton: true,
+                }).queue([
+                  "¿Está seguro que desea sacar el cristal?",
+                ]).then((result) => {
+                    if (result.value) {
+                      // console.log(`Cantidad: ${cantidad_max}, tienda: ${id_tienda}, cristal: ${id_cristal}`);
+                      if(stock >= parseInt(result.value[0]) && parseInt(result.value[0]) > 0) {
+                        // Salida
+                        const params = new URLSearchParams();
+                        const answers = JSON.stringify(result.value)
+                        params.append('cristal_id', id_cristal);
+                        params.append('tienda_id', id_tienda);
+                        params.append('cantidad', result.value[0]);
+                        params.append('stock', stock);
+                        axios
+                        .post('<?=base_url('rest-salida-cristales')?>', params)
+                        .then(
+                          response => {
+                            if(response.data.code === 500) {
+                                console.log(response.data.msj);
+                                this.errores = response.data.msj;
+                                Swal.fire({
+                                    title: 'Salida no actualizada',
+                                    icon: 'error',
+                                    confirmButtonText: 'Confirmar'
+                                });
+                                console.log(this.errores)
+                            } else {
+                              axios
+                                .get('<?=base_url('resumen-cristales')?>')
+                                .then(response => (this.resumenCristales = response.data.data));
+                              this.errores = null;
+
+                              Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'La salida fue guardada.',
+                                showConfirmButton: false,
+                                timer: 1500
+                              })
+                            }
+                          }
+                        );
+                      } else {
+                        console.log('mmmm');
+                        Swal.fire({
+                          position: 'top-end',
+                          icon: 'warning',
+                          title: 'No puede sacar esa cantidad de critales.',
+                          showConfirmButton: false,
+                          timer: 1500
+                        })
+                      }
+                    } else if (
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                      Swal.fire({
+                        position: 'top-end',
+                        icon: 'warning',
+                        title: 'El cristal se mantiene.',
+                        showConfirmButton: false,
+                        timer: 1500
+                      })
+                    }
+                });
+            },
         },
         created () {
 					axios
