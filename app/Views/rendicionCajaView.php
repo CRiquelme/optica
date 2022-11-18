@@ -394,6 +394,7 @@ var app = new Vue({
       tiendas               : [],
       tienda                : '',
       comentario            : '',
+      existCliente          : false,
     }
   },
   methods: {
@@ -418,6 +419,30 @@ var app = new Vue({
           }
         });
 
+        if(this.existCliente === false) {
+          const params    = new URLSearchParams();
+          params.append('nombre_cliente', this.nombreCliente);
+          params.append('rut', this.rut);
+          console.log(params);
+          await axios
+            .post('<?=base_url('rest-clientes')?>', params)
+            .then(
+              response => {
+                if(response.data.code === 500) {
+                    this.errores = response.data.msj;
+                } else {
+                  Swal.fire({
+                      position          : 'top-end',
+                      title             : 'Cliente registrado',
+                      icon              : 'success',
+                      showConfirmButton : false,
+                      timer             : 1500
+                  });
+                }
+              }
+            );
+        }
+
         await axios
           .post('<?=base_url('rest-rendicion-caja')?>', params)
           .then(
@@ -434,7 +459,6 @@ var app = new Vue({
                 this.nombreCliente      = '';
                 this.id_rendicion_caja  = '';
                 this.comentario         = '';
-                // this.cliente();
                 this.getRendicionCaja();
                 Swal.fire({
                     position          : 'top-end',
@@ -674,9 +698,21 @@ var app = new Vue({
         .then(
           response => {
             const { data } = response.data;
+            console.log(data);
             this.nombreCliente = data[0].nombre_cliente;
+            if (data[0].tienda_id !== null) {
+              this.existCliente = true;
+            } else {
+              this.existCliente = false;
+            }
           }
         )
+      .catch(
+        error => {
+          this.nombreCliente = '';
+          this.existCliente = false;
+        }
+      )
     }
   },
 

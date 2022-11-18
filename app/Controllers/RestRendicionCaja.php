@@ -5,6 +5,7 @@ namespace App\Controllers;
 use MyRestApi;
 use CodeIgniter\Controller;
 use App\Models\RendicionCajaModel;
+use App\Models\ClientesModel;
 
 class RestRendicionCaja extends MyRestApi
 {
