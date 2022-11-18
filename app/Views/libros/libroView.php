@@ -313,7 +313,8 @@ Libros
       agregar: function (){
         const params = new URLSearchParams();
         // Adjuntar al params los valores de los inputs
-        if(clienteInfo.rut !== '') { 
+        console.log(this.clienteInfo.rut);
+        if(this.clienteInfo.rut !== '') { 
           inputs.forEach(input => {
               if(this[input] !== ''){ {
                 params.append(`${input}`, this[input]);
@@ -499,7 +500,7 @@ Libros
     },
     filters: {
       fecha: function (value) {
-        return moment(String(value)).format('MM/DD/YYYY hh:mm')
+        return moment(String(value)).format('DD/MM/YYYY')
       }
     },
     created () {

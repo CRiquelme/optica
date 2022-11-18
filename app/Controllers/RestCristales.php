@@ -27,6 +27,7 @@ class RestCristales extends MyRestApi
 		if ($this->validate('ingresoCristales')) {
 			$id = $ingresoCristales->insert([
 				'cajon' 		=> $this->request->getPost('cajon'),
+				'tienda_id'	=> $this->request->getPost('tienda_id'),
 				'material' 	=> $this->request->getPost('material'),
 				'potencia1'	=> $this->request->getPost('potencia1'),
 				'potencia2' => $this->request->getPost('potencia2'),
@@ -84,7 +85,7 @@ class RestCristales extends MyRestApi
 	{
 		$db 			= db_connect();
 		$builder 	= $db->table('cristales AS c');
-		$builder->select('c.material, c.cajon, c.potencia1, c.potencia2, t.nombre_tienda, SUM(c.cantidad) AS cantidad_cristales');
+		$builder->select('c.id_cristal, c.material, c.cajon, c.potencia1, c.potencia2, t.id_tienda, t.nombre_tienda, SUM(c.cantidad) AS cantidad_cristales');
 		$builder->join('tiendas AS t', 'c.tienda_id = t.id_tienda', 'left');
 		$builder->where('c.deleted', null);
 		$builder->groupBy(["c.material", "c.tienda_id"]);

@@ -5,6 +5,7 @@ namespace App\Controllers;
 use MyRestApi;
 use CodeIgniter\Controller;
 use App\Models\RendicionCajaModel;
+use App\Models\ClientesModel;
 
 class RestRendicionCaja extends MyRestApi
 {
@@ -41,6 +42,7 @@ class RestRendicionCaja extends MyRestApi
       "oc"                    => $this->request->getPost("oc"),
       "saldo"                 => $this->request->getPost("saldo"),
       "tienda_id"             => $this->request->getPost("tienda"),
+      "comentario"            => $this->request->getPost("comentario"),
 		]);
 	}
 
@@ -69,6 +71,7 @@ class RestRendicionCaja extends MyRestApi
       "oc"                    => $data['oc'] !== (null) ? $data['oc'] : (null),
       "saldo"                 => $data['saldo'] !== (null) ? $data['saldo'] : (null),
       "tienda_id"             => $data['tienda'] !== (null) ? $data['tienda'] : (null),
+      "comentario"            => $data['comentario'] !== (null) ? $data['comentario'] : (null),
     ]);
   }
 

@@ -12,10 +12,26 @@ class RestClientes extends MyRestApi {
     $db = db_connect();
     $builder = $db->table('clientes');
     $builder->select('*');
-    $builder->orderBy('id_cliente', 'DESC');
+    $builder->orderBy('created_at', 'DESC');
     $query = $builder->get();
     return $this->genericResponse($query->getResultArray(), null, 200);
   } // index()
+
+  public function create() {
+    $ingresoCliente = new ClientesModel();
+    // if($this->validate('clientes')) {
+      $id = $ingresoCliente->insert([
+        'rut'             => $this->request->getPost('rut'),
+        'nombre_cliente'  => $this->request->getPost('nombre_cliente'),
+        'telefono'        => $this->request->getPost('telefono'),
+        'celular'         => $this->request->getPost('celular'),
+        'direccion'       => $this->request->getPost('direccion')
+      ]);
+      return $this->genericResponse($this->model->find($id), null, 200);
+    // }
+    // $validation = \Config\Services::validation();
+    // return $this->genericResponse(null, $validation->getErrors(), 400);
+  } // create()
 
   public function show ($id = null) {
     // return $this->genericResponse($this->model->find($id), null, 200);
