@@ -52,8 +52,6 @@ $routes->get('facturas_emitidas', 'FacturasEmitidasController::index');
 
 $routes->get('clientes_empresas', 'ClientesEmpresasController::index');
 
-
-
 $routes->get('sobre', 'SobreController::index');
 $routes->get('sobre/(:any)', 'SobreController::cliente/$1');
 $routes->get('libros', 'LibrosController::index');
@@ -81,6 +79,8 @@ $routes->resource('rest-traslados', ['controller' => 'RestTraslados']); // gené
 // $routes->get('rest-salida-productos/fechas/(:any)', 'RestSalidaProductos::fechas/$1');
 $routes->get('rest-rendicion-caja/fecha/(:any)', 'RestRendicionCaja::fecha/$1');
 $routes->get('rest-rendicion-caja/fecha-tienda/(:any)/(:any)', 'RestRendicionCaja::fecha/$1/$2');
+$routes->get('rest-rendicion-caja/cierre-caja-show/(:any)/(:any)', 'RestRendicionCaja::cierreCajaShow/$1/$2');
+$routes->post('rest-rendicion-caja/cerrar-caja/(:any)/(:any)', 'RestRendicionCaja::cerrarCaja/$1/$2');
 $routes->put('rest-rendicion-caja/eliminar-tbk-sombras/(:any)', 'RestRendicionCaja::eliminarTbkSombras/$1');
 $routes->resource('rest-rendicion-caja', ['controller' => 'RestRendicionCaja']); // genérica
 

@@ -65,6 +65,7 @@
 						<a>Productos</a>
 						<ul class="uk-nav-sub">
 							<li><a href="<?=base_url('stock_productos')?>">Stock por tiendas</a></li>
+							<li><a href="<?=base_url('salida_productos')?>">Salida</a></li>
 						</ul>
 				</li>
 				<li class="uk-parent"><a href="<?=base_url('rendicion-caja')?>">Rendición de caja</a></li>

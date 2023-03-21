@@ -26,7 +26,7 @@ Rendición de caja
 				?>
 
     </div>
-    
+
     <div v-if="!cargarForm" class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-12" ref="formRendicionCaja">
 
       <input type="hidden" name="id_rendicion_caja" name="id_rendicion_caja" v-model="id_rendicion_caja">
@@ -39,9 +39,9 @@ Rendición de caja
       <div class="sm:col-span-2">
         <label for="tienda" class="<?= $labelClass ?>">Tienda</label>
         <div class="mt-1">
-          <select v-model="tienda" class="uk-select" id="tienda" name="tienda" @change="getRendicionCaja">
-            <option value="">Tienda</option>
-            <option v-for="(t, index) in tiendas" :key="tiendas.id_tienda" :value="t.id_tienda">
+          <select v-model="tienda" class="uk-select" id="tienda" name="tienda" @change="getRendicionCaja" required>
+            <option disabled value="">Seleccione una tienda</option>
+            <option v-for="(t, index) in tiendas" :key="tiendas.id_tienda" :value="t.id_tienda" :selected="index === 1">
                 {{t.nombre_tienda}}
             </option>
           </select>
@@ -185,7 +185,7 @@ Rendición de caja
           <input type="text" v-model="tbkSombra" class="<?= $inputClass ?>" id="tbkSombra" name="tbkSombra">
         </div>
       </div>
-      
+
       <div class="sm:col-span-6">
         <label class="<?= $labelClass ?>" for="comentario">Comentario</label>
         <div class="mt-1">
@@ -193,21 +193,21 @@ Rendición de caja
         </div>
       </div>
 
-      
-
       <div class="sm:col-span-2">
         <label>&nbsp;</label>
         <button
           v-if="!edit"
-          class="uk-button uk-button-primary | w-full" 
-          type="button" 
-          @click="guardar()">
-              Guardar
+          class="uk-button uk-button-primary | w-full"
+          type="button"
+          @click="guardar()"
+          :disabled="cierreCaja && tienda !== ''"
+        >
+            {{!cierreCaja ? "Guardar" : "Caja cerrada" }}
         </button>
         <button
           v-if="edit"
-          class="uk-button uk-button-secondary | w-full" 
-          type="button" 
+          class="uk-button uk-button-secondary | w-full"
+          type="button"
           @click="guardar()">
               Editar
         </button>
@@ -215,15 +215,27 @@ Rendición de caja
       <div class="sm:col-span-2">
         <label>&nbsp;</label>
         <button
-          class="uk-button uk-button-secondary | w-full" 
-          type="button" 
+          class="uk-button uk-button-secondary | w-full"
+          type="button"
           @click="deleteTbkSombra()">
               Eliminar tbk sombra
         </button>
       </div>
-      
+      <div class="sm:col-span-2">
+        <label>&nbsp;</label>
+        <button
+          class="uk-button uk-button-default | w-full"
+          type="button"
+          @click="cerrarCaja()"
+          v-if="!cierreCaja"
+          v-show="tienda!==''"
+        >
+            Cerrar caja
+        </button>
+      </div>
+
     </div>
-      
+
       <!-- Registro de sobres -->
       <div class="w-full | mt-3">
         <h2 class="text-gray-500 text-xs font-medium uppercase tracking-wide">
@@ -395,6 +407,7 @@ var app = new Vue({
       tienda                : '',
       comentario            : '',
       existCliente          : false,
+      cierreCaja            : false,
     }
   },
   methods: {
@@ -409,15 +422,45 @@ var app = new Vue({
     async guardar() {
       console.log(this.id_rendicion_caja);
       if(this.id_rendicion_caja === '') {
-        const params    = new URLSearchParams();
-
+        const params = new URLSearchParams();
         this.fecha = moment(this.fecha).format('YYYY-MM-DD');
-
         inputs.forEach(input => {
           if (this[input] !== '') {
             params.append(`${input}`, this[input]);
           }
         });
+
+        if(this.tienda === '') {
+          Swal.fire({
+            position          : 'top-end',
+            title             : 'Por favor, seleccione una tienda.',
+            icon              : 'error',
+            showConfirmButton : false,
+            timer             : 1500
+          });
+          return;
+        }
+        if(this.rut === '') {
+          Swal.fire({
+            position          : 'top-end',
+            title             : 'Por favor, escriba un RUT.',
+            icon              : 'error',
+            showConfirmButton : false,
+            timer             : 1500
+          });
+          return;
+        }
+        if(this.nombreCliente === '') {
+          Swal.fire({
+            position          : 'top-end',
+            title             : 'Por favor, escriba un nombre de cliente.',
+            icon              : 'error',
+            showConfirmButton : false,
+            timer             : 1500
+          });
+          return;
+        }
+
 
         if(this.existCliente === false) {
           const params    = new URLSearchParams();
@@ -459,6 +502,7 @@ var app = new Vue({
                 this.nombreCliente      = '';
                 this.id_rendicion_caja  = '';
                 this.comentario         = '';
+                this.tienda             = '';
                 this.getRendicionCaja();
                 Swal.fire({
                     position          : 'top-end',
@@ -479,15 +523,19 @@ var app = new Vue({
 
     getRendicionCaja() {
       let self = this;
-      this.cargar         = true;
+      this.cargar = true;
       this.totalIngresos  = 0;
       let fecha   = moment(this.fecha).format('YYYY-MM-DD');
       let url = '';
+      let urlCierreCaja = '';
+
       if(self.tienda !== '' && fecha !== null) {
         url = '<?= base_url('rest-rendicion-caja') ?>/fecha-tienda/' + fecha + '/' + self.tienda;
+        urlCierreCaja = '<?= base_url('rest-rendicion-caja') ?>/cierre-caja-show/' + fecha + '/' + self.tienda;
       } else if(self.tienda === '' && fecha !== null) {
         url = '<?= base_url('rest-rendicion-caja') ?>/fecha/' + fecha;
       }
+
       axios.get( url )
         .then( response => {
             const { data } = response.data;
@@ -495,9 +543,13 @@ var app = new Vue({
             this.cargar           = false;
             this.cargarForm       = false;
         });
-      
+      axios.get( urlCierreCaja )
+        .then( response => {
+          this.cierreCaja = (response?.data?.data?.length > 0 ) ? true : false;
+        });
+
       $(function() {
-        $('#tableRendicionCaja').DataTable( 
+        $('#tableRendicionCaja').DataTable(
           {
             "order": [ 0, "desc" ],
             "info": false,
@@ -545,6 +597,31 @@ var app = new Vue({
             });
         }
       });
+    },
+
+    cerrarCaja() {
+      let self = this;
+      let fecha = moment(this.fecha).format('YYYY-MM-DD');
+      let tienda = this.tienda;
+      let urlCerrarCaja = '';
+      if(self.tienda !== '' && fecha !== null) {
+        urlCerrarCaja = '<?= base_url('rest-rendicion-caja') ?>/cerrar-caja/' + fecha + '/' + self.tienda;
+      }
+      axios.post( urlCerrarCaja )
+        .then( response => {
+          if(response.data.code === 500) {
+            this.errores = response.data.msj;
+          } else {
+            this.cierreCaja = true;
+            Swal.fire({
+              position          : 'top-end',
+              title             : 'Caja cerrada',
+              icon              : 'success',
+              showConfirmButton : false,
+              timer             : 1500
+            });
+          }
+        });
     },
 
     eliminar(id_rendicion_caja) {
@@ -685,11 +762,10 @@ var app = new Vue({
             this.rut                = '';
             this.nombreCliente      = '';
             this.id_rendicion_caja  = '';
+            this.tienda             = '';
             this.edit               = false;
           }
         )
-
-      
     },
 
     getName(event) {

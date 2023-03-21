@@ -36,7 +36,7 @@ class RestClientes extends MyRestApi {
   public function show ($id = null) {
     // return $this->genericResponse($this->model->find($id), null, 200);
     if ($this->model->find($id) == null) return $this->genericResponse(null, array("Mensaje" => "Ingreso no existe."), 500);
-		
+
 		return $this->genericResponse($this->model->find($id), null, 200);
   } // show()
 

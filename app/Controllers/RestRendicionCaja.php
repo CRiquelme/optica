@@ -6,6 +6,7 @@ use MyRestApi;
 use CodeIgniter\Controller;
 use App\Models\RendicionCajaModel;
 use App\Models\ClientesModel;
+use App\Models\CierreCajaModel;
 
 class RestRendicionCaja extends MyRestApi
 {
@@ -77,7 +78,6 @@ class RestRendicionCaja extends MyRestApi
 
   public function show($id = null) {
 		if ($this->model->find($id) == null) return $this->genericResponse(null, array("Mensaje" => "Ingreso no existe."), 500);
-		
 		return $this->genericResponse($this->model->find($id), null, 200);
 	} // show
 
@@ -96,10 +96,10 @@ class RestRendicionCaja extends MyRestApi
 	/**
    * It returns the last record of the table rendicion_caja where the field deleted is null, the field
    * fecha is equal to the parameter  and the field tienda_id is equal to the parameter .
-   * 
+   *
    * @param fecha 2020-01-01
    * @param tienda 1
-   * 
+   *
    * @return <code>{
    *     "status": 200,
    *     "data": [
@@ -134,6 +134,26 @@ class RestRendicionCaja extends MyRestApi
     $builder = $db->table('rendicion_caja AS rc');
     $builder->where('rc.fecha', $fecha);
     $builder->update($data);
+  }
+
+  public function cierreCajaShow($fecha = null, $tienda = null) {
+    $cierreCaja = new CierreCajaModel();
+    $builder = $cierreCaja->table('cierre_caja');
+      $builder->select('cierre_caja.*');
+      $builder->where('cierre_caja.fecha_cierre', $fecha);
+      $builder->where('cierre_caja.tienda_id', $tienda);
+      $builder->where('cierre_caja.deleted', null);
+      $builder->orderBy('cierre_caja.id_cierre_caja', 'DESC');
+    $query = $builder->get();
+    return  $this->genericResponse($query->getResultArray(), null, 200);
+  }
+
+  public function cerrarCaja($fecha = null, $tienda = null) {
+    $cerrarCaja = new CierreCajaModel();
+		$id = $cerrarCaja->insert([
+      "fecha_cierre"  => $fecha,
+      "tienda_id"     => $tienda,
+    ]);
   }
 
 }
