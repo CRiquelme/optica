@@ -51,7 +51,7 @@ class RestCristales extends MyRestApi
 		$salidaCristales->where('cristal_id', $id)->delete();
 		return $this->genericResponse("El producto ingresado ha sido eliminado.", null, 200);
 	} // delete
-    
+
 	public function show($id=null)
 	{
 		if($this->model->find($id) == null) {
@@ -60,7 +60,7 @@ class RestCristales extends MyRestApi
 		return $this->genericResponse($this->model->find($id), null, 200);
 	} // show
 
-	public function update($id = null) 
+	public function update($id = null)
 	{
 		$ingresoCristales = new CristalesModel();
 		$data = $this->request->getRawInput();
