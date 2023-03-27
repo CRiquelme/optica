@@ -237,6 +237,16 @@ class ProductosController extends BaseController
 		}
 	}
 
+  public function listProducts() {
+    $data = array();
+		if($this->dataUser) {
+			$data = $this->dataUser;
+			return view('listaDeProductosView', $data);
+		}  else {
+			return redirect()->route('login');
+		}
+	}
+
 
 }
 

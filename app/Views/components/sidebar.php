@@ -6,6 +6,7 @@
     <li class="uk-parent">
         <a href="<?=base_url('productos')?>">Productos</a>
         <ul class="uk-nav-sub">
+            <li><a href="<?=base_url('lista-productos')?>">Lista de productos</a></li>
             <li><a href="<?=base_url('ingreso_productos')?>">Ingresos</a></li>
             <li><a href="<?=base_url('salida_productos')?>">Salida</a></li>
             <li><a href="<?=base_url('stock_productos')?>">Stock por tiendas</a></li>
